@@ -1,5 +1,6 @@
 package View;
 
+import Model.Hunter;
 import utils.Observer;
 import utils.Subject;
 

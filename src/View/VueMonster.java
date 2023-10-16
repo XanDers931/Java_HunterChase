@@ -1,12 +1,12 @@
 package View;
 
-import Model.Hunter;
+import Model.Monster;
 import utils.Observer;
 import utils.Subject;
 
-public class VueMonster implements Observer {
+public class VueMonster implements Observer{
 
-    private Hunter hunter;
+    private Monster monster;
 
     @Override
     public void update(Subject subj) {
