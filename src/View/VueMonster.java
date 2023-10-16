@@ -8,6 +8,15 @@ public class VueMonster implements Observer{
 
     private Monster monster;
 
+    public void eventMonster(Monster monster){
+        //A REMPLIR
+    }
+
+    public void creerStage(){
+        //A REMPLIR
+    }
+
+
     @Override
     public void update(Subject subj) {
         // TODO Auto-generated method stub

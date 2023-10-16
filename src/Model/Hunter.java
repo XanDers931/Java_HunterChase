@@ -7,6 +7,14 @@ import Utils.Subject;
 
 public class Hunter extends Subject implements IHunterStrategy {
 
+    private String nickname;
+    
+    public Hunter(String nickname){
+        this.nickname = nickname;
+    }
+
+    
+
     @Override
     public ICoordinate play() {
         // TODO Auto-generated method stub
@@ -23,6 +31,12 @@ public class Hunter extends Subject implements IHunterStrategy {
     public void initialize(int arg0, int arg1) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'initialize'");
+    }
+
+
+
+    public String getNickname() {
+        return nickname;
     }
     
 }
