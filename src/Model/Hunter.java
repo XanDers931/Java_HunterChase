@@ -3,7 +3,7 @@ package Model;
 import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
-import utils.Subject;
+import Utils.Subject;
 
 public class Hunter extends Subject implements IHunterStrategy {
 

@@ -1,8 +1,8 @@
 package View;
 
 import Model.Monster;
-import utils.Observer;
-import utils.Subject;
+import Utils.Observer;
+import Utils.Subject;
 
 public class VueMonster implements Observer{
 

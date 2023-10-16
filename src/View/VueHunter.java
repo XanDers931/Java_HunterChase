@@ -1,8 +1,8 @@
 package View;
 
 import Model.Hunter;
-import utils.Observer;
-import utils.Subject;
+import Utils.Observer;
+import Utils.Subject;
 
 public class VueHunter implements Observer{
 

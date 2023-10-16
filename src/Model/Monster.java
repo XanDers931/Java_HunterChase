@@ -3,7 +3,7 @@ package Model;
 import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
-import utils.Subject;
+import Utils.Subject;
 
 public class Monster extends Subject implements IMonsterStrategy{
 

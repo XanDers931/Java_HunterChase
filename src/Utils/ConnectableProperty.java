@@ -1,4 +1,4 @@
-package utils;
+package Utils;
 
 public class ConnectableProperty extends ObservableProperty implements Observer {
 
