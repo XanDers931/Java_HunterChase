@@ -13,6 +13,8 @@ public class Hunter extends Subject implements IHunterStrategy {
     
     public Hunter(String nickname){
         this.nickname = nickname;
+        map.initMap();
+        map.initShoot();
     }
 
     
