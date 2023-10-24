@@ -23,9 +23,8 @@ public class VueHunter implements Observer{
         GridPane gridPane = new GridPane();
         for(int i = 0; i < map.getMap().length; i++){
             for(int j = 0; j < map.getMap()[i].length; j++){
-                gridPane.add(new Label(map.getMap()[i][j]), j , i );
+                gridPane.add(new Label(map.getMap()[i][j].toString()), j , i );
             }
-            
         }
     }
 
