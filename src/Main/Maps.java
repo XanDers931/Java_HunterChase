@@ -1,12 +1,16 @@
+package Main;
 import javax.print.attribute.standard.MediaPrintableArea;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
-public class Map {
+public class Maps {
+    
+    
+    
+    
     public CellInfo[][] getMap() {
         return map;
     }
-
 
     public boolean[][] getMapShoot() {
         return mapShoot;
@@ -42,7 +46,7 @@ public class Map {
     }
 
     public static void main(String[] args) {
-        Map map= new Map();
+        Maps map= new Maps();
         map.init();
         map.displayMap();
     }

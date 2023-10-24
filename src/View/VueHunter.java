@@ -1,7 +1,6 @@
 package View;
 
-import java.util.Map;
-
+import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
@@ -19,10 +18,10 @@ public class VueHunter implements Observer{
 
     public void creerStage(){
         Stage stage = new Stage();
-        Map map = hunter.getMap();
+        Maps map = hunter.getMap();
         GridPane gridPane = new GridPane();
-        for(int i = 0; i < map.map.size(); i++){
-            for(int j = 0; j < map.size(); j++){
+        for(int i = 0; i < map.getMap().length; i++){
+            for(int j = 0; j < map.getMap()[i].length; j++){
                 gridPane.addRow(i, null);
             }
             

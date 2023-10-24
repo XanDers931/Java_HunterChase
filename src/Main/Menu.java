@@ -1,3 +1,4 @@
+package Main;
 public class Menu {
     public void rules(){
         //A REMPLIR
