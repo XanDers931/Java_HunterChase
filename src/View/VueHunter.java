@@ -5,6 +5,7 @@ import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -22,7 +23,7 @@ public class VueHunter implements Observer{
         GridPane gridPane = new GridPane();
         for(int i = 0; i < map.getMap().length; i++){
             for(int j = 0; j < map.getMap()[i].length; j++){
-                gridPane.addRow(i, null);
+                gridPane.add(new Label(map.getMap()[i][j]), j , i );
             }
             
         }
