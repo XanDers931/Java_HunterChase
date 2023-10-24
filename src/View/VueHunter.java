@@ -17,7 +17,7 @@ public class VueHunter implements Observer{
         //A REMPLIR
     }
 
-    public void creerStage(){
+    public Stage creerStage(){
         Stage stage = new Stage();
         Maps map = hunter.getMap();
         GridPane gridPane = new GridPane();
@@ -25,8 +25,9 @@ public class VueHunter implements Observer{
             for(int j = 0; j < map.getMap()[i].length; j++){
                 gridPane.add(new Label(map.getMap()[i][j]), j , i );
             }
-            
         }
+        stage.setScene(new GridPaneScene(gridPane));
+        return stage;
     }
 
     @Override
