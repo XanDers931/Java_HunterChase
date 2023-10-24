@@ -3,6 +3,15 @@ import javax.print.attribute.standard.MediaPrintableArea;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Map {
+    public CellInfo[][] getMap() {
+        return map;
+    }
+
+
+    public boolean[][] getMapShoot() {
+        return mapShoot;
+    }
+
     private CellInfo[][] map;
     private boolean[][] mapShoot;
 
