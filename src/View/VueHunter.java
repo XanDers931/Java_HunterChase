@@ -5,6 +5,7 @@ import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -27,6 +28,8 @@ public class VueHunter implements Observer{
             }
             
         }
+        stage.setScene(new GridPaneScene(gridPane));
+        return stage;
     }
 
     @Override

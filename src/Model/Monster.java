@@ -1,12 +1,9 @@
 package Model;
 
-import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
-import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import Main.Maps;
 import Utils.Subject;
 
-public class Monster extends Subject implements IMonsterStrategy{
+public class Monster extends Subject{
 
     public String nickname;
     public Maps map;
@@ -16,24 +13,6 @@ public class Monster extends Subject implements IMonsterStrategy{
         map.initMap();
     }
     
-    @Override
-    public ICoordinate play() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'play'");
-    }
-
-    @Override
-    public void update(ICellEvent arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void initialize(boolean[][] arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
-    }
-
     public String getNickname() {
         return nickname;
     }
