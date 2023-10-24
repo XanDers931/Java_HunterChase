@@ -5,6 +5,7 @@ import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -26,7 +27,9 @@ public class VueHunter implements Observer{
                 gridPane.add(new Label(map.getMap()[i][j].toString()), i, j);
             }
         }
-        stage.setScene(new GridPaneScene(gridPane));
+        Scene scene = new Scene(gridPane, 1000, 1000);
+        stage.setScene(scene);
+        stage.setTitle("Vue chasseur");
         return stage;
     }
 
