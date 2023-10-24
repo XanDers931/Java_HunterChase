@@ -19,7 +19,7 @@ public class Maps {
     private CellInfo[][] map;
     private boolean[][] mapShoot;
 
-    public void init(){
+    public void initMap(){
         this.map= new CellInfo[10][5];
         int cpt1=0;
         int cpt2=0;
@@ -35,6 +35,17 @@ public class Maps {
         this.map[5][2]= CellInfo.HUNTER;
     }
 
+    public void initShoot(){
+        this.mapShoot= new boolean[10][5];
+        for(int i = 0; i < 10; i++)
+        {
+          for(int y = 0; y < 5; y++)
+          {
+            this.mapShoot[i][y] = false;
+          }
+        }
+    }
+
 
     public void displayMap(){
         for (CellInfo[] cellInfos : map) {
@@ -47,7 +58,7 @@ public class Maps {
 
     public static void main(String[] args) {
         Maps map= new Maps();
-        map.init();
+        map.initMap();
         map.displayMap();
     }
 }
