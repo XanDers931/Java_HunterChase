@@ -5,6 +5,7 @@ import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -17,15 +18,19 @@ public class VueHunter implements Observer{
         //A REMPLIR
     }
 
-    public void creerStage(){
+    public Stage creerStage(){
         Stage stage = new Stage();
         Maps map = hunter.getMap();
         GridPane gridPane = new GridPane();
         for(int i = 0; i < map.getMap().length; i++){
             for(int j = 0; j < map.getMap()[i].length; j++){
-                gridPane.add(new Label(map.getMap()[i][j].toString()), j , i );
+                gridPane.add(new Label(map.getMap()[i][j].toString()), i, j);
             }
         }
+        Scene scene = new Scene(gridPane, 1000, 1000);
+        stage.setScene(scene);
+        stage.setTitle("Vue chasseur");
+        return stage;
     }
 
     @Override

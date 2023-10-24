@@ -10,6 +10,8 @@ public class Hunter extends Subject {
     
     public Hunter(String nickname){
         this.nickname = nickname;
+        map.initMap();
+        map.initShoot();
     }
 
     public String getNickname() {
