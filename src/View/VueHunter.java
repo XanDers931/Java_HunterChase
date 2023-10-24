@@ -1,9 +1,13 @@
 package View;
 
+import java.util.Map;
+
 import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class VueHunter implements Observer{
 
@@ -14,7 +18,15 @@ public class VueHunter implements Observer{
     }
 
     public void creerStage(){
-        //A REMPLIR
+        Stage stage = new Stage();
+        Map map = hunter.getMap();
+        GridPane gridPane = new GridPane();
+        for(int i = 0; i < map.map.size(); i++){
+            for(int j = 0; j < map.size(); j++){
+                gridPane.addRow(i, null);
+            }
+            
+        }
     }
 
     @Override

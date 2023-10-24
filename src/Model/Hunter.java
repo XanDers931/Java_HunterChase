@@ -4,10 +4,12 @@ import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import Utils.Subject;
+import Map;
 
 public class Hunter extends Subject implements IHunterStrategy {
 
     private String nickname;
+    private Map map;
     
     public Hunter(String nickname){
         this.nickname = nickname;
@@ -37,6 +39,10 @@ public class Hunter extends Subject implements IHunterStrategy {
 
     public String getNickname() {
         return nickname;
+    }
+
+    public Map getMap() {
+        return map;
     }
     
 }
