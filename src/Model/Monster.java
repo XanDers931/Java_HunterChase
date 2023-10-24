@@ -1,8 +1,5 @@
 package Model;
 
-import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
-import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import Main.Maps;
 import Utils.Subject;
 
