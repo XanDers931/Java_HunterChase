@@ -26,6 +26,10 @@ public class Monster extends Subject{
         map.setOnMap(x, y);
     }
 
+    public void moveMonster(int x, int y){
+        
+    }
+
     
     
 }
