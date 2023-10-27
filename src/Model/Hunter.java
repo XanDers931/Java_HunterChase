@@ -10,6 +10,7 @@ public class Hunter extends Subject {
     
     public Hunter(String nickname){
         this.nickname = nickname;
+        map= new Maps();
         map.initMap();
         map.initShoot();
     }
@@ -20,6 +21,11 @@ public class Hunter extends Subject {
 
     public Maps getMap() {
         return map;
+    }
+
+
+    public void setMap(int x,int y){
+        map.setOnMap(x, y);
     }
     
 }

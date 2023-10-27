@@ -8,7 +8,7 @@ public class Maps {
     
     
     
-    public CellInfo[][] getMap() {
+    public CellInfo[][] getMaps() {
         return map;
     }
 
@@ -50,10 +50,15 @@ public class Maps {
     public void displayMap(){
         for (CellInfo[] cellInfos : map) {
             for (CellInfo cellInfo : cellInfos) {
-                System.out.print(cellInfo);
+                String temp = cellInfo.toString().substring(0, 1);
+                System.out.print(temp);
             }
             System.out.println();
         }
+    }
+
+    public void setOnMap(int x, int y){
+        map[x][y]=CellInfo.WALL;
     }
 
     public static void main(String[] args) {
