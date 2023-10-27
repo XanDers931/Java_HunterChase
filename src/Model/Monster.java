@@ -2,6 +2,8 @@ package Model;
 
 import Main.Maps;
 import Utils.Subject;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import javafx.scene.control.Cell;
 
 public class Monster extends Subject{
 
@@ -26,9 +28,29 @@ public class Monster extends Subject{
         map.setOnMap(x, y);
     }
 
-    public void moveMonster(int x, int y){
-        
+    public int[] getCordMonster(){
+        int[] cord = new int[2];
+        for(int i=0;i<map.getMaps().length;i++){
+            for(int j=0;i<map.getMaps()[i].length;j++){
+                if(map.getMaps()[i][j]==CellInfo.MONSTER){
+                    cord[0]=i;
+                    cord[1]=j;
+                    return cord;
+                }
+            }
+        }
+        return null;
     }
+
+    public void moveMonster(int x, int y){
+        int[] cord = getCordMonster();
+        map.getMaps()[cord[0]][cord[1]]=CellInfo.EMPTY;
+        map.getMaps()[x][y]=CellInfo.MONSTER;
+        //System.out.println(cord[0]+""+cord[1]);
+    }
+
+
+    
 
     
     

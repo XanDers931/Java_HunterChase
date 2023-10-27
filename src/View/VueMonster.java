@@ -47,7 +47,8 @@ public class VueMonster implements Observer{
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
-                monster.setMap(clickedRow, clickedCol);
+                monster.moveMonster(clickedRow, clickedCol);
+                //monster.setMap(clickedRow, clickedCol);
                 chargePlateau(gridPane);
                 System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
             }
