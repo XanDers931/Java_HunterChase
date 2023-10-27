@@ -18,6 +18,8 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -25,11 +27,23 @@ public class VueMonster implements Observer{
 
     private Monster monster;
     private GridPane gridPane;
+    private Hunter hunter;
+    boolean tour=true;
+    
 
 
     public VueMonster(Monster monster) {
         this.monster = monster;
     }
+
+    
+
+    public VueMonster(Monster monster, Hunter hunter) {
+        this.monster = monster;
+        this.hunter = hunter;
+    }
+
+
 
     public void eventMonster(Monster monster){
         
@@ -39,24 +53,30 @@ public class VueMonster implements Observer{
     public Stage creerStage(){
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Stage stage = new Stage();
-        Maps map = monster.getMap();
         gridPane = new GridPane();
         chargePlateau(gridPane);
-        gridPane.setOnMouseClicked(event -> {
+        HBox hbox = new HBox(new Label("HUNTER"));
+        hbox.setAlignment(javafx.geometry.Pos.CENTER);
+        
+            gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
+                int[] cordMonster= monster.getCordMonster();
+                hunter.getMap().setCellInfo(cordMonster[0], cordMonster[1], CellInfo.EMPTY);
+                hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
                 monster.moveMonster(clickedRow, clickedCol);
-                //monster.setMap(clickedRow, clickedCol);
-                chargePlateau(gridPane);
+                chargePlateau(gridPane); 
+                System.out.println(tour);
                 System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
             }
         });
 
+        VBox vbox = new VBox(hbox,gridPane);
         gridPane.setBorder(new Border(borderStroke));
         gridPane.setPadding(new Insets(100, 100, 100, 100)); 
-        Scene scene = new Scene(gridPane, 1000, 1000);
+        Scene scene = new Scene(vbox, 900, 900);
         stage.setScene(scene);
         return stage;
     }

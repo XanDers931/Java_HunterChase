@@ -37,6 +37,7 @@ public class Maps {
         this.map[0][0]=CellInfo.MONSTER;
         this.map[9][4]= CellInfo.EXIT;
         this.map[5][2]= CellInfo.HUNTER;
+        this.map[0][1]=CellInfo.WALL;
     }
 
     public void initShoot(){
@@ -81,6 +82,10 @@ public class Maps {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void setCellInfo(int x, int y, CellInfo cell){
+        map[x][y]=cell;
     }
 
     public static void main(String[] args) {

@@ -18,6 +18,8 @@ import javafx.scene.layout.BorderStrokeStyle;
 import javafx.scene.layout.BorderWidths;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -40,6 +42,8 @@ public class VueHunter implements Observer{
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Stage stage = new Stage();
         gridPane = new GridPane();
+        HBox hbox = new HBox(new Label("HUNTER"));
+        hbox.setAlignment(javafx.geometry.Pos.CENTER);
         chargePlateau(gridPane,-1,-1);
         gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
@@ -49,16 +53,19 @@ public class VueHunter implements Observer{
                 hunter.getMap().getMapShoot()[clickedRow][clickedCol] = true;
                 if(monster.getMap().getMaps()[clickedRow][clickedCol].equals(CellInfo.MONSTER)){
                     //VICTOIRE DU HUNTER
-                    System.out.println("VICTOIRE DU HUNTER");
+                    System.out.println("VICTOIRE DU HUNTER"); 
                 }
-                hunter.setMap(clickedRow, clickedCol);
+                //hunter.setMap(clickedRow, clickedCol);
                 chargePlateau(gridPane,clickedRow,clickedCol);
                 System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
             }
         });
+
+
+        VBox vbox = new VBox(hbox,gridPane);
         gridPane.setBorder(new Border(borderStroke));
         gridPane.setPadding(new Insets(100, 100, 100, 100)); 
-        Scene scene = new Scene(gridPane, 1000, 1000);
+        Scene scene = new Scene(vbox, 900, 900);
         stage.setScene(scene);
         return stage;
     }
