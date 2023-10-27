@@ -40,7 +40,7 @@ public class VueHunter implements Observer{
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Stage stage = new Stage();
         gridPane = new GridPane();
-        chargePlateau(gridPane);
+        chargePlateau(gridPane,-1,-1);
         gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
             if (source instanceof Label) {
@@ -52,7 +52,7 @@ public class VueHunter implements Observer{
                     System.out.println("VICTOIRE DU HUNTER");
                 }
                 hunter.setMap(clickedRow, clickedCol);
-                chargePlateau(gridPane);
+                chargePlateau(gridPane,clickedRow,clickedCol);
                 System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
             }
         });
@@ -63,7 +63,7 @@ public class VueHunter implements Observer{
         return stage;
     }
 
-    public void chargePlateau(GridPane gp){
+    public void chargePlateau(GridPane gp,int row, int col){
         gp.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Maps map = hunter.getMap();
@@ -77,15 +77,15 @@ public class VueHunter implements Observer{
                 else{
                     test = new Label();
                 }
+                if(i==row && j ==col){
+                    BackgroundFill backgroundFill = new BackgroundFill(Color.RED, new CornerRadii(5), null);
+                    Background background = new Background(backgroundFill);
+                    test.setBackground(background);
+                }
                 test.setPrefWidth(200); 
                 test.setPrefHeight(100);
                 test.setPadding(new Insets(10,30,10,30));
                 test.setBorder(new Border(borderStroke));
-                if(hunter.getMap().getMaps()[i][j].equals(CellInfo.HUNTER)){
-                    BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
-                    Background background = new Background(backgroundFill);
-                    test.setBackground(background);
-                }
                 gp.add(test, j , i );
             }
         }
