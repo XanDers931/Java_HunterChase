@@ -6,11 +6,9 @@ import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -24,24 +22,23 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class VueHunter implements Observer{
-
+    private Monster monster;
     private Hunter hunter;
     GridPane gridPane;
 
-    public VueHunter(Hunter hunter) {
+    public VueHunter(Hunter hunter, Monster monster) {
         this.hunter = hunter;
+        this.monster = monster;
     }
 
     public void eventHunter(Hunter hunter){
         //A REMPLIR //
     }
 
-    
 
     public Stage creerStage(){
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Stage stage = new Stage();
-        Maps map = hunter.getMap();
         gridPane = new GridPane();
         chargePlateau(gridPane);
         gridPane.setOnMouseClicked(event -> {
@@ -49,12 +46,16 @@ public class VueHunter implements Observer{
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
+                hunter.getMap().getMapShoot()[clickedRow][clickedCol] = true;
+                if(monster.getMap().getMaps()[clickedRow][clickedCol].equals(CellInfo.MONSTER)){
+                    //VICTOIRE DU HUNTER
+                    System.out.println("VICTOIRE DU HUNTER");
+                }
                 hunter.setMap(clickedRow, clickedCol);
                 chargePlateau(gridPane);
                 System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
             }
         });
-
         gridPane.setBorder(new Border(borderStroke));
         gridPane.setPadding(new Insets(100, 100, 100, 100)); 
         Scene scene = new Scene(gridPane, 1000, 1000);
@@ -65,9 +66,16 @@ public class VueHunter implements Observer{
     public void chargePlateau(GridPane gp){
         gp.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        for(int i = 0; i < hunter.getMap().getMaps().length; i++){
-            for(int j = 0; j < hunter.getMap().getMaps()[i].length; j++){
-                Label test = new Label(hunter.getMap().getMaps()[i][j].toString());
+        Maps map = hunter.getMap();
+        for(int i = 0; i < map.getMaps().length; i++){
+            for(int j = 0; j < map.getMaps()[i].length; j++){
+                Label test;
+                if(map.getMapShoot()[i][j] == true){
+                    test = new Label(map.getMaps()[i][j].toString());
+                }
+                else{
+                    test = new Label();
+                }
                 test.setPrefWidth(200); 
                 test.setPrefHeight(100);
                 test.setPadding(new Insets(10,30,10,30));

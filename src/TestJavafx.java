@@ -1,4 +1,5 @@
 import Model.Hunter;
+import Model.Monster;
 import View.VueHunter;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -15,7 +16,7 @@ public class TestJavafx extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-       VueHunter test = new VueHunter(new Hunter("test"));
+       VueHunter test = new VueHunter(new Hunter("test"),new Monster("test"));
        test.creerStage().show();
     }
 }
