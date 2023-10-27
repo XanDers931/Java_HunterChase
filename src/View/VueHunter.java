@@ -71,6 +71,7 @@ public class VueHunter implements Observer{
             for(int j = 0; j < map.getMaps()[i].length; j++){
                 Label test;
                 if(map.getMapShoot()[i][j] == true){
+                    if(map.getMaps()[i][j].equals(CellInfo.EMPTY))test = new Label("");
                     test = new Label(map.getMaps()[i][j].toString());
                 }
                 else{
