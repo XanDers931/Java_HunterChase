@@ -6,11 +6,9 @@ import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.geometry.Dimension2D;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -24,37 +22,40 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class VueHunter implements Observer{
-
+    private Monster monster;
     private Hunter hunter;
     GridPane gridPane;
 
-    public VueHunter(Hunter hunter) {
+    public VueHunter(Hunter hunter, Monster monster) {
         this.hunter = hunter;
+        this.monster = monster;
     }
 
     public void eventHunter(Hunter hunter){
         //A REMPLIR //
     }
 
-    
 
     public Stage creerStage(){
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Stage stage = new Stage();
-        Maps map = hunter.getMap();
         gridPane = new GridPane();
-        chargePlateau(gridPane);
+        chargePlateau(gridPane,-1,-1);
         gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
+                hunter.getMap().getMapShoot()[clickedRow][clickedCol] = true;
+                if(monster.getMap().getMaps()[clickedRow][clickedCol].equals(CellInfo.MONSTER)){
+                    //VICTOIRE DU HUNTER
+                    System.out.println("VICTOIRE DU HUNTER");
+                }
                 hunter.setMap(clickedRow, clickedCol);
-                chargePlateau(gridPane);
+                chargePlateau(gridPane,clickedRow,clickedCol);
                 System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
             }
         });
-
         gridPane.setBorder(new Border(borderStroke));
         gridPane.setPadding(new Insets(100, 100, 100, 100)); 
         Scene scene = new Scene(gridPane, 1000, 1000);
@@ -62,21 +63,29 @@ public class VueHunter implements Observer{
         return stage;
     }
 
-    public void chargePlateau(GridPane gp){
+    public void chargePlateau(GridPane gp,int row, int col){
         gp.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        for(int i = 0; i < hunter.getMap().getMaps().length; i++){
-            for(int j = 0; j < hunter.getMap().getMaps()[i].length; j++){
-                Label test = new Label(hunter.getMap().getMaps()[i][j].toString());
+        Maps map = hunter.getMap();
+        for(int i = 0; i < map.getMaps().length; i++){
+            for(int j = 0; j < map.getMaps()[i].length; j++){
+                Label test;
+                if(map.getMapShoot()[i][j] == true){
+                    if(map.getMaps()[i][j].equals(CellInfo.EMPTY))test = new Label("");
+                    test = new Label(map.getMaps()[i][j].toString());
+                }
+                else{
+                    test = new Label();
+                }
+                if(i==row && j ==col){
+                    BackgroundFill backgroundFill = new BackgroundFill(Color.RED, new CornerRadii(5), null);
+                    Background background = new Background(backgroundFill);
+                    test.setBackground(background);
+                }
                 test.setPrefWidth(200); 
                 test.setPrefHeight(100);
                 test.setPadding(new Insets(10,30,10,30));
                 test.setBorder(new Border(borderStroke));
-                if(hunter.getMap().getMaps()[i][j].equals(CellInfo.HUNTER)){
-                    BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
-                    Background background = new Background(backgroundFill);
-                    test.setBackground(background);
-                }
                 gp.add(test, j , i );
             }
         }
