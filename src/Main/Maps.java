@@ -1,4 +1,8 @@
 package Main;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
 import javax.print.attribute.standard.MediaPrintableArea;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
@@ -61,9 +65,28 @@ public class Maps {
         map[x][y]=CellInfo.WALL;
     }
 
+    public void readMapFromCSV(int ligne, int colonne){
+        File csv = new File("./res/Maps.csv");
+        this.map = new CellInfo[ligne][colonne];
+        try (BufferedReader reader = new BufferedReader(new FileReader(csv))) {
+            String str;
+            int cpt = 0;
+            while ((str = reader.readLine()) != null) {
+                String[] lst  = str.split(",");
+                for(int i=0; i<colonne;i++){
+                    map[cpt][i] = CellInfo.valueOf(lst[i]);                    
+                }
+                cpt++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         Maps map= new Maps();
-        map.initMap();
+        map.readMapFromCSV(5, 5);
         map.displayMap();
+        //map.initMap();
     }
 }
