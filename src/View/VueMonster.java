@@ -55,15 +55,14 @@ public class VueMonster implements Observer{
         Stage stage = new Stage();
         gridPane = new GridPane();
         chargePlateau(gridPane);
-        HBox hbox = new HBox(new Label("HUNTER"));
+        HBox hbox = new HBox(new Label("MONSTER"));
         hbox.setAlignment(javafx.geometry.Pos.CENTER);
-        
             gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
-                int[] cordMonster= monster.getCordMonster();
+                int[] cordMonster= monster.getCordUser(CellInfo.MONSTER);
                 hunter.getMap().setCellInfo(cordMonster[0], cordMonster[1], CellInfo.EMPTY);
                 hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
                 monster.moveMonster(clickedRow, clickedCol);
@@ -101,6 +100,28 @@ public class VueMonster implements Observer{
             }
         }
         gridPane = gp;
+    }
+
+
+    public GridPane createGrid(){
+        GridPane grid = new GridPane();
+         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+         for(int i = 0; i < monster.getMap().getMaps().length; i++){
+            for(int j = 0; j < monster.getMap().getMaps()[i].length; j++){
+                Label test = new Label(monster.getMap().getMaps()[i][j].toString());
+                test.setPrefWidth(200); 
+                test.setPrefHeight(100);
+                test.setPadding(new Insets(10,30,10,30));
+                test.setBorder(new Border(borderStroke));
+                if(monster.getMap().getMaps()[i][j].equals(CellInfo.HUNTER)){
+                    BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
+                    Background background = new Background(backgroundFill);
+                    test.setBackground(background);
+                }
+                grid.add(test, j , i );
+            }
+         }
+         return grid;
     }
 
     

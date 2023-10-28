@@ -26,15 +26,12 @@ public class Monster extends Subject{
         return map;
     }
 
-    public void setMap(int x,int y){
-        map.setOnMap(x, y);
-    }
-
-    public int[] getCordMonster(){
+   
+    public int[] getCordUser(CellInfo cell){
         int[] cord = new int[2];
         for(int i=0;i<map.getMaps().length;i++){
             for(int j=0;j<map.getMaps()[i].length;j++){
-                if(map.getMaps()[i][j]==CellInfo.MONSTER){
+                if(map.getMaps()[i][j]==cell){
                     cord[0]=i;
                     cord[1]=j;
                     return cord;
@@ -55,7 +52,7 @@ public class Monster extends Subject{
     
 
     public boolean moveMonster(int x, int y) {
-        int[] cord = getCordMonster();
+        int[] cord = getCordUser(CellInfo.MONSTER);
         if(getMap().getMaps()[x][y]==CellInfo.WALL) return false;
         // Vérifiez si les nouvelles coordonnées sont adjacentes aux coordonnées actuelles du monstre
         if (isAdjacent(cord[0], cord[1], x, y)) {

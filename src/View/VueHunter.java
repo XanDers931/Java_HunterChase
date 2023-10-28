@@ -39,7 +39,6 @@ public class VueHunter implements Observer{
 
 
     public Stage creerStage(){
-        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Stage stage = new Stage();
         gridPane = new GridPane();
         HBox hbox = new HBox(new Label("HUNTER"));
@@ -61,10 +60,8 @@ public class VueHunter implements Observer{
             }
         });
 
-
+        styleGridPane(gridPane);
         VBox vbox = new VBox(hbox,gridPane);
-        gridPane.setBorder(new Border(borderStroke));
-        gridPane.setPadding(new Insets(100, 100, 100, 100)); 
         Scene scene = new Scene(vbox, 900, 900);
         stage.setScene(scene);
         return stage;
@@ -72,7 +69,6 @@ public class VueHunter implements Observer{
 
     public void chargePlateau(GridPane gp,int row, int col){
         gp.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
-        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         Maps map = hunter.getMap();
         for(int i = 0; i < map.getMaps().length; i++){
             for(int j = 0; j < map.getMaps()[i].length; j++){
@@ -89,14 +85,26 @@ public class VueHunter implements Observer{
                     Background background = new Background(backgroundFill);
                     test.setBackground(background);
                 }
-                test.setPrefWidth(200); 
-                test.setPrefHeight(100);
-                test.setPadding(new Insets(10,30,10,30));
-                test.setBorder(new Border(borderStroke));
                 gp.add(test, j , i );
+                styleLabel(test);
             }
         }
         gridPane = gp;
+    }
+
+    public void styleLabel(Label label){
+        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        label.setPrefWidth(200); 
+        label.setPrefHeight(100);
+        label.setPadding(new Insets(10,30,10,30));
+        label.setBorder(new Border(borderStroke));
+    }
+
+
+    public void styleGridPane(GridPane pane){
+        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
+        gridPane.setBorder(new Border(borderStroke));
+        gridPane.setPadding(new Insets(100, 100, 100, 100));
     }
     
 
