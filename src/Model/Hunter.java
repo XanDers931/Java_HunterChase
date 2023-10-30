@@ -55,4 +55,8 @@ public class Hunter extends Subject {
     public boolean victory(int x,int y){
         return map.getMaps()[x][y]==CellInfo.MONSTER;
     }
+
+    public void changeCanMoove(){
+        canMoove=!canMoove;
+    }
 }

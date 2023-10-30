@@ -46,7 +46,7 @@ public class ControlMonster {
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
-                int[] cordMonster= monster.getCordUser(CellInfo.MONSTER);
+                int[] cordMonster=hunter.getMap().getCordUser(CellInfo.MONSTER);
                 if(view.getMonster().canMoove){
 
                 // TODO

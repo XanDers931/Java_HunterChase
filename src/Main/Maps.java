@@ -103,4 +103,9 @@ public class Maps {
     public void setCellInfo(int x, int y, CellInfo cell){
         map[x][y]=cell;
     }
+
+    
+
+
+    
 }
