@@ -5,6 +5,7 @@ import java.io.FileReader;
 
 import javax.print.attribute.standard.MediaPrintableArea;
 
+import Utils.Coordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Maps {
@@ -66,14 +67,11 @@ public class Maps {
         }
     }
 
-    public int[] getCordUser(CellInfo cell){
-        int[] cord = new int[2];
+    public Coordinate getCordUser(CellInfo cell){
         for(int i=0;i<map.length;i++){
             for(int j=0;j<map[i].length;j++){
                 if(map[i][j]==cell){
-                    cord[0]=i;
-                    cord[1]=j;
-                    return cord;
+                    return new Coordinate(i,j);
                 }
             }
         }

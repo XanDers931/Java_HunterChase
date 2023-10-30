@@ -11,46 +11,30 @@ import javafx.scene.layout.GridPane;
 
 public class ControlHunter {
     public VueHunter view;
-    public int cpt;
 
- 
-
-    
-    
     public ControlHunter(VueHunter view) {
         this.view = view;
-        this.cpt=0;
     }
 
-   
-
-
-
-    public void hMouvement(GridPane gp){
+    public void hMouvement(){
+        GridPane gp= view.getGridPane();
             gp.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
                 if(view.getHunter().canMoove){
-                view.getHunter().getMap().getMapShoot()[clickedRow][clickedCol] = true;
-                if(view.getHunter().getMap().getMaps()[clickedRow][clickedCol].equals(CellInfo.MONSTER)){
-                    //VICTOIRE DU HUNTER
-                    System.out.println("VICTOIRE DU HUNTER"); 
+                    view.getHunter().getMap().getMapShoot()[clickedRow][clickedCol] = true;
+                    if(view.getHunter().victory(clickedRow,clickedCol)){
+                        System.out.println("VICTOIRE DU HUNTER"); 
+                    }
+                    view.getHunter().getHunted().setCol(clickedCol);
+                    view.getHunter().getHunted().setRow(clickedRow);
+                    view.chargePlateau(clickedRow,clickedCol);
+                    view.getHunter().changeCanMoove();
+                    view.getMonster().changeCanMoove();
                 }
-                int[] cord = new int[2];
-                cord[0]= clickedRow;
-                cord[1]= clickedCol;
-                view.getHunter().setHunted(cord);
-                
-                view.chargePlateau(gp,clickedRow,clickedCol);
-                System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
-                view.getHunter().canMoove=!view.getHunter().canMoove;
-                view.getMonster().canMoove=!view.getMonster().canMoove;
-            }
             }
         });
-     
-        
     }
 }

@@ -1,5 +1,6 @@
 package Model;
 
+import Utils.Coordinate;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import javafx.scene.control.Cell;
@@ -14,7 +15,7 @@ public class Hunter extends Subject {
     private Maps map;
     public boolean tour ;
     public boolean canMoove;
-    public int[] hunted;
+    public Coordinate hunted;
 
     
     public Hunter(String nickname){
@@ -24,24 +25,12 @@ public class Hunter extends Subject {
         map= new Maps();
         map.initMap();
         map.initShoot();
-        /* for(int i = 0; i < map.getMaps().length; i++){
-            for(int j = 0; j < map.getMaps()[i].length; j++){
-                if(map.getMaps()[i][j].equals(CellInfo.MONSTER)){
-                    //map.getMaps()[i][j] = CellInfo.EMPTY;
-                }
-            }
-        }
-        */
         map.getMaps();
-        this.hunted= new int[2];
+        this.hunted= new Coordinate(0,0);
     }
 
-    public int[] getHunted() {
+    public Coordinate getHunted() {
         return hunted;
-    }
-
-    public void setHunted(int[] hunted) {
-        this.hunted = hunted;
     }
 
     public String getNickname() {

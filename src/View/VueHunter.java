@@ -1,7 +1,6 @@
 package View;
 
 import Controller.ControlHunter;
-import Controller.ControlMonster;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
@@ -12,124 +11,95 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.Border;
-import javafx.scene.layout.BorderStroke;
-import javafx.scene.layout.BorderStrokeStyle;
-import javafx.scene.layout.BorderWidths;
-import javafx.scene.layout.CornerRadii;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-public class VueHunter implements Observer{
+public class VueHunter implements Observer {
     private Monster monster;
     private Hunter hunter;
-    public GridPane gridPane;
+    private GridPane gridPane;
     private ControlHunter controlleur;
-    private Label label;
+
     private int cpt;
-
-    
-
-    public Label getLabel() {
-        return label;
-    }
-
-
-
-    public void setLabel(Label label) {
-        this.label = label;
-    }
-
-
+    private static final int GRID_SIZE = 900;
 
     public VueHunter(Hunter hunter, Monster monster) {
         this.hunter = hunter;
         this.monster = monster;
-        this.controlleur= new ControlHunter(this);
-        this.cpt=0;
+        this.controlleur = new ControlHunter(this);
+        this.cpt = 0;
     }
 
-    
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
 
     public Hunter getHunter() {
         return hunter;
     }
 
-    
-
-
-
     public Monster getMonster() {
         return monster;
     }
 
-
-
-    public void eventHunter(Hunter hunter){
-        //A REMPLIR //
-    }
-
-
-    public Stage creerStage(){
+    public Stage creerStage() {
         Stage stage = new Stage();
         gridPane = new GridPane();
         HBox hbox = new HBox(new Label("HUNTER"));
         hbox.setAlignment(javafx.geometry.Pos.CENTER);
-        chargePlateau(gridPane,-1,-1);
-        controlleur.hMouvement(gridPane);
+        chargePlateau(-1, -1);
+        controlleur.hMouvement();
         styleGridPane(gridPane);
-        VBox vbox = new VBox(hbox,gridPane);
-        Scene scene = new Scene(vbox, 900, 900);
+        VBox vbox = new VBox(hbox, gridPane);
+        Scene scene = new Scene(vbox, GRID_SIZE, GRID_SIZE);
         stage.setScene(scene);
         return stage;
     }
 
-    public void chargePlateau(GridPane gp,int row, int col){
-        gp.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
+    public void chargePlateau(int row, int col) {
+        gridPane.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
         Maps map = hunter.getMap();
-        for(int i = 0; i < map.getMaps().length; i++){
-            for(int j = 0; j < map.getMaps()[i].length; j++){
-                Label test;
-                if(map.getMapShoot()[i][j] == true){
-                    if(map.getMaps()[i][j].equals(CellInfo.EMPTY))test = new Label("");
-                    test = new Label(map.getMaps()[i][j].toString());
+        boolean[][] mapShoot = map.getMapShoot();
+        CellInfo[][] maps = map.getMaps();
+
+        for (int i = 0; i < maps.length; i++) {
+            for (int j = 0; j < maps[i].length; j++) {
+                Label label = new Label();
+                if (mapShoot[i][j]) {
+                    label.setText(maps[i][j].toString());
                 }
-                else{
-                    test = new Label();
+
+                if (i == row && j == col) {
+                    styleHuntedLabel(label);
                 }
-                if(i==row && j ==col){
-                    BackgroundFill backgroundFill = new BackgroundFill(Color.RED, new CornerRadii(5), null);
-                    Background background = new Background(backgroundFill);
-                    test.setBackground(background);
-                }
-                gp.add(test, j , i );
-                styleLabel(test);
+
+                gridPane.add(label, j, i);
+                styleLabel(label);
             }
         }
-        gridPane = gp;
-        cpt++;
     }
 
-    public void styleLabel(Label label){
+    public void styleHuntedLabel(Label label) {
+        BackgroundFill backgroundFill = new BackgroundFill(Color.RED, new CornerRadii(5), null);
+        Background background = new Background(backgroundFill);
+        label.setBackground(background);
+    }
+
+    public void styleLabel(Label label) {
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        label.setPrefWidth(200); 
+        label.setPrefWidth(200);
         label.setPrefHeight(100);
-        label.setPadding(new Insets(10,30,10,30));
+        label.setPadding(new Insets(10, 30, 10, 30));
         label.setBorder(new Border(borderStroke));
     }
 
-
-    public void styleGridPane(GridPane pane){
+    public void styleGridPane(GridPane pane) {
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        gridPane.setBorder(new Border(borderStroke));
-        gridPane.setPadding(new Insets(100, 100, 100, 100));
+        pane.setBorder(new Border(borderStroke));
+        pane.setPadding(new Insets(100, 100, 100, 100));
     }
-    
 
     @Override
     public void update(Subject subj) {
@@ -142,8 +112,4 @@ public class VueHunter implements Observer{
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'update'");
     }
-
-
-    
-    
 }

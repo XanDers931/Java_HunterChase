@@ -1,6 +1,7 @@
 package Model;
 
 import Main.Maps;
+import Utils.Coordinate;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import javafx.scene.control.Cell;
@@ -28,8 +29,15 @@ public class Monster extends Subject{
         return map;
     }
 
-   
     
+
+    public boolean isTour() {
+        return tour;
+    }
+
+    public boolean getCanMoove() {
+        return canMoove;
+    }
 
     private boolean isAdjacent(int currentX, int currentY, int newX, int newY) {
         int dx = Math.abs(newX - currentX);
@@ -39,14 +47,12 @@ public class Monster extends Subject{
         return (dx >= 0 && dx <= 1 && dy >= 0 && dy <= 1);
     }
     
-    
-
     public boolean moveMonster(int x, int y) {
-        int[] cord = map.getCordUser(CellInfo.MONSTER);
+        Coordinate cord = map.getCordUser(CellInfo.MONSTER);
         if(getMap().getMaps()[x][y]==CellInfo.WALL) return false;
         // Vérifiez si les nouvelles coordonnées sont adjacentes aux coordonnées actuelles du monstre
-        if (isAdjacent(cord[0], cord[1], x, y)) {
-            map.getMaps()[cord[0]][cord[1]] = CellInfo.EMPTY;
+        if (isAdjacent(cord.getRow(), cord.getCol(), x, y)) {
+            map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
             map.getMaps()[x][y] = CellInfo.MONSTER;
             return true;
         }
