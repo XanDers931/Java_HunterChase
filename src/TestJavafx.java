@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -27,7 +28,7 @@ public class TestJavafx extends Application {
         Screen screen = Screen.getPrimary();
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();
-
+        
         // Divisez l'écran en deux en ajustant les dimensions et les positions des stages
         stage1.setX(0);
         stage1.setY(0);

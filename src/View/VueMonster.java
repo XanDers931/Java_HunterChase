@@ -1,5 +1,6 @@
 package View;
 
+import Controller.ControlMonster;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
@@ -9,6 +10,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -28,27 +30,60 @@ public class VueMonster implements Observer{
     private Monster monster;
     private GridPane gridPane;
     private Hunter hunter;
-    boolean tour=true;
-    
+    private ControlMonster controlleur;
+    private Label label;
+   
 
 
-    public VueMonster(Monster monster) {
-        this.monster = monster;
-    }
-
-    
 
     public VueMonster(Monster monster, Hunter hunter) {
         this.monster = monster;
+        this.hunter = hunter;
+        this.controlleur = new ControlMonster(this);
+    }
+
+
+
+    public Monster getMonster() {
+        return monster;
+    }
+
+
+
+    public void setMonster(Monster monster) {
+        this.monster = monster;
+    }
+
+
+
+    public GridPane getGridPane() {
+        return gridPane;
+    }
+
+
+
+    public void setGridPane(GridPane gridPane) {
+        this.gridPane = gridPane;
+    }
+
+
+
+    public Hunter getHunter() {
+        return hunter;
+    }
+
+
+
+    public void setHunter(Hunter hunter) {
         this.hunter = hunter;
     }
 
 
 
-    public void eventMonster(Monster monster){
-        
-    }
 
+    public VueMonster(Monster monster) {
+        this.monster = monster;
+    }
 
     public Stage creerStage(){
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
@@ -57,21 +92,7 @@ public class VueMonster implements Observer{
         chargePlateau(gridPane);
         HBox hbox = new HBox(new Label("MONSTER"));
         hbox.setAlignment(javafx.geometry.Pos.CENTER);
-            gridPane.setOnMouseClicked(event -> {
-            Node source = (Node) event.getTarget();
-            if (source instanceof Label) {
-                int clickedRow = GridPane.getRowIndex(source);
-                int clickedCol = GridPane.getColumnIndex(source);
-                int[] cordMonster= monster.getCordUser(CellInfo.MONSTER);
-                hunter.getMap().setCellInfo(cordMonster[0], cordMonster[1], CellInfo.EMPTY);
-                hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
-                monster.moveMonster(clickedRow, clickedCol);
-                chargePlateau(gridPane); 
-                System.out.println(tour);
-                System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
-            }
-        });
-
+        controlleur.mMouvement(gridPane);
         VBox vbox = new VBox(hbox,gridPane);
         gridPane.setBorder(new Border(borderStroke));
         gridPane.setPadding(new Insets(100, 100, 100, 100)); 
@@ -86,44 +107,24 @@ public class VueMonster implements Observer{
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         for(int i = 0; i < monster.getMap().getMaps().length; i++){
             for(int j = 0; j < monster.getMap().getMaps()[i].length; j++){
-                Label test = new Label(monster.getMap().getMaps()[i][j].toString());
-                test.setPrefWidth(200); 
-                test.setPrefHeight(100);
-                test.setPadding(new Insets(10,30,10,30));
-                test.setBorder(new Border(borderStroke));
-                if(monster.getMap().getMaps()[i][j].equals(CellInfo.HUNTER)){
+                label = new Label(monster.getMap().getMaps()[i][j].toString());
+                label.setPrefWidth(200); 
+                label.setPrefHeight(100);
+                label.setPadding(new Insets(10,30,10,30));
+                label.setBorder(new Border(borderStroke));
+                if(i==hunter.getHunted()[0] && j==hunter.getHunted()[1]){
                     BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
                     Background background = new Background(backgroundFill);
-                    test.setBackground(background);
+                    label.setBackground(background);
                 }
-                gp.add(test, j , i );
+                gp.add(label, j , i );
             }
         }
         gridPane = gp;
     }
 
 
-    public GridPane createGrid(){
-        GridPane grid = new GridPane();
-         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-         for(int i = 0; i < monster.getMap().getMaps().length; i++){
-            for(int j = 0; j < monster.getMap().getMaps()[i].length; j++){
-                Label test = new Label(monster.getMap().getMaps()[i][j].toString());
-                test.setPrefWidth(200); 
-                test.setPrefHeight(100);
-                test.setPadding(new Insets(10,30,10,30));
-                test.setBorder(new Border(borderStroke));
-                if(monster.getMap().getMaps()[i][j].equals(CellInfo.HUNTER)){
-                    BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
-                    Background background = new Background(backgroundFill);
-                    test.setBackground(background);
-                }
-                grid.add(test, j , i );
-            }
-         }
-         return grid;
-    }
-
+    
     
 
 

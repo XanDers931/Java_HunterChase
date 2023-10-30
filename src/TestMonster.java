@@ -1,3 +1,4 @@
+import Controller.ControlMonster;
 import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
@@ -17,7 +18,8 @@ public class TestMonster extends Application {
     
     @Override
     public void start(Stage primaryStage) {
-       VueMonster test = new VueMonster(new Monster("test"));
+        Monster monstre = new Monster("test");
+        VueMonster test = new VueMonster(monstre,new Hunter("test"));
        test.creerStage().show();
     }
 }

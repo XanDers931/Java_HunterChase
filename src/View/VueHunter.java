@@ -1,5 +1,7 @@
 package View;
 
+import Controller.ControlHunter;
+import Controller.ControlMonster;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
@@ -26,12 +28,47 @@ import javafx.stage.Stage;
 public class VueHunter implements Observer{
     private Monster monster;
     private Hunter hunter;
-    GridPane gridPane;
+    public GridPane gridPane;
+    private ControlHunter controlleur;
+    private Label label;
+    private int cpt;
+
+    
+
+    public Label getLabel() {
+        return label;
+    }
+
+
+
+    public void setLabel(Label label) {
+        this.label = label;
+    }
+
+
 
     public VueHunter(Hunter hunter, Monster monster) {
         this.hunter = hunter;
         this.monster = monster;
+        this.controlleur= new ControlHunter(this);
+        this.cpt=0;
     }
+
+    
+
+    public Hunter getHunter() {
+        return hunter;
+    }
+
+    
+
+
+
+    public Monster getMonster() {
+        return monster;
+    }
+
+
 
     public void eventHunter(Hunter hunter){
         //A REMPLIR //
@@ -44,22 +81,7 @@ public class VueHunter implements Observer{
         HBox hbox = new HBox(new Label("HUNTER"));
         hbox.setAlignment(javafx.geometry.Pos.CENTER);
         chargePlateau(gridPane,-1,-1);
-        gridPane.setOnMouseClicked(event -> {
-            Node source = (Node) event.getTarget();
-            if (source instanceof Label) {
-                int clickedRow = GridPane.getRowIndex(source);
-                int clickedCol = GridPane.getColumnIndex(source);
-                hunter.getMap().getMapShoot()[clickedRow][clickedCol] = true;
-                if(monster.getMap().getMaps()[clickedRow][clickedCol].equals(CellInfo.MONSTER)){
-                    //VICTOIRE DU HUNTER
-                    System.out.println("VICTOIRE DU HUNTER"); 
-                }
-                //hunter.setMap(clickedRow, clickedCol);
-                chargePlateau(gridPane,clickedRow,clickedCol);
-                System.out.println("Case cliquée : Ligne " + clickedRow + ", Colonne " + clickedCol);
-            }
-        });
-
+        controlleur.hMouvement(gridPane);
         styleGridPane(gridPane);
         VBox vbox = new VBox(hbox,gridPane);
         Scene scene = new Scene(vbox, 900, 900);
@@ -90,6 +112,7 @@ public class VueHunter implements Observer{
             }
         }
         gridPane = gp;
+        cpt++;
     }
 
     public void styleLabel(Label label){

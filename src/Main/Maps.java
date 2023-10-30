@@ -39,7 +39,6 @@ public class Maps {
         }
         this.map[0][0]=CellInfo.MONSTER;
         this.map[9][4]= CellInfo.EXIT;
-        this.map[5][2]= CellInfo.HUNTER;
         this.map[0][1]=CellInfo.WALL;
     }
 
@@ -67,6 +66,20 @@ public class Maps {
         }
     }
 
+    public int[] getCordUser(CellInfo cell){
+        int[] cord = new int[2];
+        for(int i=0;i<map.length;i++){
+            for(int j=0;j<map[i].length;j++){
+                if(map[i][j]==cell){
+                    cord[0]=i;
+                    cord[1]=j;
+                    return cord;
+                }
+            }
+        }
+        return null;
+    }
+
   
 
     public void readMapFromCSV(int ligne, int colonne){
@@ -89,12 +102,5 @@ public class Maps {
 
     public void setCellInfo(int x, int y, CellInfo cell){
         map[x][y]=cell;
-    }
-
-    public static void main(String[] args) {
-        Maps map= new Maps();
-        map.readMapFromCSV(5, 5);
-        map.displayMap();
-        //map.initMap();
     }
 }

@@ -10,11 +10,13 @@ public class Monster extends Subject{
     public String nickname;
     public Maps map;
     public boolean tour;
+    public boolean canMoove;
 
     public Monster(String nickname){
         this.tour=true;
         this.nickname = nickname;
         this.map= new Maps();
+        canMoove=true;
         map.initMap();
     }
     
@@ -62,11 +64,8 @@ public class Monster extends Subject{
         }
         return false;
     }
-    
 
-
-    
-
-    
-    
+    public boolean victory(int x,int y){
+        return map.getMaps()[x][y]==CellInfo.EXIT;
+    }
 }
