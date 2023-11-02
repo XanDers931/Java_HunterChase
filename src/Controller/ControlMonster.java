@@ -52,19 +52,25 @@ public class ControlMonster {
                 Coordinate cordMonster = hunter.getMap().getCordUser(CellInfo.MONSTER);
 
                 if ((view.getMonster()).getCanMoove()) {
-                    // Remplace la case d'origine du monstre par CellInfo.EMPTY et la case de destination par CellInfo.MONSTER.
-                    hunter.getMap().setCellInfo(cordMonster.getRow(), cordMonster.getCol(), CellInfo.EMPTY);
-                    hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
-                    // Déplace le monstre vers la nouvelle position.
-                    monster.moveMonster(clickedRow, clickedCol);
-                     // Recharge l'affichage du plateau de jeu pour refléter les changements.
-                    view.chargePlateau();
-                    // Change l'état "canMoove" du monstre et du chasseur pour indiquer qu'ils ont effectué un mouvement.
-                    view.getMonster().changeCanMoove();
-                    view.getHunter().changeCanMoove();
-                    // Enregistre le chemin suivi par le monstre dans le tableau "path" avec le numéro du tour (tourCpt).
-                    monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
-                    this.tourCpt++;
+                    if(view.getMonster().victory(clickedRow, clickedCol)){
+                            System.out.println("VICTOIRE DU MONSTER");
+                            view.getMonster().canMoove = false;
+                            view.getHunter().canMoove = false;
+                    }
+                    if (!monster.moveMonster(clickedRow, clickedCol)) {
+                        System.out.println("Tu ne peux pas te déplacer sur cette case !");
+                        mMouvement();
+                    }
+                    else{
+                        view.getMonster().changeCanMoove();
+                        view.getHunter().changeCanMoove();
+                        monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
+                        this.tourCpt++;
+                        // Remplace la case d'origine du monstre par CellInfo.EMPTY et la case de destination par CellInfo.MONSTER.
+                        hunter.getMap().setCellInfo(cordMonster.getRow(), cordMonster.getCol(), CellInfo.EMPTY);
+                        hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
+                        view.chargePlateau();
+                    }
                 }
             }
         });

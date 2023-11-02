@@ -32,8 +32,6 @@ public class Monster extends Subject{
         return map;
     }
 
-    
-
     public boolean isTour() {
         return tour;
     }
@@ -52,7 +50,7 @@ public class Monster extends Subject{
     
     public boolean moveMonster(int x, int y) {
         Coordinate cord = map.getCordUser(CellInfo.MONSTER);
-        if(getMap().getMaps()[x][y]==CellInfo.WALL) return false;
+        if(getMap().getMaps()[x][y].equals(CellInfo.WALL) || (x==cord.getRow()&& y==cord.getCol())) return false;
         // Vérifiez si les nouvelles coordonnées sont adjacentes aux coordonnées actuelles du monstre
         if (isAdjacent(cord.getRow(), cord.getCol(), x, y)) {
             map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
