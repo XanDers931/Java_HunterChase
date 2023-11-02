@@ -20,15 +20,12 @@ public class VueHunter implements Observer {
     private Hunter hunter;
     private GridPane gridPane;
     private ControlHunter controlleur;
-
-    private int cpt;
     private static final int GRID_SIZE = 900;
 
     public VueHunter(Hunter hunter, Monster monster) {
         this.hunter = hunter;
         this.monster = monster;
         this.controlleur = new ControlHunter(this);
-        this.cpt = 0;
     }
 
     public GridPane getGridPane() {
@@ -63,19 +60,19 @@ public class VueHunter implements Observer {
         Maps map = hunter.getMap();
         boolean[][] mapShoot = map.getMapShoot();
         CellInfo[][] maps = map.getMaps();
-
+        Label[][] labels= new Label[maps.length][maps[0].length];
+        
         for (int i = 0; i < maps.length; i++) {
             for (int j = 0; j < maps[i].length; j++) {
                 Label label = new Label();
                 if (mapShoot[i][j]) {
                     label.setText(maps[i][j].toString());
                 }
-
-                if (i == row && j == col) {
+                if(i == row && j == col) {
                     styleHuntedLabel(label);
                 }
-
                 gridPane.add(label, j, i);
+                labels[i][j]=label;
                 styleLabel(label);
             }
         }

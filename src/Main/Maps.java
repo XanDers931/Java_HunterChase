@@ -54,9 +54,6 @@ public class Maps {
         }
     }
 
-    
-
-
     public void displayMap(){
         for (CellInfo[] cellInfos : map) {
             for (CellInfo cellInfo : cellInfos) {

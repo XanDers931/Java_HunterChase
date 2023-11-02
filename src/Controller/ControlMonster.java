@@ -33,8 +33,8 @@ public class ControlMonster {
                 int clickedCol = GridPane.getColumnIndex(source);
                 Coordinate cordMonster = hunter.getMap().getCordUser(CellInfo.MONSTER);
 
-                if (((Monster) view.getMonster()).getCanMoove()) {
-        
+                if ((view.getMonster()).getCanMoove()) {
+                    
                     hunter.getMap().setCellInfo(cordMonster.getRow(), cordMonster.getCol(), CellInfo.EMPTY);
                     hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
                     monster.moveMonster(clickedRow, clickedCol);

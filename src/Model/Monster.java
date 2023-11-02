@@ -12,6 +12,7 @@ public class Monster extends Subject{
     public Maps map;
     public boolean tour;
     public boolean canMoove;
+    public Coordinate cordMonster;
 
     public Monster(String nickname){
         this.tour=true;
