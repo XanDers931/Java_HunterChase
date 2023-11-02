@@ -72,8 +72,6 @@ public class Monster extends Subject{
 
     public void initPath(){
         this.path = new int[10][5];
-        int cpt1=0;
-        int cpt2=0;
         for(int i = 0; i < 10; i++)
         {
           for(int y = 0; y < 5; y++)

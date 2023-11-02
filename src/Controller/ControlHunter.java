@@ -26,13 +26,17 @@ public class ControlHunter {
                 if(view.getHunter().canMoove){
                     view.getHunter().getMap().getMapShoot()[clickedRow][clickedCol] = true;
                     if(view.getHunter().victory(clickedRow,clickedCol)){
-                        System.out.println("VICTOIRE DU HUNTER"); 
+                        System.out.println("VICTOIRE DU HUNTER");
+                        view.getMonster().canMoove = false;
+                        view.getHunter().canMoove = false;
+                    }
+                    else{
+                        view.getHunter().changeCanMoove();
+                        view.getMonster().changeCanMoove();
                     }
                     view.getHunter().getHunted().setCol(clickedCol);
                     view.getHunter().getHunted().setRow(clickedRow);
                     view.chargePlateau(clickedRow,clickedCol);
-                    view.getHunter().changeCanMoove();
-                    view.getMonster().changeCanMoove();
                 }
             }
         });
