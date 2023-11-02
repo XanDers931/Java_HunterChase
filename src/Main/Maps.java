@@ -21,6 +21,13 @@ public class Maps {
     private CellInfo[][] map;
     private boolean[][] mapShoot;
 
+
+    /**
+     * Initialise la carte du jeu, créant une matrice 2D de CellInfo de taille 10x5,
+     * initialisant toutes les cellules à CellInfo.EMPTY, plaçant un monstre dans la
+     * case (0,0), marquant la sortie dans la case (9,4) et mettant un mur dans la
+     * case (0,1).
+     */
     public void initMap(){
         this.map= new CellInfo[10][5];
         for(int i = 0; i < 10; i++)
@@ -35,6 +42,10 @@ public class Maps {
         this.map[0][1]=CellInfo.WALL;
     }
 
+    /**
+     * Initialise la carte de suivi des tirs du chasseur, créant une matrice 2D de
+     * booléens de taille 10x5 et initialisant toutes les valeurs à false.
+     */
     public void initShoot(){
         this.mapShoot= new boolean[10][5];
         for(int i = 0; i < 10; i++)
@@ -46,6 +57,11 @@ public class Maps {
         }
     }
 
+    /**
+     * Affiche la carte actuelle du jeu en parcourant la matrice map et en imprimant
+     * la première lettre de chaque élément CellInfo sur la console.
+     */
+
     public void displayMap(){
         for (CellInfo[] cellInfos : map) {
             for (CellInfo cellInfo : cellInfos) {
@@ -55,6 +71,16 @@ public class Maps {
             System.out.println();
         }
     }
+
+    /**
+     * Recherche les coordonnées (lignes et colonnes) de la première occurrence de
+     * la cellule donnée dans la matrice map et renvoie un objet Coordinate
+     * représentant ces coordonnées. Si la cellule n'est pas trouvée, renvoie null.
+     *
+     * @param cell La cellule à rechercher dans la matrice map.
+     * @return Un objet Coordinate représentant les coordonnées de la cellule, ou null si
+     *         la cellule n'est pas trouvée.
+     */
 
     public Coordinate getCordUser(CellInfo cell){
         for(int i=0;i<map.length;i++){
@@ -66,6 +92,15 @@ public class Maps {
         }
         return null;
     }
+
+    /**
+     * Lit une carte à partir d'un fichier CSV spécifié. Crée une nouvelle matrice map
+     * de la taille spécifiée (ligne x colonne) et lit les données à partir du fichier
+     * CSV pour remplir la carte.
+     *
+     * @param ligne   Le nombre de lignes de la carte.
+     * @param colonne Le nombre de colonnes de la carte.
+     */
 
     public void readMapFromCSV(int ligne, int colonne){
         File csv = new File("./res/Maps.csv");
