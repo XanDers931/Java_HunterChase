@@ -21,11 +21,8 @@ public class Maps {
     private CellInfo[][] map;
     private boolean[][] mapShoot;
 
-   
     public void initMap(){
         this.map= new CellInfo[10][5];
-        int cpt1=0;
-        int cpt2=0;
         for(int i = 0; i < 10; i++)
         {
           for(int y = 0; y < 5; y++)
@@ -70,8 +67,6 @@ public class Maps {
         return null;
     }
 
-  
-
     public void readMapFromCSV(int ligne, int colonne){
         File csv = new File("./res/Maps.csv");
         this.map = new CellInfo[ligne][colonne];
@@ -92,10 +87,5 @@ public class Maps {
 
     public void setCellInfo(int x, int y, CellInfo cell){
         map[x][y]=cell;
-    }
-
-    
-
-
-    
+    }    
 }
