@@ -10,11 +10,6 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Maps {
     
-    
-    
-    
-    
-
     public CellInfo[][] getMaps() {
         return map;
     }

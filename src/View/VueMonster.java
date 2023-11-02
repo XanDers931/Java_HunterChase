@@ -72,6 +72,9 @@ public class VueMonster implements Observer {
                 if (i == hunter.getHunted().getRow() && j == hunter.getHunted().getCol()) {
                     styleHuntedLabel(label);
                 }
+                if(monster.path[i][j]!=-1){
+                    label.setText(""+monster.path[i][j]);
+                }
                 gridPane.add(label, j, i);
             }
         }

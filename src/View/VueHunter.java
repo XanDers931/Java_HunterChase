@@ -1,6 +1,7 @@
 package View;
 
 import Controller.ControlHunter;
+import Controller.ControlMonster;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
@@ -67,6 +68,9 @@ public class VueHunter implements Observer {
                 Label label = new Label();
                 if (mapShoot[i][j]) {
                     label.setText(maps[i][j].toString());
+                    if(monster.path[i][j]!=-1){
+                        label.setText(""+monster.path[i][j]);
+                    }
                 }
                 if(i == row && j == col) {
                     styleHuntedLabel(label);
