@@ -14,10 +14,12 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class ControlMonster {
     private VueMonster view;
+    private int tourCpt;
 
 
     public ControlMonster(VueMonster view) {
         this.view = view;
+        this.tourCpt = 0;
     }
 
     public void mMouvement() {
@@ -41,6 +43,8 @@ public class ControlMonster {
                     view.chargePlateau();
                     view.getMonster().changeCanMoove();
                     view.getHunter().changeCanMoove();
+                    monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
+                    this.tourCpt++;
                 }
             }
         });
@@ -52,5 +56,9 @@ public class ControlMonster {
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+    }
+
+    public int getTour(){
+        return this.tourCpt;
     }
 }

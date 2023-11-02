@@ -13,6 +13,7 @@ public class Monster extends Subject{
     public boolean tour;
     public boolean canMoove;
     public Coordinate cordMonster;
+    public int[][] path;
 
     public Monster(String nickname){
         this.tour=true;
@@ -20,6 +21,7 @@ public class Monster extends Subject{
         this.map= new Maps();
         canMoove=true;
         map.initMap();
+        initPath();
     }
     
     public String getNickname() {
@@ -66,5 +68,18 @@ public class Monster extends Subject{
 
     public void changeCanMoove(){
         canMoove=!canMoove;
+    }
+
+    public void initPath(){
+        this.path = new int[10][5];
+        int cpt1=0;
+        int cpt2=0;
+        for(int i = 0; i < 10; i++)
+        {
+          for(int y = 0; y < 5; y++)
+          {
+            path[i][y] = -1;
+          }
+        }
     }
 }
