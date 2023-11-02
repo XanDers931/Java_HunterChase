@@ -97,4 +97,8 @@ public class Menus {
         stage1.show();
         stage2.show();
     }
+
+    public void close() {
+        primaryStage.close();
+    }
 }
