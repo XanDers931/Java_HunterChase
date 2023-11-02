@@ -14,6 +14,7 @@ public class Monster extends Subject{
     public boolean canMoove;
     public Coordinate cordMonster;
     public int[][] path;
+    
 
     public Monster(String nickname){
         this.tour=true;

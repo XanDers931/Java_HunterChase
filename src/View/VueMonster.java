@@ -21,6 +21,7 @@ public class VueMonster implements Observer {
     private Hunter hunter;
     private ControlMonster controlleur;
     private GridPane gridPane; 
+    private Stage stage;
 
     
 
@@ -46,6 +47,7 @@ public class VueMonster implements Observer {
         this.monster = monster;
         this.hunter = hunter;
         this.controlleur = new ControlMonster(this);
+        this.stage = creerStage();
     }
 
     public Stage creerStage() {
@@ -98,6 +100,10 @@ public class VueMonster implements Observer {
         BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
         Background background = new Background(backgroundFill);
         label.setBackground(background);
+    }
+
+    public Stage getStage(){
+        return this.stage;
     }
 
     @Override

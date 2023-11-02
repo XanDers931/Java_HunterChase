@@ -23,8 +23,8 @@ public class TestJavafx extends Application {
         Monster monster = new Monster("lala");
         VueHunter test = new VueHunter(hunter,monster);
         VueMonster test2 = new VueMonster(monster,hunter);
-        Stage stage1 = test.creerStage();
-        Stage stage2= test2.creerStage();
+        Stage stage1 = test.getStage();
+        Stage stage2= test2.getStage();
         Screen screen = Screen.getPrimary();
         double screenWidth = screen.getBounds().getWidth();
         double screenHeight = screen.getBounds().getHeight();

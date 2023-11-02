@@ -16,6 +16,7 @@ public class Hunter extends Subject {
     public boolean tour ;
     public boolean canMoove;
     public Coordinate hunted;
+    
 
     
     public Hunter(String nickname){

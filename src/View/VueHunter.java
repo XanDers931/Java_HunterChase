@@ -22,11 +22,13 @@ public class VueHunter implements Observer {
     private GridPane gridPane;
     private ControlHunter controlleur;
     private static final int GRID_SIZE = 900;
+    private Stage stage;
 
     public VueHunter(Hunter hunter, Monster monster) {
         this.hunter = hunter;
         this.monster = monster;
         this.controlleur = new ControlHunter(this);
+        this.stage = creerStage();
     }
 
     public GridPane getGridPane() {
@@ -100,6 +102,10 @@ public class VueHunter implements Observer {
         BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
         pane.setBorder(new Border(borderStroke));
         pane.setPadding(new Insets(100, 100, 100, 100));
+    }
+
+    public Stage getStage(){
+        return this.stage;
     }
 
     @Override
