@@ -36,15 +36,25 @@ public class ControlMonster {
                 Coordinate cordMonster = hunter.getMap().getCordUser(CellInfo.MONSTER);
 
                 if ((view.getMonster()).getCanMoove()) {
-                    
-                    hunter.getMap().setCellInfo(cordMonster.getRow(), cordMonster.getCol(), CellInfo.EMPTY);
-                    hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
-                    monster.moveMonster(clickedRow, clickedCol);
-                    view.chargePlateau();
-                    view.getMonster().changeCanMoove();
-                    view.getHunter().changeCanMoove();
-                    monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
-                    this.tourCpt++;
+                    if(view.getMonster().victory(clickedRow, clickedCol)){
+                            System.out.println("VICTOIRE DU MONSTER");
+                            view.getMonster().canMoove = false;
+                            view.getHunter().canMoove = false;
+                    }
+                    if (!monster.moveMonster(clickedRow, clickedCol)) {
+                        System.out.println("Tu ne peux pas te déplacer sur cette case !");
+                        mMouvement();
+                    }
+                    else{
+                        view.getMonster().changeCanMoove();
+                        view.getHunter().changeCanMoove();
+                        monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
+                        this.tourCpt++;
+                        
+                        hunter.getMap().setCellInfo(cordMonster.getRow(), cordMonster.getCol(), CellInfo.EMPTY);
+                        hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
+                        view.chargePlateau();
+                    }
                 }
             }
         });
