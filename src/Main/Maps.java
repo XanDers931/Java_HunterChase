@@ -120,6 +120,12 @@ public class Maps {
         }
     }
 
+    /**
+     * Permet de placer une instance de type CellInfo à l'endroit [x][y] sur la map.
+     * @param x
+     * @param y
+     * @param cell
+     */
     public void setCellInfo(int x, int y, CellInfo cell){
         map[x][y]=cell;
     }    

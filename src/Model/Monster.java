@@ -44,18 +44,21 @@ public class Monster extends Subject{
     private boolean isAdjacent(int currentX, int currentY, int newX, int newY) {
         int dx = Math.abs(newX - currentX);
         int dy = Math.abs(newY - currentY);
-    
         // Vérifiez si les coordonnées (newX, newY) sont adjacentes horizontalement, verticalement ou en diagonale
         return (dx >= 0 && dx <= 1 && dy >= 0 && dy <= 1);
     }
     
-    public boolean moveMonster(int x, int y) {
+    public boolean moveMonster(int x, int y,Hunter hunter) {
         Coordinate cord = map.getCordUser(CellInfo.MONSTER);
         if(getMap().getMaps()[x][y].equals(CellInfo.WALL) || (x==cord.getRow()&& y==cord.getCol())) return false;
         // Vérifiez si les nouvelles coordonnées sont adjacentes aux coordonnées actuelles du monstre
         if (isAdjacent(cord.getRow(), cord.getCol(), x, y)) {
             map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
             map.getMaps()[x][y] = CellInfo.MONSTER;
+            // Modifie les coordonées également sur la map du Hunter
+            hunter.getMap().getMaps()[cord.getRow()][cord.getCol()]=CellInfo.EMPTY;
+            hunter.getMap().getMaps()[x][y]=CellInfo.MONSTER;
+            performActionThatChangesState(x, y);
             return true;
         }
         return false;
@@ -78,5 +81,15 @@ public class Monster extends Subject{
             path[i][y] = -1;
           }
         }
+    }
+
+    public void performActionThatChangesState(int x, int y) {
+        // Effectuez les opérations qui modifient l'état de Hunter ici
+        // Par exemple, enregistrez les coordonnées du clic ou de l'action
+
+        Coordinate coordonnees = new Coordinate(x, y);
+
+        // Après les modifications, appelez notifyObservers avec l'objet Coordonnees en paramètre
+        notifyObservers(coordonnees);
     }
 }

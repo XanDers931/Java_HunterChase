@@ -38,53 +38,48 @@ public class ControlMonster {
      *           Chaque case visitée est enregistrée avec le numéro du tour (tourCpt).
      */
     public void mMouvement() {
-        Monster monster = view.getMonster();
-        Hunter hunter = view.getHunter();
         refresh();
-        GridPane gridPane= view.getGridPane();
-
+        GridPane gridPane = view.getGridPane();
         gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
-                // Récupère les coordonnées du monstre.
+                Monster monster = view.getMonster();
+                Hunter hunter = view.getHunter();
                 Coordinate cordMonster = hunter.getMap().getCordUser(CellInfo.MONSTER);
-
-                if ((view.getMonster()).getCanMoove()) {
-                    if(view.getMonster().victory(clickedRow, clickedCol)){
-                            System.out.println("VICTOIRE DU MONSTER");
-                            view.getMonster().canMoove = false;
-                            view.getHunter().canMoove = false;
-                    }
-                    if (!monster.moveMonster(clickedRow, clickedCol)) {
-                        System.out.println("Tu ne peux pas te déplacer sur cette case !");
-                        mMouvement();
-                    }
-                    else{
-                        view.getMonster().changeCanMoove();
-                        view.getHunter().changeCanMoove();
-                        monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
-                        this.tourCpt++;
-                        // Remplace la case d'origine du monstre par CellInfo.EMPTY et la case de destination par CellInfo.MONSTER.
-                        hunter.getMap().setCellInfo(cordMonster.getRow(), cordMonster.getCol(), CellInfo.EMPTY);
-                        hunter.getMap().setCellInfo(clickedRow, clickedCol, CellInfo.MONSTER);
-                        view.chargePlateau();
+                if (monster.getCanMoove()) {
+                    if (monster.victory(clickedRow, clickedCol)) {
+                        System.out.println("VICTOIRE DU MONSTER");
+                        disableMovement();
+                    } else {
+                        if (monster.moveMonster(clickedRow, clickedCol, hunter)) {
+                            monster.changeCanMoove();
+                            hunter.changeCanMoove();
+                            monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
+                            tourCpt++;
+                        }
                     }
                 }
             }
         });
     }
 
-    public void refresh() {
-        // Crée une instance de la classe Timeline pour gérer les rafraîchissements.
+    public void refresh(){
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             view.chargePlateau();
-            // À chaque rafraîchissement (toutes les 1 seconde), appelez la méthode "chargePlateau" de la vue .
+            // À chaque rafraîchissement (toutes les 1 seconde), on appele la méthode "chargePlateau" de la vue .
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+    }
+
+
+    private void disableMovement() {
+        view.getMonster().canMoove = false;
+        view.getHunter().canMoove = false;
+        view.showVictoryMessage();
     }
 
     public int getTour(){

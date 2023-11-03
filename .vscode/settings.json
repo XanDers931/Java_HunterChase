@@ -24,6 +24,8 @@
         "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx.media.jar",
         "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx.swing.jar",
         "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx.web.jar",
-        "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx-swt.jar"
-    ]
+        "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx-swt.jar",
+        "/Users/juju/Downloads/cam-player-api-base.jar"
+    ],
+    "java.debug.settings.onBuildFailureProceed": true
 }

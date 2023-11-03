@@ -1,17 +1,20 @@
 package View;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-
-
+import javafx.util.Duration;
 import Controller.ControlMonster;
 import Model.Hunter;
 import Model.Monster;
+import Utils.Coordinate;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
@@ -48,6 +51,7 @@ public class VueMonster implements Observer {
         this.hunter = hunter;
         this.controlleur = new ControlMonster(this);
         this.stage = creerStage();
+        monster.attach(this);
     }
 
     public Stage creerStage() {
@@ -102,17 +106,46 @@ public class VueMonster implements Observer {
         label.setBackground(background);
     }
 
+    public void showVictoryMessage() {
+    // Créez une nouvelle fenêtre de dialogue pour le message de victoire
+    Stage victoryStage = new Stage();
+    victoryStage.setTitle("Victory!");
+
+    // Créez un label pour afficher le message de victoire
+    Label victoryLabel = new Label("Congratulations! Monster won!");
+
+    // Créez un bouton pour fermer la fenêtre de dialogue
+    Button closeButton = new Button("Close");
+    closeButton.setOnAction(e -> victoryStage.close());
+
+    // Créez un conteneur pour le label et le bouton
+    VBox vbox = new VBox(victoryLabel, closeButton);
+    vbox.setAlignment(Pos.CENTER);
+    vbox.setSpacing(20);
+
+    // Créez une nouvelle scène pour la fenêtre de dialogue
+    Scene victoryScene = new Scene(vbox, 300, 200);
+
+    // Définissez la scène pour la fenêtre de dialogue
+    victoryStage.setScene(victoryScene);
+
+    // Affichez la fenêtre de dialogue
+    victoryStage.show();
+}
+
     public Stage getStage(){
         return this.stage;
     }
 
     @Override
     public void update(Subject subj) {
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        update(subj,null);
     }
 
     @Override
     public void update(Subject subj, Object data) {
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        chargePlateau();    
     }
+
+    
 }

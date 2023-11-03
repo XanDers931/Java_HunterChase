@@ -5,12 +5,15 @@ import Controller.ControlMonster;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
+import Utils.Coordinate;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -21,7 +24,6 @@ public class VueHunter implements Observer {
     private Hunter hunter;
     private GridPane gridPane;
     private ControlHunter controlleur;
-    private static final int GRID_SIZE = 900;
     private Stage stage;
 
     public VueHunter(Hunter hunter, Monster monster) {
@@ -29,6 +31,7 @@ public class VueHunter implements Observer {
         this.monster = monster;
         this.controlleur = new ControlHunter(this);
         this.stage = creerStage();
+        hunter.attach(this);
     }
 
     public GridPane getGridPane() {
@@ -53,20 +56,18 @@ public class VueHunter implements Observer {
         controlleur.hMouvement();
         styleGridPane(gridPane);
         VBox vbox = new VBox(hbox, gridPane);
-        Scene scene = new Scene(vbox, GRID_SIZE, GRID_SIZE);
+        Scene scene = new Scene(vbox, 900, 900);
         stage.setScene(scene);
         return stage;
     }
 
     public void chargePlateau(int row, int col) {
-        gridPane.getChildren().clear(); // Supprime tous les enfants actuels du GridPane
+        gridPane.getChildren().clear(); // Supprime tous les enfants actuels du GridPane 
         Maps map = hunter.getMap();
         boolean[][] mapShoot = map.getMapShoot();
         CellInfo[][] maps = map.getMaps();
-        Label[][] labels= new Label[maps.length][maps[0].length];
-        
         for (int i = 0; i < maps.length; i++) {
-            for (int j = 0; j < maps[i].length; j++) {
+            for (int j = 0; j < maps[i].length; j++){
                 Label label = new Label();
                 if (mapShoot[i][j]) {
                     label.setText(maps[i][j].toString());
@@ -78,7 +79,6 @@ public class VueHunter implements Observer {
                     styleHuntedLabel(label);
                 }
                 gridPane.add(label, j, i);
-                labels[i][j]=label;
                 styleLabel(label);
             }
         }
@@ -104,19 +104,51 @@ public class VueHunter implements Observer {
         pane.setPadding(new Insets(100, 100, 100, 100));
     }
 
+
     public Stage getStage(){
         return this.stage;
     }
 
+    public void showVictoryMessage() {
+    // Créez une nouvelle fenêtre de dialogue pour le message de victoire
+    Stage victoryStage = new Stage();
+    victoryStage.setTitle("Victory!");
+
+    // Créez un label pour afficher le message de victoire
+    Label victoryLabel = new Label("Congratulations! Hunter won!");
+
+    // Créez un bouton pour fermer la fenêtre de dialogue
+    Button closeButton = new Button("Close");
+    closeButton.setOnAction(e -> victoryStage.close());
+
+    // Créez un conteneur pour le label et le bouton
+    VBox vbox = new VBox(victoryLabel, closeButton);
+    vbox.setAlignment(Pos.CENTER);
+    vbox.setSpacing(20);
+
+    // Créez une nouvelle scène pour la fenêtre de dialogue
+    Scene victoryScene = new Scene(vbox, 300, 200);
+
+    // Définissez la scène pour la fenêtre de dialogue
+    victoryStage.setScene(victoryScene);
+
+    // Affichez la fenêtre de dialogue
+    victoryStage.show();
+}
+
     @Override
     public void update(Subject subj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        update(subj,null);
     }
 
     @Override
     public void update(Subject subj, Object data) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        if (data instanceof Coordinate) {
+            Coordinate coordonnees = (Coordinate) data;
+            int row = coordonnees.getRow();
+            int col = coordonnees.getCol();
+            // Réagissez aux mises à jour du sujet en fonction des coordonnées passées en paramètres
+            chargePlateau(row, col);
+        }
     }
 }
