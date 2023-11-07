@@ -4,7 +4,6 @@ import Main.Maps;
 import Utils.Coordinate;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.scene.control.Cell;
 
 public class Monster extends Subject{
 

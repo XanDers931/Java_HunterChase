@@ -1,7 +1,6 @@
 package View;
 
 import Controller.ControlHunter;
-import Controller.ControlMonster;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
@@ -11,7 +10,6 @@ import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;

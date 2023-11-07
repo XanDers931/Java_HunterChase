@@ -3,8 +3,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
-import javax.print.attribute.standard.MediaPrintableArea;
-
 import Utils.Coordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 

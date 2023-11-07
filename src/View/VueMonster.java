@@ -1,7 +1,5 @@
 package View;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -10,14 +8,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import Controller.ControlMonster;
 import Model.Hunter;
 import Model.Monster;
-import Utils.Coordinate;
 import Utils.Observer;
 import Utils.Subject;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class VueMonster implements Observer {
     private Monster monster;

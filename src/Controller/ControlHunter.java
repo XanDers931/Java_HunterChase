@@ -1,19 +1,9 @@
 package Controller;
 
-import java.util.HashMap;
-
 import View.VueHunter;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 public class ControlHunter {
     public VueHunter view;

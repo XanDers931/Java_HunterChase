@@ -3,9 +3,6 @@ package Model;
 import Utils.Coordinate;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.scene.control.Cell;
-
-import java.util.HashMap;
 
 import Main.Maps;
 
