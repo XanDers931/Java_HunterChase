@@ -4,10 +4,15 @@ import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
 import View.VueMonster;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Screen;
@@ -34,24 +39,57 @@ public class Menus {
         Label titleLabel = new Label("Monster Hunter");
         titleLabel.setStyle("-fx-font-size: 20px;");
 
+        TextField pseudo = new TextField();
+        TextField tabSize = new TextField();
+        GridPane param = new GridPane();
         Button playButton = new Button("Play");
         Button rulesButton = new Button("Rules");
 
+        param.setPadding(new Insets(10, 10, 10, 10));
+        param.setVgap(5);
+        param.setHgap(5);
+        //ajout du textfield pour le pseudo
+        param.add(new Label("Pseudo :"), 0, 0,2,1);
+        param.add(pseudo, 0, 1,2,1);
+
+        //Ajout du TextField qui ne prend que des int pour la taille de plateau
+        param.add(new Label("Taille du plateau :"), 0, 2, 2, 1);
+        TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
+            if (change.getControlNewText().matches("\\d*")) {
+                return change;
+            }
+            return null;
+        });
+        // Lie le filtre au TextField
+        tabSize.setTextFormatter(textFormatter);
+        param.add(tabSize, 0, 3, 2, 1);
+
+        // Ajout de la liste déroulante du choix du mode de jeu
+        ComboBox<String> choixComboBox = new ComboBox<>();
+        choixComboBox.getItems().addAll("Chasseur", "Monstre");
+        choixComboBox.setValue("Chasseur");
+        Label choixLabel = new Label("Choix :");
+        GridPane.setHalignment(choixLabel, javafx.geometry.HPos.CENTER);
+        param.add(choixLabel, 0, 4, 2, 1);
+        GridPane.setHalignment(choixComboBox, javafx.geometry.HPos.CENTER);
+        param.add(choixComboBox, 0, 5, 2, 1);
+
         playButton.setOnAction(event -> {
-            play();
+            
+            play(pseudo.getText(),Integer.parseInt(textFormatter.getValue()));
         });
 
         rulesButton.setOnAction(event -> {
             primaryStage.setScene(rulesScene);
         });
-
+        param.setAlignment(Pos.CENTER);
         VBox vbox = new VBox(20);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(titleLabel, playButton, rulesButton);
+        vbox.getChildren().addAll(titleLabel, param, playButton, rulesButton);
 
         StackPane root = new StackPane();
         root.getChildren().add(vbox);
-        mainMenuScene = new Scene(root, 400, 300);
+        mainMenuScene = new Scene(root, 400, 400);
     }
 
     public void createRulesPage() {
@@ -69,7 +107,7 @@ public class Menus {
         rulesScene = new Scene(vbox, 600, 400);
     }
 
-    public void play() {
+    public void play(String nickname,int tailleTab) {
         primaryStage.close();
 
         //Création des objets
