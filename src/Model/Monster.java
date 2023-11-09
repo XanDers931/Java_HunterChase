@@ -13,17 +13,27 @@ public class Monster extends Subject{
     public boolean canMoove;
     public Coordinate cordMonster;
     public int[][] path;
-    
 
     public Monster(String nickname){
         this.tour=true;
         this.nickname = nickname;
         this.map= new Maps();
         canMoove=true;
-        map.initMap();
         initPath();
+        for(int i=0; i<map.getMaps().length; i++){
+            for(int j=0;j<map.getMaps()[i].length; j++){
+                if(map.getMaps()[i][j]==CellInfo.MONSTER){
+                    cordMonster.setCol(j);
+                    cordMonster.setRow(i);
+                }
+            }
+        }
     }
     
+    public Coordinate getCordMonster() {
+        return cordMonster;
+    }
+
     public String getNickname() {
         return nickname;
     }
@@ -58,6 +68,8 @@ public class Monster extends Subject{
             hunter.getMap().getMaps()[cord.getRow()][cord.getCol()]=CellInfo.EMPTY;
             hunter.getMap().getMaps()[x][y]=CellInfo.MONSTER;
             performActionThatChangesState(x, y);
+            this.cordMonster.setCol(y);
+            this.cordMonster.setRow(x);
             return true;
         }
         return false;
