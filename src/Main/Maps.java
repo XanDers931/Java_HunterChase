@@ -8,6 +8,11 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Maps {
     
+    public Maps() {
+        initMap();
+        initShoot();
+    }
+
     public CellInfo[][] getMaps() {
         return map;
     }
