@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.GameModel;
 import View.VueHunter;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -35,13 +36,13 @@ public class ControlHunter {
             if (source instanceof Label) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
-                if (view.getHunter().canMoove) {
+                if (view.getHunter().getGameModel().currentPlayer==2) {
                     view.getHunter().shoot(clickedRow, clickedCol);
                     if (view.getHunter().victory(clickedRow, clickedCol)) {
-                        disableMovement();
-                    } else {
-                        view.getHunter().changeCanMoove();
-                        view.getMonster().changeCanMoove();
+                        view.getHunter().getGameModel().currentPlayer=3;
+                        view.showVictoryMessage();
+                    }else {
+                        view.getHunter().getGameModel().changeCurrentPlayer();
                     }
                     updateHunterPosition(clickedRow, clickedCol);
                 }
@@ -49,12 +50,6 @@ public class ControlHunter {
         });
     }
 
-
-    private void disableMovement() {
-        view.getMonster().canMoove = false;
-        view.getHunter().canMoove = false;
-        view.showVictoryMessage();
-    }
 
     private void updateHunterPosition(int row, int col) {
         view.getHunter().getHunted().setCol(col);

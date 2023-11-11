@@ -9,19 +9,16 @@ import Main.Maps;
 public class Hunter extends Subject {
 
     private String nickname;
-    private Maps map;
+    private GameModel gameModel;
     public boolean tour ;
     public boolean canMoove;
     public Coordinate hunted;
         
-    public Hunter(String nickname){
+    public Hunter(String nickname,GameModel gameModel){
         this.tour=false;
         this.nickname = nickname;
         this.canMoove=false;
-        map= new Maps();
-        map.initMap();
-        map.initShoot();
-        map.getMaps();
+        this.gameModel=gameModel;
         this.hunted= new Coordinate(0,0);
     }
 
@@ -33,20 +30,19 @@ public class Hunter extends Subject {
         return nickname;
     }
 
-    public Maps getMap() {
-        return map;
-    }
+    
 
-    public boolean victory(int x,int y){
-        return map.getMaps()[x][y]==CellInfo.MONSTER;
-    }
+   public boolean victory(int x, int y){
+        Coordinate co = Monster.getCordMonster();
+        return co.getRow()==x && co.getCol()==y;
+   }
 
     public void changeCanMoove(){
         canMoove=!canMoove;
     }
-
+ 
     public void shoot(int x, int y){
-        this.map.getMapShoot()[x][y]=true;
+        this.gameModel.getMap().getMapShoot()[x][y]=true;
         performActionThatChangesState(x, y);
     }
 
@@ -59,4 +55,10 @@ public class Hunter extends Subject {
         // Après les modifications, appelez notifyObservers avec l'objet Coordonnees en paramètre
         notifyObservers(coordonnees);
     }
+
+    public GameModel getGameModel() {
+        return gameModel;
+    }
+
+    
 }

@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
+import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
@@ -46,18 +47,13 @@ public class ControlMonster {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
                 Monster monster = view.getMonster();
-                Hunter hunter = view.getHunter();
-                Coordinate cordMonster = hunter.getMap().getCordUser(CellInfo.MONSTER);
-                if (monster.getCanMoove()) {
+                if (monster.getGameModel().currentPlayer==1) {
                     if (monster.victory(clickedRow, clickedCol)) {
-                        System.out.println("VICTOIRE DU MONSTER");
-                        disableMovement();
+                        monster.getGameModel().currentPlayer=3;
+                        view.showVictoryMessage();
                     } else {
-                        if (monster.moveMonster(clickedRow, clickedCol, hunter)) {
-                            monster.changeCanMoove();
-                            hunter.changeCanMoove();
-                            monster.path[cordMonster.getRow()][cordMonster.getCol()] = tourCpt;
-                            tourCpt++;
+                        if (monster.moveMonster(clickedRow, clickedCol)) {
+                            monster.getGameModel().changeCurrentPlayer();
                         }
                     }
                 }
@@ -73,13 +69,6 @@ public class ControlMonster {
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-    }
-
-
-    private void disableMovement() {
-        view.getMonster().canMoove = false;
-        view.getHunter().canMoove = false;
-        view.showVictoryMessage();
     }
 
     public int getTour(){

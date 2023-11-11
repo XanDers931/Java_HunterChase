@@ -8,29 +8,32 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 public class Monster extends Subject{
 
     public String nickname;
-    public Maps map;
     public boolean tour;
     public boolean canMoove;
-    public Coordinate cordMonster;
+    public static Coordinate cordMonster;
+    public GameModel gameModel;
     public int[][] path;
+  
 
-    public Monster(String nickname){
+    public Monster(String nickname,GameModel gameModel){
         this.tour=true;
         this.nickname = nickname;
-        this.map= new Maps();
+        this.gameModel= gameModel;
         canMoove=true;
-        initPath();
-        for(int i=0; i<map.getMaps().length; i++){
+        //initPath();
+        /*for(int i=0; i<map.getMaps().length; i++){
             for(int j=0;j<map.getMaps()[i].length; j++){
                 if(map.getMaps()[i][j]==CellInfo.MONSTER){
                     cordMonster.setCol(j);
                     cordMonster.setRow(i);
                 }
             }
-        }
+        }*/
+        cordMonster= new Coordinate(0, 0);
+        initPath();
     }
     
-    public Coordinate getCordMonster() {
+    public static Coordinate getCordMonster() {
         return cordMonster;
     }
 
@@ -38,10 +41,7 @@ public class Monster extends Subject{
         return nickname;
     }
 
-    public Maps getMap() {
-        return map;
-    }
-
+    
     public boolean isTour() {
         return tour;
     }
@@ -57,31 +57,31 @@ public class Monster extends Subject{
         return (dx >= 0 && dx <= 1 && dy >= 0 && dy <= 1);
     }
     
-    public boolean moveMonster(int x, int y,Hunter hunter) {
-        Coordinate cord = map.getCordUser(CellInfo.MONSTER);
-        if(getMap().getMaps()[x][y].equals(CellInfo.WALL) || (x==cord.getRow()&& y==cord.getCol())) return false;
+    public boolean moveMonster(int x, int y) {
+        Coordinate cord = cordMonster;
+        Maps map = gameModel.getMap();
+        if(gameModel.isWall(new Coordinate(x, y)) || (x==cord.getRow()&& y==cord.getCol())) return false;
         // Vérifiez si les nouvelles coordonnées sont adjacentes aux coordonnées actuelles du monstre
         if (isAdjacent(cord.getRow(), cord.getCol(), x, y)) {
             map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
             map.getMaps()[x][y] = CellInfo.MONSTER;
-            // Modifie les coordonées également sur la map du Hunter
-            hunter.getMap().getMaps()[cord.getRow()][cord.getCol()]=CellInfo.EMPTY;
-            hunter.getMap().getMaps()[x][y]=CellInfo.MONSTER;
             performActionThatChangesState(x, y);
-            this.cordMonster.setCol(y);
-            this.cordMonster.setRow(x);
+            cordMonster.setCol(y);
+            cordMonster.setRow(x);
             return true;
         }
         return false;
     }
 
     public boolean victory(int x,int y){
-        return map.getMaps()[x][y]==CellInfo.EXIT;
+        return gameModel.getMap().getMaps()[x][y]==CellInfo.EXIT;
     }
 
     public void changeCanMoove(){
         canMoove=!canMoove;
     }
+
+    
 
     public void initPath(){
         this.path = new int[10][5];
@@ -102,5 +102,9 @@ public class Monster extends Subject{
 
         // Après les modifications, appelez notifyObservers avec l'objet Coordonnees en paramètre
         notifyObservers(coordonnees);
+    }
+
+    public GameModel getGameModel() {
+        return gameModel;
     }
 }

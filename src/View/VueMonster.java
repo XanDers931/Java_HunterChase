@@ -9,6 +9,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import Controller.ControlMonster;
+import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
@@ -16,7 +17,6 @@ import Utils.Subject;
 
 public class VueMonster implements Observer {
     private Monster monster;
-    private Hunter hunter;
     private ControlMonster controlleur;
     private GridPane gridPane; 
     private Stage stage;
@@ -31,9 +31,7 @@ public class VueMonster implements Observer {
         return monster;
     }
 
-    public Hunter getHunter() {
-        return hunter;
-    }
+   
 
 
     public GridPane getGridPane() {
@@ -43,7 +41,6 @@ public class VueMonster implements Observer {
 
     public VueMonster(Monster monster, Hunter hunter) {
         this.monster = monster;
-        this.hunter = hunter;
         this.controlleur = new ControlMonster(this);
         this.stage = creerStage();
         monster.attach(this);
@@ -65,12 +62,13 @@ public class VueMonster implements Observer {
 
     public void chargePlateau() {
         gridPane.getChildren().clear();
-        for (int i = 0; i < monster.getMap().getMaps().length; i++) {
-            for (int j = 0; j < monster.getMap().getMaps()[i].length; j++) {
+        Maps map = monster.getGameModel().getMap();
+        for (int i = 0; i < map.getMaps().length; i++) {
+            for (int j = 0; j < map.getMaps()[i].length; j++) {
                 Label label;
-                label = new Label(monster.getMap().getMaps()[i][j].toString());
+                label = new Label(map.getMaps()[i][j].toString());
                 styleLabel(label);
-                if (i == hunter.getHunted().getRow() && j == hunter.getHunted().getCol()) {
+                if (i == monster.getGameModel().getHunter().getHunted().getRow() && j == monster.getGameModel().getHunter().getHunted().getCol()) {
                     styleHuntedLabel(label);
                 }
                 if(monster.path[i][j]!=-1){

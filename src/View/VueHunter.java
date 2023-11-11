@@ -18,15 +18,13 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class VueHunter implements Observer {
-    private Monster monster;
     private Hunter hunter;
     private GridPane gridPane;
     private ControlHunter controlleur;
     private Stage stage;
 
-    public VueHunter(Hunter hunter, Monster monster) {
+    public VueHunter(Hunter hunter) {
         this.hunter = hunter;
-        this.monster = monster;
         this.controlleur = new ControlHunter(this);
         this.stage = creerStage();
         hunter.attach(this);
@@ -41,9 +39,7 @@ public class VueHunter implements Observer {
         return hunter;
     }
 
-    public Monster getMonster() {
-        return monster;
-    }
+   
 
     public Stage creerStage() {
         Stage stage = new Stage();
@@ -61,7 +57,7 @@ public class VueHunter implements Observer {
 
     public void chargePlateau(int row, int col) {
         gridPane.getChildren().clear(); // Supprime tous les enfants actuels du GridPane 
-        Maps map = hunter.getMap();
+        Maps map = hunter.getGameModel().getMap();
         boolean[][] mapShoot = map.getMapShoot();
         CellInfo[][] maps = map.getMaps();
         for (int i = 0; i < maps.length; i++) {
@@ -69,8 +65,8 @@ public class VueHunter implements Observer {
                 Label label = new Label();
                 if (mapShoot[i][j]) {
                     label.setText(maps[i][j].toString());
-                    if(monster.path[i][j]!=-1){
-                        label.setText(""+monster.path[i][j]);
+                    if(hunter.getGameModel().getMonster().path[i][j]!=-1){
+                        label.setText(""+hunter.getGameModel().getMonster().path[i][j]);
                     }
                 }
                 if(i == row && j == col) {
