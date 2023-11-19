@@ -3,7 +3,8 @@ package Main;
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
-import View.GameView;
+import View.VueHunter;
+import View.VueMonster;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -31,8 +32,16 @@ public class Main extends Application{
     // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
+
+        VueHunter view1 = new VueHunter(hunter);
+        VueMonster view2= new VueMonster(monster, hunter);
+
+        Stage stage= view1.creerStage();
+        Stage stage2= view2.creerStage();
+        stage.show();
+        stage2.show();
+
         
-        GameView gameView = new GameView(hunter, monster);
-        gameView.show();
+        
     }
 }

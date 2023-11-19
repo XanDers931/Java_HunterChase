@@ -2,11 +2,14 @@ package View;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import Controller.ControlMonster;
 import Main.Maps;
@@ -14,30 +17,25 @@ import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
 import Utils.Subject;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class VueMonster implements Observer {
     private Monster monster;
     private ControlMonster controlleur;
-    private GridPane gridPane; 
+    private GridPane gridPane;
     private Stage stage;
-
-    
 
     public void setMonster(Monster monster) {
         this.monster = monster;
     }
 
-    public Monster getMonster(){
+    public Monster getMonster() {
         return monster;
     }
-
-   
-
 
     public GridPane getGridPane() {
         return gridPane;
     }
-
 
     public VueMonster(Monster monster, Hunter hunter) {
         this.monster = monster;
@@ -51,7 +49,7 @@ public class VueMonster implements Observer {
         gridPane = new GridPane();
         chargePlateau();
         HBox hbox = new HBox(new Label("MONSTER"));
-        hbox.setAlignment(javafx.geometry.Pos.CENTER);
+        hbox.setAlignment(Pos.CENTER);
         controlleur.mMouvement();
         VBox vbox = new VBox(hbox, gridPane);
         styleGridPane();
@@ -65,80 +63,120 @@ public class VueMonster implements Observer {
         Maps map = monster.getGameModel().getMap();
         for (int i = 0; i < map.getMaps().length; i++) {
             for (int j = 0; j < map.getMaps()[i].length; j++) {
-                Label label;
-                label = new Label(map.getMaps()[i][j].toString());
-                styleLabel(label);
-                if (i == monster.getGameModel().getHunter().getHunted().getRow() && j == monster.getGameModel().getHunter().getHunted().getCol()) {
-                    styleHuntedLabel(label);
-                }
-                if(monster.path[i][j]!=-1){
-                    label.setText(""+monster.path[i][j]);
-                }
-                gridPane.add(label, j, i);
+                ImageView imageView = createImageViewWithBorder(map.getMaps()[i][j]);
+                ColorAdjust color = new ColorAdjust();
+                color.setHue(0.5);
+                imageView.setEffect(color);
+
+                gridPane.add(imageView, j, i);
             }
         }
     }
 
-    public void styleLabel(Label label) {
-        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        label.setPrefWidth(200);
-        label.setPrefHeight(100);
-        label.setPadding(new Insets(10, 30, 10, 30));
-        label.setBorder(new Border(borderStroke));
+    private String determineImagePath(CellInfo cellInfo) {
+        switch (cellInfo) {
+            case WALL:
+                return "ground.png";
+            case MONSTER:
+                return "monstre.png";
+            default:
+                return "ground.png";
+        }
+    }
+
+    private ImageView createImageViewWithBorder(CellInfo cellInfo) {
+        ImageView imageView = new ImageView();
+        String imagePath = determineImagePath(cellInfo);
+        Image image = new Image(getClass().getResourceAsStream(imagePath));
+        imageView.setImage(image);
+        imageView.setFitWidth(50);
+        imageView.setFitHeight(50);
+        return imageView;
+    }
+
+    public void updatePlateau() {
+        int clickedRow = controlleur.getClickedCase().getRow();
+        int clickedCol = controlleur.getClickedCase().getCol();
+        int row = Monster.getCordMonster().getRow();
+        int col = Monster.getCordMonster().getCol();
+
+        Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
+        Node nodeMonster = getNodeByRowColumnIndex(row, col, gridPane);
+
+        if (node != null && node instanceof ImageView) {
+            ImageView existingImageView = (ImageView) node;
+            ImageView monsterImageView = (ImageView) nodeMonster;
+
+            String imagePathMonster = determineImagePath(CellInfo.EMPTY);
+            Image imageMonster = new Image(getClass().getResourceAsStream(imagePathMonster));
+            monsterImageView.setImage(imageMonster);
+            existingImageView.toBack();
+            monsterImageView.toBack();
+
+            String imagePathClicked = determineImagePath(CellInfo.MONSTER);
+            Image imageClicked = new Image(getClass().getResourceAsStream(imagePathClicked));
+            existingImageView.setImage(imageClicked);
+
+            existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 1;");
+            monsterImageView.setStyle("-fx-border-color: black; -fx-border-width: 1;");
+        }
+    }
+
+    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                return node;
+            }
+        }
+        return null;
     }
 
     public void styleGridPane() {
-        BorderStroke borderStroke = new BorderStroke(Color.BLACK, BorderStrokeStyle.SOLID, null, new BorderWidths(1));
-        gridPane.setBorder(new Border(borderStroke));
-        gridPane.setPadding(new Insets(100, 100, 100, 100));
+        gridPane.setStyle("-fx-background-color: #ececec;");
+        gridPane.setPadding(new Insets(20));
+        gridPane.setHgap(1);
+        gridPane.setVgap(1);
+
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof ImageView) {
+                ImageView imageView = (ImageView) node;
+                imageView.setFitWidth(50);
+                imageView.setFitHeight(50);
+            }
+        }
     }
 
-    public void styleHuntedLabel(Label label) {
-        BackgroundFill backgroundFill = new BackgroundFill(Color.LIGHTBLUE, new CornerRadii(5), null);
-        Background background = new Background(backgroundFill);
-        label.setBackground(background);
+    public Stage getStage() {
+        return this.stage;
     }
 
     public void showVictoryMessage() {
-    // Créez une nouvelle fenêtre de dialogue pour le message de victoire
-    Stage victoryStage = new Stage();
-    victoryStage.setTitle("Victory!");
+        Stage victoryStage = new Stage();
+        victoryStage.setTitle("Victory!");
 
-    // Créez un label pour afficher le message de victoire
-    Label victoryLabel = new Label("Congratulations! Monster won!");
+        Label victoryLabel = new Label("Congratulations! Monster won!");
 
-    // Créez un bouton pour fermer la fenêtre de dialogue
-    Button closeButton = new Button("Close");
-    closeButton.setOnAction(e -> victoryStage.close());
+        Button closeButton = new Button("Close");
+        closeButton.setOnAction(e -> victoryStage.close());
 
-    // Créez un conteneur pour le label et le bouton
-    VBox vbox = new VBox(victoryLabel, closeButton);
-    vbox.setAlignment(Pos.CENTER);
-    vbox.setSpacing(20);
+        VBox vbox = new VBox(victoryLabel, closeButton);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(20);
 
-    // Créez une nouvelle scène pour la fenêtre de dialogue
-    Scene victoryScene = new Scene(vbox, 300, 200);
+        Scene victoryScene = new Scene(vbox, 300, 200);
 
-    // Définissez la scène pour la fenêtre de dialogue
-    victoryStage.setScene(victoryScene);
+        victoryStage.setScene(victoryScene);
 
-    // Affichez la fenêtre de dialogue
-    victoryStage.show();
-}
-
-    public Stage getStage(){
-        return this.stage;
+        victoryStage.show();
     }
 
     @Override
     public void update(Subject subj) {
-        update(subj,null);
+        update(subj, null);
     }
 
     @Override
     public void update(Subject subj, Object data) {
-        chargePlateau();    
+        chargePlateau();
     }
-
-    
 }

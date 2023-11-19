@@ -1,5 +1,6 @@
 package Main;
 
+import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
@@ -111,9 +112,17 @@ public class Menus {
         primaryStage.close();
 
         //Création des objets
-        Monster monster = new Monster("");
-        Hunter hunter  = new Hunter("");
-        VueHunter hunterView = new VueHunter(hunter,monster);
+        GameModel gameModel = new GameModel(null, null);
+        // Ensuite, utilisez ce GameModel pour créer un Monster
+        Monster monster = new Monster("STYLESHEET_CASPIAN", gameModel);
+
+        // Puis, utilisez le GameModel et le Monster pour créer un Hunter
+        Hunter hunter = new Hunter("STYLESHEET_CASPIAN", gameModel);
+
+    // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
+        gameModel.setMonster(monster);
+        gameModel.setHunter(hunter);
+        VueHunter hunterView = new VueHunter(hunter);
         VueMonster monsterView = new VueMonster(monster,hunter);
 
         //Création des deux stages joueurs

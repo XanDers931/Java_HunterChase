@@ -1,13 +1,15 @@
 package Controller;
 
-import Model.GameModel;
+import Utils.Coordinate;
 import View.VueHunter;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 
 public class ControlHunter {
     public VueHunter view;
+    public Coordinate clickedCase;
 
     public ControlHunter(VueHunter view) {
         this.view = view;
@@ -33,11 +35,13 @@ public class ControlHunter {
         gp.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
 
-            if (source instanceof Label) {
+            if (source instanceof ImageView) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
+                this.clickedCase= new Coordinate(clickedRow, clickedCol);
                 if (view.getHunter().getGameModel().currentPlayer==2) {
                     view.getHunter().shoot(clickedRow, clickedCol);
+                    view.updatePlateau();
                     if (view.getHunter().victory(clickedRow, clickedCol)) {
                         view.getHunter().getGameModel().currentPlayer=3;
                         view.showVictoryMessage();
@@ -48,6 +52,21 @@ public class ControlHunter {
                 }
             }
         });
+    }
+
+    public Coordinate getCaseCLiked(MouseEvent event) {
+        GridPane gridPane = view.getGridPane();
+        // Calculer les coordonnées du clic en fonction de la taille de la cellule
+        int col = (int) (event.getX() / (gridPane.getWidth() / gridPane.getColumnCount()));
+        int row = (int) (event.getY() / (gridPane.getHeight() / gridPane.getRowCount()));
+
+        return new Coordinate(row, col);
+    }
+
+    
+
+    public Coordinate getClickedCase() {
+        return clickedCase;
     }
 
 

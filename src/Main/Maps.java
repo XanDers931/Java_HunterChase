@@ -32,10 +32,10 @@ public class Maps {
      * case (0,1).
      */
     public void initMap(){
-        this.map= new CellInfo[10][5];
+        this.map= new CellInfo[10][10];
         for(int i = 0; i < 10; i++)
         {
-          for(int y = 0; y < 5; y++)
+          for(int y = 0; y < 10; y++)
           {
             this.map[i][y] = CellInfo.EMPTY;
           }
@@ -50,10 +50,10 @@ public class Maps {
      * booléens de taille 10x5 et initialisant toutes les valeurs à false.
      */
     public void initShoot(){
-        this.mapShoot= new boolean[10][5];
+        this.mapShoot= new boolean[10][10];
         for(int i = 0; i < 10; i++)
         {
-          for(int y = 0; y < 5; y++)
+          for(int y = 0; y < 10; y++)
           {
             this.mapShoot[i][y] = false;
           }

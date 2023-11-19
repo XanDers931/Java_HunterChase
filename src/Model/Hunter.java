@@ -2,9 +2,7 @@ package Model;
 
 import Utils.Coordinate;
 import Utils.Subject;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
-import Main.Maps;
 
 public class Hunter extends Subject {
 
@@ -43,7 +41,8 @@ public class Hunter extends Subject {
  
     public void shoot(int x, int y){
         this.gameModel.getMap().getMapShoot()[x][y]=true;
-        performActionThatChangesState(x, y);
+        this.hunted= new Coordinate(x, y);
+        //performActionThatChangesState(x, y);
     }
 
     public void performActionThatChangesState(int x, int y) {

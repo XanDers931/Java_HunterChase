@@ -65,12 +65,15 @@ public class Monster extends Subject{
         if (isAdjacent(cord.getRow(), cord.getCol(), x, y)) {
             map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
             map.getMaps()[x][y] = CellInfo.MONSTER;
-            performActionThatChangesState(x, y);
-            cordMonster.setCol(y);
-            cordMonster.setRow(x);
+           // performActionThatChangesState(x, y);
             return true;
         }
         return false;
+    }
+
+    public void addCurrentCordMonster(int x, int y){
+        cordMonster.setRow(x);
+        cordMonster.setCol(y);
     }
 
     public boolean victory(int x,int y){

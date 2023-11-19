@@ -3,24 +3,25 @@ package Controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
-import Model.GameModel;
-import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
 import View.VueMonster;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+
 
 public class ControlMonster {
     private VueMonster view;
     private int tourCpt;
+    private Coordinate clickedCase;
 
 
     public ControlMonster(VueMonster view) {
         this.view = view;
         this.tourCpt = 0;
+        this.clickedCase= new Coordinate(0, 0);
     }
 
     /**
@@ -43,9 +44,10 @@ public class ControlMonster {
         GridPane gridPane = view.getGridPane();
         gridPane.setOnMouseClicked(event -> {
             Node source = (Node) event.getTarget();
-            if (source instanceof Label) {
+            if (source instanceof ImageView) {
                 int clickedRow = GridPane.getRowIndex(source);
                 int clickedCol = GridPane.getColumnIndex(source);
+                this.clickedCase= new Coordinate(clickedRow, clickedCol);
                 Monster monster = view.getMonster();
                 if (monster.getGameModel().currentPlayer==1) {
                     if (monster.victory(clickedRow, clickedCol)) {
@@ -53,6 +55,8 @@ public class ControlMonster {
                         view.showVictoryMessage();
                     } else {
                         if (monster.moveMonster(clickedRow, clickedCol)) {
+                            view.updatePlateau();
+                            monster.addCurrentCordMonster(clickedRow, clickedCol);
                             monster.getGameModel().changeCurrentPlayer();
                         }
                     }
@@ -63,7 +67,12 @@ public class ControlMonster {
 
     public void refresh(){
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            view.chargePlateau();
+            Coordinate cord = view.getMonster().getGameModel().getHunter().getHunted();
+            Node node = view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
+            ImageView image = (ImageView) node;
+            ColorAdjust color = new ColorAdjust();
+            color.setHue(0.1);
+            image.setEffect(color);
             // À chaque rafraîchissement (toutes les 1 seconde), on appele la méthode "chargePlateau" de la vue .
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
@@ -74,4 +83,10 @@ public class ControlMonster {
     public int getTour(){
         return this.tourCpt;
     }
+
+    public Coordinate getClickedCase() {
+        return clickedCase;
+    }
+
+    
 }
