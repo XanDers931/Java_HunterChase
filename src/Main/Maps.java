@@ -2,8 +2,10 @@ package Main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.Random;
 
 import Utils.Coordinate;
+import Utils.Solveur;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Maps {
@@ -132,4 +134,55 @@ public class Maps {
     public void setCellInfo(int x, int y, CellInfo cell){
         map[x][y]=cell;
     }    
+
+       public void initCheckedMap(int rowsLength, int colsLength, int probaWall){
+        Solveur solv = new Solveur(randomInitMap(rowsLength, colsLength, probaWall));
+        while(!solv.estFaisable()){
+            solv.setMap(randomInitMap(rowsLength, colsLength, probaWall));
+        }
+        map = solv.getMap();
+    }
+
+    public CellInfo[][] randomInitMap(int rowsLength, int colsLength, int probaWall){
+        CellInfo[][] resMap = new CellInfo[rowsLength][colsLength];
+        Coordinate tmpMonster = getRandomCellForMonsterOrExit(rowsLength, colsLength);
+        resMap[tmpMonster.getRow()][tmpMonster.getCol()] = CellInfo.MONSTER;
+        Coordinate tmpExit = getRandomCellForMonsterOrExit(rowsLength, colsLength);
+        while(tmpMonster.equals(tmpExit)){
+            tmpExit = getRandomCellForMonsterOrExit(rowsLength, colsLength);
+        }
+        resMap[tmpExit.getRow()][tmpExit.getCol()] = CellInfo.EXIT;
+        for (int i = 0; i < rowsLength; i++) {
+            for (int j = 0; j < colsLength; j++) {
+                System.out.println(" ["+i+"-"+j+"]");
+                if(i == 0 || j == 0 || i == rowsLength-1 || j == colsLength-1 ) {
+                    
+                    resMap[i][j] = CellInfo.WALL;
+                }
+                else if(resMap[i][j] != CellInfo.MONSTER && resMap[i][j] != CellInfo.EXIT){
+                    resMap[i][j] = getRandomCellInfo(probaWall);
+                }
+            }
+        }
+        return resMap;
+    }
+
+    //retourne un CellInfo random , probaWall en Pourcents
+    public CellInfo getRandomCellInfo(int probWall) {
+        Random random = new Random();
+        double nombreAleatoire = random.nextDouble();
+
+        double probabilite = probWall / 100.0; // Convertit probWall en pourcentage
+
+        if (nombreAleatoire < probabilite) {
+            return CellInfo.WALL;
+        } else {
+            return CellInfo.EMPTY;
+        }
+    }
+
+    public Coordinate getRandomCellForMonsterOrExit(int rowsLength, int columnsLength){
+        Random random = new Random();
+        return new Coordinate(random.nextInt(rowsLength-2)+1, random.nextInt(columnsLength-2)+1);
+    }
 }

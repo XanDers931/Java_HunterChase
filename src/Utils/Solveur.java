@@ -4,16 +4,24 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Solveur {
     
-    CellInfo[][] map;
+    private CellInfo[][] map;
     // les marques
-    char[][] marque;
+    private char[][] marque;
 
     public Solveur(CellInfo[][] map) {
         this.map = map;
         initMarque();;
     }
 
-    int[] getEntre(){
+    public void setMap(CellInfo[][] map) {
+        this.map = map;
+    }
+
+    public CellInfo[][] getMap() {
+        return map;
+    }
+
+    private int[] getEntre(){
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if(map[i][j]==CellInfo.MONSTER) return new int[] {i,j};
@@ -22,7 +30,7 @@ public class Solveur {
         return null;
     }
 
-    int[] getSortie(){
+    private int[] getSortie(){
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
                 if(map[i][j]==CellInfo.EXIT) return new int[] {i,j};
@@ -31,27 +39,16 @@ public class Solveur {
         return null;
     }
 
-    boolean estSortie(int x,int y){
-        return x == getSortie()[0] && y == getSortie()[1];
-    }
-
-    boolean estSortie(int[] s) {
-        return s[0] == getSortie()[0] && s[1] == getSortie()[1];
-    }
-
     // est-ce que (x,y) est un mur ?
-    boolean estMur(int x, int y) {
+    private boolean estMur(int x, int y) {
         return map[x][y].equals(CellInfo.WALL);
     }
 
-    // est-ce que (x,y) est un mur ?
-    boolean estMur(int[] m) {
-        return estMur(m[0], m[1]);
-    }
+    // est-ce que (x,y) est un 
 
-    final char VIDE = 'a', ROUGE = 'b', ROSE = 'c';
+    private final char VIDE = 'a', ROUGE = 'b', ROSE = 'c';
 
-    void initMarque(){
+    private void initMarque(){
         marque = new char[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -61,28 +58,28 @@ public class Solveur {
     }
 
     // teste si la cellule (x,y) comporte une marque
-    boolean estMarque(int x, int y) {
+    private boolean estMarque(int x, int y) {
         return marque[x][y] != VIDE;
     }
 
-    boolean estMarque(int[] c) {
+    private boolean estMarque(int[] c) {
         return estMarque(c[0], c[1]);
     }
 
     // pose une marque
-    void poserMarque(int x, int y) {
+    private void poserMarque(int x, int y) {
         marque[x][y] = ROSE;
     }
 
-    void poserMarque(int[] c) {
+    private void poserMarque(int[] c) {
         marque[c[0]][c[1]] = ROSE;
     }
 
-    void poserMarqueChemin(int x, int y) {
+    private void poserMarqueChemin(int x, int y) {
         marque[x][y] = ROUGE;
     }
 
-    void poserMarqueChemin(int[] c) {
+    private void poserMarqueChemin(int[] c) {
         marque[c[0]][c[1]] = ROUGE;
     }
 
@@ -115,7 +112,7 @@ public class Solveur {
         return false;
     }
 
-    public Coordinate getVoisines(Coordinate c) {
+    private  Coordinate getVoisines(Coordinate c) {
         int[] cell = c.toArray();
         if (!estMarque(cell[0],cell[1]+1 ) && !estMur(cell[0],cell[1]+1  )) {
             return new Coordinate(cell[0],cell[1]+1);
