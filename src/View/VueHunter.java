@@ -18,6 +18,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+
 public class VueHunter implements Observer {
     private Hunter hunter;
     private GridPane gridPane;
@@ -44,11 +45,17 @@ public class VueHunter implements Observer {
         gridPane = new GridPane();
         HBox hbox = new HBox(new Label("HUNTER"));
         hbox.setAlignment(Pos.CENTER);
-        chargePlateau(-1, -1, 50); // Taille de l'image ajustée à 50
+
+        int imageSize = 50; // Taille de l'image ajustée à 50
+        chargePlateau(-1, -1, imageSize);
         controlleur.hMouvement();
-        styleGridPane(gridPane, 50); // Taille de l'image ajustée à 50
+        styleGridPane(gridPane, imageSize);
+
+        int rowCount = 11 ;
+        int colCount = 11 ;
+
         VBox vbox = new VBox(hbox, gridPane);
-        Scene scene = new Scene(vbox, 900, 900);
+        Scene scene = new Scene(vbox, colCount * imageSize, rowCount * imageSize);
         stage.setScene(scene);
         return stage;
     }
@@ -58,15 +65,18 @@ public class VueHunter implements Observer {
         Maps map = hunter.getGameModel().getMap();
         boolean[][] mapShoot = map.getMapShoot();
         CellInfo[][] maps = map.getMaps();
+
         for (int i = 0; i < maps.length; i++) {
             for (int j = 0; j < maps[i].length; j++) {
                 Image image = new Image(getClass().getResourceAsStream("carrenoir.png"));
-                ImageView imageView = createImageViewWithBorder(map.getMaps()[i][j], imageSize);
+                ImageView imageView = createImageViewWithBorder(map.getMaps()[i][j], imageSize, imageSize);
                 imageView.setImage(image);
+
                 if (mapShoot[i][j]) {
-                    imageView = createImageViewWithBorder(map.getMaps()[i][j], imageSize);
+                    imageView = createImageViewWithBorder(map.getMaps()[i][j], imageSize, imageSize);
                     imageView.setStyle("-fx-border-color: red; -fx-border-width: 1;"); // Bordure rouge pour les tirs
                 }
+
                 gridPane.add(imageView, j, i);
             }
         }
@@ -83,13 +93,13 @@ public class VueHunter implements Observer {
         }
     }
 
-    private ImageView createImageViewWithBorder(CellInfo cellInfo, double imageSize) {
+    private ImageView createImageViewWithBorder(CellInfo cellInfo, double fitWidth, double fitHeight) {
         ImageView imageView = new ImageView();
         String imagePath = determineImagePath(cellInfo);
         Image image = new Image(getClass().getResourceAsStream(imagePath));
         imageView.setImage(image);
-        imageView.setFitWidth(imageSize);
-        imageView.setFitHeight(imageSize);
+        imageView.setFitWidth(fitWidth);
+        imageView.setFitHeight(fitHeight);
         return imageView;
     }
 
@@ -168,7 +178,7 @@ public class VueHunter implements Observer {
             Coordinate coordonnees = (Coordinate) data;
             int row = coordonnees.getRow();
             int col = coordonnees.getCol();
-            chargePlateau(row, col, 50); // Taille de l'image ajustée à 50
+            chargePlateau(row, col, 50); 
         }
     }
 }

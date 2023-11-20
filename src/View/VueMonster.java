@@ -50,10 +50,13 @@ public class VueMonster implements Observer {
         chargePlateau();
         HBox hbox = new HBox(new Label("MONSTER"));
         hbox.setAlignment(Pos.CENTER);
+
+        int imageSize = 50; // Taille de l'image ajustée à 50
         controlleur.mMouvement();
+
         VBox vbox = new VBox(hbox, gridPane);
-        styleGridPane();
-        Scene scene = new Scene(vbox, 900, 900);
+        styleGridPane(imageSize);
+        Scene scene = new Scene(vbox, imageSize * 11,imageSize * 11);
         stage.setScene(scene);
         return stage;
     }
@@ -63,15 +66,34 @@ public class VueMonster implements Observer {
         Maps map = monster.getGameModel().getMap();
         for (int i = 0; i < map.getMaps().length; i++) {
             for (int j = 0; j < map.getMaps()[i].length; j++) {
-                ImageView imageView = createImageViewWithBorder(map.getMaps()[i][j]);
+                StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
                 ColorAdjust color = new ColorAdjust();
                 color.setHue(0.5);
-                imageView.setEffect(color);
-
-                gridPane.add(imageView, j, i);
+                stackPane.setEffect(color);
+    
+                gridPane.add(stackPane, j, i);
             }
         }
     }
+
+    private StackPane createStackPaneWithBorder(CellInfo cellInfo) {
+        StackPane stackPane = new StackPane();
+        String imagePath = determineImagePath(cellInfo);
+        Image image = new Image(getClass().getResourceAsStream(imagePath));
+    
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(50);
+        imageView.setFitHeight(50);
+    
+        stackPane.getChildren().add(imageView);
+    
+        // Ajoutez une étiquette (Label) avec du texte
+        
+    
+        return stackPane;
+    }
+    
+    
 
     private String determineImagePath(CellInfo cellInfo) {
         switch (cellInfo) {
@@ -84,43 +106,44 @@ public class VueMonster implements Observer {
         }
     }
 
-    private ImageView createImageViewWithBorder(CellInfo cellInfo) {
-        ImageView imageView = new ImageView();
-        String imagePath = determineImagePath(cellInfo);
-        Image image = new Image(getClass().getResourceAsStream(imagePath));
-        imageView.setImage(image);
-        imageView.setFitWidth(50);
-        imageView.setFitHeight(50);
-        return imageView;
-    }
+   
 
     public void updatePlateau() {
         int clickedRow = controlleur.getClickedCase().getRow();
         int clickedCol = controlleur.getClickedCase().getCol();
         int row = Monster.getCordMonster().getRow();
         int col = Monster.getCordMonster().getCol();
-
+    
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
         Node nodeMonster = getNodeByRowColumnIndex(row, col, gridPane);
-
-        if (node != null && node instanceof ImageView) {
-            ImageView existingImageView = (ImageView) node;
-            ImageView monsterImageView = (ImageView) nodeMonster;
-
+    
+        if (node != null && node instanceof StackPane) {
+            StackPane existingStackPane = (StackPane) node;
+            StackPane monsterStackPane = (StackPane) nodeMonster;
+    
+            // Mise à jour de l'image du monstre
             String imagePathMonster = determineImagePath(CellInfo.EMPTY);
             Image imageMonster = new Image(getClass().getResourceAsStream(imagePathMonster));
+            ImageView monsterImageView = (ImageView) monsterStackPane.getChildren().get(0);
             monsterImageView.setImage(imageMonster);
-            existingImageView.toBack();
-            monsterImageView.toBack();
 
+            Label label = new Label("1");
+            monsterStackPane.getChildren().add(label);
+    
+            existingStackPane.toBack();
+            monsterStackPane.toBack();
+    
+            // Mise à jour de l'image cliquée
             String imagePathClicked = determineImagePath(CellInfo.MONSTER);
             Image imageClicked = new Image(getClass().getResourceAsStream(imagePathClicked));
+            ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
             existingImageView.setImage(imageClicked);
-
-            existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 1;");
-            monsterImageView.setStyle("-fx-border-color: black; -fx-border-width: 1;");
+    
+            existingStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
+            monsterStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
         }
     }
+    
 
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
@@ -131,20 +154,21 @@ public class VueMonster implements Observer {
         return null;
     }
 
-    public void styleGridPane() {
-        gridPane.setStyle("-fx-background-color: #ececec;");
-        gridPane.setPadding(new Insets(20));
-        gridPane.setHgap(1);
-        gridPane.setVgap(1);
-
-        for (Node node : gridPane.getChildren()) {
-            if (node instanceof ImageView) {
-                ImageView imageView = (ImageView) node;
-                imageView.setFitWidth(50);
-                imageView.setFitHeight(50);
+    
+        private void styleGridPane(double imageSize) {
+            gridPane.setStyle("-fx-background-color: #ececec;");
+            gridPane.setPadding(new Insets(20));
+            gridPane.setHgap(1);
+            gridPane.setVgap(1);
+        
+            for (Node node : gridPane.getChildren()) {
+                if (node instanceof StackPane) {
+                    StackPane stackPane = (StackPane) node;
+                    stackPane.setMinSize(imageSize, imageSize);
+                    stackPane.setMaxSize(imageSize, imageSize);
+                }
             }
         }
-    }
 
     public Stage getStage() {
         return this.stage;

@@ -3,6 +3,7 @@ package Main;
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
+import View.GameView;
 import View.VueHunter;
 import View.VueMonster;
 import javafx.application.Application;
@@ -40,6 +41,7 @@ public class Main extends Application{
         Stage stage2= view2.creerStage();
         stage.show();
         stage2.show();
+       
 
         
         

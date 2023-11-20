@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import Model.Monster;
 import Utils.Coordinate;
@@ -40,18 +41,30 @@ public class ControlMonster {
      *           Chaque case visitée est enregistrée avec le numéro du tour (tourCpt).
      */
     public void mMouvement() {
-        refresh();
         GridPane gridPane = view.getGridPane();
         gridPane.setOnMouseClicked(event -> {
-            Node source = (Node) event.getTarget();
+            Node source = event.getPickResult().getIntersectedNode();
+            StackPane clickedStackPane = null;
+    
+            // Trouver le StackPane cliqué
             if (source instanceof ImageView) {
-                int clickedRow = GridPane.getRowIndex(source);
-                int clickedCol = GridPane.getColumnIndex(source);
-                this.clickedCase= new Coordinate(clickedRow, clickedCol);
+                // Si l'événement est sur l'ImageView, remonte au parent (StackPane)
+                clickedStackPane = (StackPane) source.getParent();
+            } else if (source instanceof StackPane) {
+                // Si l'événement est déjà sur le StackPane, utilisez-le directement
+                clickedStackPane = (StackPane) source;
+            }
+    
+            if (clickedStackPane != null) {
+                int clickedRow = GridPane.getRowIndex(clickedStackPane);
+                int clickedCol = GridPane.getColumnIndex(clickedStackPane);
+    
+                this.clickedCase = new Coordinate(clickedRow, clickedCol);
                 Monster monster = view.getMonster();
-                if (monster.getGameModel().currentPlayer==1) {
+    
+                if (monster.getGameModel().currentPlayer == 1) {
                     if (monster.victory(clickedRow, clickedCol)) {
-                        monster.getGameModel().currentPlayer=3;
+                        monster.getGameModel().currentPlayer = 3;
                         view.showVictoryMessage();
                     } else {
                         if (monster.moveMonster(clickedRow, clickedCol)) {
@@ -64,8 +77,9 @@ public class ControlMonster {
             }
         });
     }
+    
 
-    public void refresh(){
+    /*public void refresh(){
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Coordinate cord = view.getMonster().getGameModel().getHunter().getHunted();
             Node node = view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
@@ -78,7 +92,7 @@ public class ControlMonster {
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-    }
+    }*/
 
     public int getTour(){
         return this.tourCpt;
