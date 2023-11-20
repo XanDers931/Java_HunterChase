@@ -29,4 +29,24 @@ public class Coordinate implements ICoordinate {
     public void setCol(int col) {
         this.col = col;
     }    
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Coordinate other = (Coordinate) obj;
+        if (row != other.row)
+            return false;
+        if (col != other.col)
+            return false;
+        return true;
+    }
+
+    int[] toArray() {
+        return new int[] {row, col};
+    }
 }
