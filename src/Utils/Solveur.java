@@ -1,5 +1,7 @@
 package Utils;
 
+import java.util.ArrayList;
+
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Solveur {
@@ -44,9 +46,7 @@ public class Solveur {
         return map[x][y].equals(CellInfo.WALL);
     }
 
-    // est-ce que (x,y) est un 
-
-    private final char VIDE = 'a', ROUGE = 'b', ROSE = 'c';
+    private final char VIDE = 'a',  ROSE = 'c';
 
     private void initMarque(){
         marque = new char[map.length][map[0].length];
@@ -62,10 +62,6 @@ public class Solveur {
         return marque[x][y] != VIDE;
     }
 
-    private boolean estMarque(int[] c) {
-        return estMarque(c[0], c[1]);
-    }
-
     // pose une marque
     private void poserMarque(int x, int y) {
         marque[x][y] = ROSE;
@@ -75,28 +71,22 @@ public class Solveur {
         marque[c[0]][c[1]] = ROSE;
     }
 
-    private void poserMarqueChemin(int x, int y) {
-        marque[x][y] = ROUGE;
-    }
-
-    private void poserMarqueChemin(int[] c) {
-        marque[c[0]][c[1]] = ROUGE;
-    }
-
-    public boolean estFaisable(){       
+    public ArrayList<Coordinate> estFaisable(){       
         Stack<Coordinate> p = new Stack<Coordinate>();
         int[] entre = getEntre();
         int[] sortie = getSortie();
         Coordinate end = new Coordinate(sortie[0], sortie[1]);
         Coordinate start = new Coordinate(entre[0], entre[1]);
         Coordinate voisin;
+        boolean found = false;
         p.push(new Coordinate(entre[0], entre[1]));
         poserMarque(start.getRow(), start.getCol());
         Coordinate c;
         while(!p.isEmpty()){
             c = p.peek();
             if(c.equals(end)){
-                return true;
+                found = true;
+                break;
             }
             else{
                 voisin = getVoisines(c);  
@@ -109,7 +99,16 @@ public class Solveur {
                 }
             }
         }
-        return false;
+        if(found){
+            ArrayList<Coordinate> res = new ArrayList<>();
+            while(!p.isEmpty()){
+                res.add(p.pop());
+            }
+            return res;
+        }
+        else{
+            return null;
+        }
     }
 
     private  Coordinate getVoisines(Coordinate c) {

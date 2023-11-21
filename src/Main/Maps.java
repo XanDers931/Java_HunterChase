@@ -2,6 +2,7 @@ package Main;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Random;
 
 import Utils.Coordinate;
@@ -135,13 +136,16 @@ public class Maps {
         map[x][y]=cell;
     }    
 
-       public void initCheckedMap(int rowsLength, int colsLength, int probaWall){
+    //Check si la map est valide, notamment que le chemin le plus court fais 5 minimum
+    public void initCheckedMap(int rowsLength, int colsLength, int probaWall){
         Solveur solv = new Solveur(randomInitMap(rowsLength, colsLength, probaWall));
-        while(!solv.estFaisable()){
+        ArrayList<Coordinate> coords = solv.estFaisable();
+        while(coords == null && coords.size()<=5){
             solv.setMap(randomInitMap(rowsLength, colsLength, probaWall));
         }
         map = solv.getMap();
     }
+
 
     public CellInfo[][] randomInitMap(int rowsLength, int colsLength, int probaWall){
         CellInfo[][] resMap = new CellInfo[rowsLength][colsLength];
