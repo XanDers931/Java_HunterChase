@@ -89,7 +89,7 @@ public class Solveur {
                 break;
             }
             else{
-                voisin = getVoisines(c);  
+                voisin = getVoisinesDiagonal(c);  
                 if(voisin!= null){
                     p.push(voisin);
                     poserMarque(voisin.toArray());
@@ -124,6 +124,36 @@ public class Solveur {
         }
         if (!estMarque(cell[0],cell[1]-1 ) && !estMur(cell[0],cell[1]-1 )) {
             return new Coordinate(cell[0],cell[1]-1);
+        }
+        return null;
+    }
+
+    private  Coordinate getVoisinesDiagonal(Coordinate c) {
+        int[] cell = c.toArray();
+        if (!estMarque(cell[0],cell[1]+1 ) && !estMur(cell[0],cell[1]+1  )) {
+            return new Coordinate(cell[0],cell[1]+1);
+        }
+        if (!estMarque(cell[0]+1,cell[1] ) && !estMur(cell[0]+1,cell[1] )) {
+            return new Coordinate(cell[0]+1,cell[1]);
+        }
+        if (!estMarque(cell[0]-1,cell[1] ) && !estMur(cell[0]-1,cell[1] )) {
+            return new Coordinate(cell[0]-1,cell[1]);
+        }
+        if (!estMarque(cell[0],cell[1]-1 ) && !estMur(cell[0],cell[1]-1 )) {
+            return new Coordinate(cell[0],cell[1]-1);
+        }
+
+        if (!estMarque(cell[0]+1,cell[1]+1 ) && !estMur(cell[0]+1,cell[1]+1 )) {
+            return new Coordinate(cell[0]+1,cell[1]+1);
+        }
+        if (!estMarque(cell[0]-1,cell[1]+1 ) && !estMur(cell[0]-1,cell[1]+1 )) {
+            return new Coordinate(cell[0]-1,cell[1]+1);
+        }
+        if (!estMarque(cell[0]-1,cell[1]-1 ) && !estMur(cell[0]-1,cell[1]-1 )) {
+            return new Coordinate(cell[0]-1,cell[1]-1);
+        }
+        if (!estMarque(cell[0]+1,cell[1]-1 ) && !estMur(cell[0]+1,cell[1]-1 )) {
+            return new Coordinate(cell[0]+1,cell[1]-1);
         }
         return null;
     }
