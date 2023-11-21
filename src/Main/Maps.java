@@ -10,10 +10,6 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Maps {
     
-    public Maps() {
-        initMap();
-        initShoot();
-    }
 
     public CellInfo[][] getMaps() {
         return map;
@@ -25,7 +21,11 @@ public class Maps {
 
     private CellInfo[][] map;
     private boolean[][] mapShoot;
-
+    
+    public Maps() {
+        this.map=  randomInitMap(10, 10, 10);
+        initShoot();
+    }
 
     /**
      * Initialise la carte du jeu, créant une matrice 2D de CellInfo de taille 10x5,

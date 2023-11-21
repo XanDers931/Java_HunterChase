@@ -87,9 +87,6 @@ public class VueMonster implements Observer {
     
         stackPane.getChildren().add(imageView);
     
-        // Ajoutez une étiquette (Label) avec du texte
-        
-    
         return stackPane;
     }
     
@@ -98,9 +95,11 @@ public class VueMonster implements Observer {
     private String determineImagePath(CellInfo cellInfo) {
         switch (cellInfo) {
             case WALL:
-                return "ground.png";
+                return "carrenoir.png";
             case MONSTER:
                 return "monstre.png";
+            case EXIT:
+                return "monstre.avif";
             default:
                 return "ground.png";
         }

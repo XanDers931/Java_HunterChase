@@ -78,21 +78,38 @@ public class ControlMonster {
         });
     }
     
-
-    /*public void refresh(){
+    //TODO//
+    public void refresh() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             Coordinate cord = view.getMonster().getGameModel().getHunter().getHunted();
-            Node node = view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
-            ImageView image = (ImageView) node;
-            ColorAdjust color = new ColorAdjust();
-            color.setHue(0.1);
-            image.setEffect(color);
-            // À chaque rafraîchissement (toutes les 1 seconde), on appele la méthode "chargePlateau" de la vue .
+            StackPane stackPane = getStackPaneByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
+    
+            if (stackPane != null) {
+                ColorAdjust color = new ColorAdjust();
+                color.setHue(0.1);
+                stackPane.setEffect(color);
+                // À chaque rafraîchissement (toutes les 1 seconde), on appelle la méthode "chargePlateau" de la vue.
+            }
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-    }*/
+    }
+    
+    public StackPane getStackPaneByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                if (node instanceof StackPane) {
+                    return (StackPane) node;
+                }
+            }
+        }
+        return null;
+    }
+    
+    
+   
+    
 
     public int getTour(){
         return this.tourCpt;

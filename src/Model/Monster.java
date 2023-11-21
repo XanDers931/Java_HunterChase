@@ -29,7 +29,7 @@ public class Monster extends Subject{
                 }
             }
         }*/
-        cordMonster= new Coordinate(0, 0);
+        cordMonster= gameModel.getMap().getCordUser(CellInfo.MONSTER);
         initPath();
     }
     
