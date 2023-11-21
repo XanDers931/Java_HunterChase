@@ -25,7 +25,15 @@
         "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx.swing.jar",
         "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx.web.jar",
         "c:\\Users\\alexa\\OneDrive\\Bureau\\travail\\BUT\\sae\\javafx-sdk-17.0.2\\lib\\javafx-swt.jar",
-        "/Users/juju/Downloads/cam-player-api-base.jar"
+        "/Users/juju/Downloads/cam-player-api-base.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.base.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.controls.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.fxml.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.graphics.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.media.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.swing.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx.web.jar",
+        "c:\\Users\\paulm\\Documents\\BUT\\lib\\javafx-sdk-21\\lib\\javafx-swt.jar"
     ],
     "java.debug.settings.onBuildFailureProceed": true
 }
