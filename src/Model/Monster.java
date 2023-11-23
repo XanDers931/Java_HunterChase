@@ -3,9 +3,12 @@ package Model;
 import Main.Maps;
 import Utils.Coordinate;
 import Utils.Subject;
+import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
+import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
-public class Monster extends Subject{
+public class Monster extends Subject implements IMonsterStrategy{
 
     public String nickname;
     public boolean tour;
@@ -30,6 +33,7 @@ public class Monster extends Subject{
             }
         }*/
         cordMonster= gameModel.getMap().getCordUser(CellInfo.MONSTER);
+        //cordMonster= new Coordinate(0, 0);
         initPath();
     }
     
@@ -65,6 +69,7 @@ public class Monster extends Subject{
         if (isAdjacent(cord.getRow(), cord.getCol(), x, y)) {
             map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
             map.getMaps()[x][y] = CellInfo.MONSTER;
+            getGameModel().Playround();
            // performActionThatChangesState(x, y);
             return true;
         }
@@ -109,5 +114,23 @@ public class Monster extends Subject{
 
     public GameModel getGameModel() {
         return gameModel;
+    }
+
+    @Override
+    public ICoordinate play() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'play'");
+    }
+
+    @Override
+    public void update(ICellEvent arg0) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public void initialize(boolean[][] arg0) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
     }
 }

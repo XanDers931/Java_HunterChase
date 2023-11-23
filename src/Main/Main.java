@@ -22,7 +22,9 @@ public class Main extends Application{
         menu.createMainMenu();
         menu.createRulesPage();
         primaryStage.setScene(menu.getMainMenuScene());
-        //primaryStage.show();
+        primaryStage.show();
+
+        /* *
         GameModel gameModel = new GameModel(null, null);
         // Ensuite, utilisez ce GameModel pour créer un Monster
         Monster monster = new Monster(STYLESHEET_CASPIAN, gameModel);
@@ -42,7 +44,7 @@ public class Main extends Application{
         stage.show();
         stage2.show();
        
-
+        */
         
         
     }

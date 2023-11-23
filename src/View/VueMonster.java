@@ -10,6 +10,7 @@ import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import Controller.ControlMonster;
 import Main.Maps;
@@ -52,7 +53,9 @@ public class VueMonster implements Observer {
         hbox.setAlignment(Pos.CENTER);
 
         int imageSize = 50; // Taille de l'image ajustée à 50
+        
         controlleur.mMouvement();
+        //controlleur.botMouvement();
 
         VBox vbox = new VBox(hbox, gridPane);
         styleGridPane(imageSize);
@@ -107,11 +110,10 @@ public class VueMonster implements Observer {
 
    
 
-    public void updatePlateau() {
-        int clickedRow = controlleur.getClickedCase().getRow();
-        int clickedCol = controlleur.getClickedCase().getCol();
+    public void updatePlateau(int clickedRow, int clickedCol) {
         int row = Monster.getCordMonster().getRow();
         int col = Monster.getCordMonster().getCol();
+        System.out.println(row + "" + col + "     " + clickedRow + "" + clickedCol);
     
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
         Node nodeMonster = getNodeByRowColumnIndex(row, col, gridPane);
@@ -125,9 +127,18 @@ public class VueMonster implements Observer {
             Image imageMonster = new Image(getClass().getResourceAsStream(imagePathMonster));
             ImageView monsterImageView = (ImageView) monsterStackPane.getChildren().get(0);
             monsterImageView.setImage(imageMonster);
-
-            Label label = new Label("1");
-            monsterStackPane.getChildren().add(label);
+    
+            Label label;
+            if (monsterStackPane.getChildren().size() > 1 && monsterStackPane.getChildren().get(1) instanceof Label) {
+                // Si le label existe déjà, mettez à jour son texte
+                label = (Label) monsterStackPane.getChildren().get(1);
+                label.setText(String.valueOf(monster.getGameModel().getTurn()));
+            } else {
+                // Sinon, créez un nouveau label
+                label = new Label(String.valueOf(monster.getGameModel().getTurn()));
+                label.setTextFill(Color.BLACK);
+                monsterStackPane.getChildren().add(label);
+            }
     
             existingStackPane.toBack();
             monsterStackPane.toBack();
@@ -142,6 +153,7 @@ public class VueMonster implements Observer {
             monsterStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
         }
     }
+    
     
 
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {

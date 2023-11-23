@@ -76,8 +76,7 @@ public class Menus {
         param.add(choixComboBox, 0, 5, 2, 1);
 
         playButton.setOnAction(event -> {
-            
-            play(pseudo.getText(),Integer.parseInt(textFormatter.getValue()));
+            play("test",Integer.parseInt("10"));
         });
 
         rulesButton.setOnAction(event -> {

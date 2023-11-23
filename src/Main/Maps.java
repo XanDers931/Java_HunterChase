@@ -137,13 +137,14 @@ public class Maps {
     }    
 
     //Check si la map est valide, notamment que le chemin le plus court fais 5 minimum
-    public void initCheckedMap(int rowsLength, int colsLength, int probaWall){
+    public ArrayList<Coordinate> initCheckedMap(int rowsLength, int colsLength, int probaWall){
         Solveur solv = new Solveur(randomInitMap(rowsLength, colsLength, probaWall));
         ArrayList<Coordinate> coords = solv.estFaisable();
         while(coords == null && coords.size()<=5){
             solv.setMap(randomInitMap(rowsLength, colsLength, probaWall));
         }
         map = solv.getMap();
+        return coords;
     }
 
 
@@ -158,7 +159,6 @@ public class Maps {
         resMap[tmpExit.getRow()][tmpExit.getCol()] = CellInfo.EXIT;
         for (int i = 0; i < rowsLength; i++) {
             for (int j = 0; j < colsLength; j++) {
-                System.out.println(" ["+i+"-"+j+"]");
                 if(i == 0 || j == 0 || i == rowsLength-1 || j == colsLength-1 ) {
                     
                     resMap[i][j] = CellInfo.WALL;
