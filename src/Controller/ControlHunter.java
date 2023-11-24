@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class ControlHunter {
     public VueHunter view;
@@ -33,12 +34,25 @@ public class ControlHunter {
         GridPane gp = view.getGridPane();
 
         gp.setOnMouseClicked(event -> {
-            Node source = (Node) event.getTarget();
-
+            Node source = event.getPickResult().getIntersectedNode();
+            StackPane clickedStackPane = null;
+    
+            // Trouver le StackPane cliqué
             if (source instanceof ImageView) {
-                int clickedRow = GridPane.getRowIndex(source);
-                int clickedCol = GridPane.getColumnIndex(source);
+                // Si l'événement est sur l'ImageView, remonte au parent (StackPane)
+                clickedStackPane = (StackPane) source.getParent();
+            } else if (source instanceof StackPane) {
+                // Si l'événement est déjà sur le StackPane, utilisez-le directement
+                clickedStackPane = (StackPane) source;
+            }
+            
+            if (clickedStackPane != null) {
+                int clickedRow = GridPane.getRowIndex(clickedStackPane);
+                int clickedCol = GridPane.getColumnIndex(clickedStackPane);
+     
+              
                 this.clickedCase= new Coordinate(clickedRow, clickedCol);
+
                 if (view.getHunter().getGameModel().currentPlayer==2) {
                     view.getHunter().shoot(clickedRow, clickedCol);
                     view.updatePlateau();
@@ -54,14 +68,7 @@ public class ControlHunter {
         });
     }
 
-    public Coordinate getCaseCLiked(MouseEvent event) {
-        GridPane gridPane = view.getGridPane();
-        // Calculer les coordonnées du clic en fonction de la taille de la cellule
-        int col = (int) (event.getX() / (gridPane.getWidth() / gridPane.getColumnCount()));
-        int row = (int) (event.getY() / (gridPane.getHeight() / gridPane.getRowCount()));
-
-        return new Coordinate(row, col);
-    }
+    
 
     
 

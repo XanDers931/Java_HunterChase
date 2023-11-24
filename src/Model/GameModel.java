@@ -27,6 +27,7 @@ public class GameModel {
         this.map = new Maps();
         this.path = new HashMap<>();
         currentPlayer= 1;
+        this.addPath(this.map.getCordUser(CellInfo.MONSTER));
     }
 
     //retourne le tour actuel
@@ -41,7 +42,8 @@ public class GameModel {
 
     //Ajoute une les coordonnées
     public void addPath(Coordinate co){
-        path.put(co, turn);
+        System.out.println("Adding path for coordinates: " + co.toString());
+        path.put(co, turn+1);
     }
 
     //renvoie True si l'un des deux joueurs a gagné

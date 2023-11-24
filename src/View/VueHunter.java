@@ -69,15 +69,16 @@ public class VueHunter implements Observer {
         for (int i = 0; i < maps.length; i++) {
             for (int j = 0; j < maps[i].length; j++) {
                 Image image = new Image(getClass().getResourceAsStream("carrenoir.png"));
-                ImageView imageView = createImageViewWithBorder(map.getMaps()[i][j], imageSize, imageSize);
+                StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
+                ImageView imageView= (ImageView) stackPane.getChildren().get(0);
                 imageView.setImage(image);
 
                 if (mapShoot[i][j]) {
-                    imageView = createImageViewWithBorder(map.getMaps()[i][j], imageSize, imageSize);
-                    imageView.setStyle("-fx-border-color: red; -fx-border-width: 1;"); // Bordure rouge pour les tirs
+                    stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
+                    stackPane.setStyle("-fx-border-color: red; -fx-border-width: 1;"); // Bordure rouge pour les tirs
                 }
 
-                gridPane.add(imageView, j, i);
+                gridPane.add(stackPane, j, i);
             }
         }
     }
@@ -85,37 +86,54 @@ public class VueHunter implements Observer {
     private String determineImagePath(CellInfo cellInfo) {
         switch (cellInfo) {
             case WALL:
-                return "ground.png";
+                return "trou.jpg";
             case MONSTER:
-                return "monstre.png";
+                return "loup.jpg";
+            case EXIT:
+                return "monstre.avif";
             default:
-                return "ground.png";
+                return "green.jpg";
         }
     }
 
-    private ImageView createImageViewWithBorder(CellInfo cellInfo, double fitWidth, double fitHeight) {
-        ImageView imageView = new ImageView();
+    private StackPane createStackPaneWithBorder(CellInfo cellInfo) {
+        StackPane stackPane = new StackPane();
         String imagePath = determineImagePath(cellInfo);
         Image image = new Image(getClass().getResourceAsStream(imagePath));
-        imageView.setImage(image);
-        imageView.setFitWidth(fitWidth);
-        imageView.setFitHeight(fitHeight);
-        return imageView;
+    
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(50);
+        imageView.setFitHeight(50);
+    
+        stackPane.getChildren().add(imageView);
+    
+        return stackPane;
     }
 
     public void updatePlateau() {
         int clickedRow = controlleur.getClickedCase().getRow();
         int clickedCol = controlleur.getClickedCase().getCol();
 
+        System.out.println("Clicked Row: " + clickedRow + ", Clicked Col: " + clickedCol);
+
+
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
 
-        if (node != null && node instanceof ImageView) {
-            ImageView existingImageView = (ImageView) node;
-            existingImageView.toBack();
+        if (node != null && node instanceof StackPane) {
+            StackPane existingStackPane = (StackPane) node;
+            
             String imagePathClicked = determineImagePath(hunter.getGameModel().getMap().getMaps()[clickedRow][clickedCol]);
             Image imageClicked = new Image(getClass().getResourceAsStream(imagePathClicked));
+            ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
             existingImageView.setImage(imageClicked);
             existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 0.5;");
+            if(hunter.getGameModel().getPath().containsKey(new Coordinate(clickedRow, clickedCol))){
+                int path =hunter.getGameModel().getPath(new Coordinate(clickedRow, clickedCol));
+                //System.out.println(path);
+                Label label = new Label(path+"");
+                existingStackPane.getChildren().add(label);
+            }
+            existingStackPane.toBack();
         }
     }
 

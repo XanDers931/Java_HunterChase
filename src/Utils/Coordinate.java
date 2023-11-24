@@ -1,5 +1,7 @@
 package Utils;
 
+import java.util.Objects;
+
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
 public class Coordinate implements ICoordinate {
@@ -31,22 +33,27 @@ public class Coordinate implements ICoordinate {
     }    
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Coordinate other = (Coordinate) obj;
-        if (row != other.row)
-            return false;
-        if (col != other.col)
-            return false;
-        return true;
-    }
+public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    Coordinate other = (Coordinate) obj;
+    return this.row == other.row && this.col == other.col;
+}
+
+@Override
+public int hashCode() {
+    return Objects.hash(row, col);
+}
+
 
     int[] toArray() {
         return new int[] {row, col};
     }
+
+    @Override
+    public String toString() {
+        return "Coordinate [row=" + row + ", col=" + col + "]";
+    }
+
+    
 }

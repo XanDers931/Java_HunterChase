@@ -70,6 +70,7 @@ public class Monster extends Subject implements IMonsterStrategy{
             map.getMaps()[cord.getRow()][cord.getCol()] = CellInfo.EMPTY;
             map.getMaps()[x][y] = CellInfo.MONSTER;
             getGameModel().Playround();
+            gameModel.addPath(new Coordinate(x, y));
            // performActionThatChangesState(x, y);
             return true;
         }

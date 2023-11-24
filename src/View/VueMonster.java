@@ -70,10 +70,6 @@ public class VueMonster implements Observer {
         for (int i = 0; i < map.getMaps().length; i++) {
             for (int j = 0; j < map.getMaps()[i].length; j++) {
                 StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
-                ColorAdjust color = new ColorAdjust();
-                color.setHue(0.5);
-                stackPane.setEffect(color);
-    
                 gridPane.add(stackPane, j, i);
             }
         }
@@ -98,13 +94,13 @@ public class VueMonster implements Observer {
     private String determineImagePath(CellInfo cellInfo) {
         switch (cellInfo) {
             case WALL:
-                return "carrenoir.png";
+                return "trou.jpg";
             case MONSTER:
-                return "monstre.png";
+                return "loup.jpg";
             case EXIT:
                 return "monstre.avif";
             default:
-                return "ground.png";
+                return "green.jpg";
         }
     }
 
@@ -113,7 +109,7 @@ public class VueMonster implements Observer {
     public void updatePlateau(int clickedRow, int clickedCol) {
         int row = Monster.getCordMonster().getRow();
         int col = Monster.getCordMonster().getCol();
-        System.out.println(row + "" + col + "     " + clickedRow + "" + clickedCol);
+        
     
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
         Node nodeMonster = getNodeByRowColumnIndex(row, col, gridPane);
