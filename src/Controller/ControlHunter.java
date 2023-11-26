@@ -8,6 +8,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 
+
+
+
 public class ControlHunter {
     public VueHunter view;
     public Coordinate clickedCase;
@@ -31,56 +34,61 @@ public class ControlHunter {
      *           pour éliminer le monstre. La victoire est déterminée en fonction de la position du chasseur.
      */
     public void hMouvement() {
-        GridPane gp = view.getGridPane();
-
-        gp.setOnMouseClicked(event -> {
-            Node source = event.getPickResult().getIntersectedNode();
-            StackPane clickedStackPane = null;
-    
-            // Trouver le StackPane cliqué
-            if (source instanceof ImageView) {
-                // Si l'événement est sur l'ImageView, remonte au parent (StackPane)
-                clickedStackPane = (StackPane) source.getParent();
-            } else if (source instanceof StackPane) {
-                // Si l'événement est déjà sur le StackPane, utilisez-le directement
-                clickedStackPane = (StackPane) source;
-            }
-            
-            if (clickedStackPane != null) {
-                int clickedRow = GridPane.getRowIndex(clickedStackPane);
-                int clickedCol = GridPane.getColumnIndex(clickedStackPane);
-     
-              
-                this.clickedCase= new Coordinate(clickedRow, clickedCol);
-
-                if (view.getHunter().getGameModel().currentPlayer==2) {
-                    view.getHunter().shoot(clickedRow, clickedCol);
-                    view.updatePlateau();
-                    if (view.getHunter().victory(clickedRow, clickedCol)) {
-                        view.getHunter().getGameModel().currentPlayer=3;
-                        view.showVictoryMessage();
-                    }else {
-                        view.getHunter().getGameModel().changeCurrentPlayer();
-                    }
-                    updateHunterPosition(clickedRow, clickedCol);
-                }
-            }
-        });
+        view.getGridPane().setOnMouseClicked(this::handleMouseClick);
     }
 
-    
+    private void handleMouseClick(MouseEvent event) {
+        Node source = event.getPickResult().getIntersectedNode();
+        StackPane clickedStackPane = findClickedStackPane(source);
 
-    
+        if (clickedStackPane != null) {
+            int clickedRow = GridPane.getRowIndex(clickedStackPane);
+            int clickedCol = GridPane.getColumnIndex(clickedStackPane);
 
-    public Coordinate getClickedCase() {
-        return clickedCase;
+            this.clickedCase = new Coordinate(clickedRow, clickedCol);
+
+            if (view.getHunter().getGameModel().currentPlayer == 2) {
+                handleHunterTurn(clickedRow, clickedCol);
+            }
+        }
     }
 
+    private StackPane findClickedStackPane(Node source) {
+        if (source instanceof ImageView) {
+            return (StackPane) source.getParent();
+        } else if (source instanceof StackPane) {
+            return (StackPane) source;
+        }
+        return null;
+    }
+
+    private void handleHunterTurn(int clickedRow, int clickedCol) {
+        Model.Hunter hunter = view.getHunter();
+        Model.GameModel gameModel = hunter.getGameModel();
+
+        hunter.shoot(clickedRow, clickedCol);
+        view.updatePlateau();
+
+        if (hunter.victory(clickedRow, clickedCol)) {
+            gameModel.currentPlayer = 3;
+            view.showVictoryMessage();
+        } else {
+            gameModel.changeCurrentPlayer();
+        }
+
+        updateHunterPosition(clickedRow, clickedCol);
+    }
 
     private void updateHunterPosition(int row, int col) {
         view.getHunter().getHunted().setCol(col);
         view.getHunter().getHunted().setRow(row);
     }
+    
+    public Coordinate getClickedCase() {
+        return clickedCase;
+    }
+
+    
 }
 
 

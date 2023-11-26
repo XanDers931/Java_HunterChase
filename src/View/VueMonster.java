@@ -70,6 +70,8 @@ public class VueMonster implements Observer {
         for (int i = 0; i < map.getMaps().length; i++) {
             for (int j = 0; j < map.getMaps()[i].length; j++) {
                 StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
+               
+    
                 gridPane.add(stackPane, j, i);
             }
         }

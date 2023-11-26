@@ -114,9 +114,6 @@ public class VueHunter implements Observer {
         int clickedRow = controlleur.getClickedCase().getRow();
         int clickedCol = controlleur.getClickedCase().getCol();
 
-        System.out.println("Clicked Row: " + clickedRow + ", Clicked Col: " + clickedCol);
-
-
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
 
         if (node != null && node instanceof StackPane) {
@@ -129,7 +126,6 @@ public class VueHunter implements Observer {
             existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 0.5;");
             if(hunter.getGameModel().getPath().containsKey(new Coordinate(clickedRow, clickedCol))){
                 int path =hunter.getGameModel().getPath(new Coordinate(clickedRow, clickedCol));
-                //System.out.println(path);
                 Label label = new Label(path+"");
                 existingStackPane.getChildren().add(label);
             }
