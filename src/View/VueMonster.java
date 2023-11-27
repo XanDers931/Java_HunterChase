@@ -67,8 +67,8 @@ public class VueMonster implements Observer {
     public void chargePlateau() {
         gridPane.getChildren().clear();
         Maps map = monster.getGameModel().getMap();
-        for (int i = 0; i < map.getMaps().length; i++) {
-            for (int j = 0; j < map.getMaps()[i].length; j++) {
+        for (int i = 0; i < map.getRow(); i++) {
+            for (int j = 0; j < map.getCol(); j++) {
                 StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
                
     

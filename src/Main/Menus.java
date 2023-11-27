@@ -76,7 +76,8 @@ public class Menus {
         param.add(choixComboBox, 0, 5, 2, 1);
 
         playButton.setOnAction(event -> {
-            play("test",Integer.parseInt("10"));
+            if(tabSize.getText().isEmpty()) play("test",10);
+            else play("test",Integer.parseInt(tabSize.getText()));
         });
 
         rulesButton.setOnAction(event -> {
@@ -111,7 +112,7 @@ public class Menus {
         primaryStage.close();
 
         //Création des objets
-        GameModel gameModel = new GameModel(null, null);
+        GameModel gameModel = new GameModel(null, null, tailleTab);
         // Ensuite, utilisez ce GameModel pour créer un Monster
         Monster monster = new Monster("STYLESHEET_CASPIAN", gameModel);
 

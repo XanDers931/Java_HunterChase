@@ -10,7 +10,7 @@ import Utils.Solveur;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Maps {
-    
+    private int row, col;
 
     public CellInfo[][] getMaps() {
         return map;
@@ -20,19 +20,23 @@ public class Maps {
         return mapShoot;
     }
 
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
     private CellInfo[][] map;
     private boolean[][] mapShoot;
     
     public Maps(int row,int col,int probaWall) {
         this.map=  randomInitMap(row, col, probaWall);
-        initShoot();
+        this.row= row;
+        this.col= col;
+        initShoot(row);
     }
-
-     public Maps() {
-        this.map=  randomInitMap(10, 10, 30);
-        initShoot();
-    }
-
 
     /**
      * Initialise la carte du jeu, créant une matrice 2D de CellInfo de taille 10x5,
@@ -58,11 +62,11 @@ public class Maps {
      * Initialise la carte de suivi des tirs du chasseur, créant une matrice 2D de
      * booléens de taille 10x5 et initialisant toutes les valeurs à false.
      */
-    public void initShoot(){
-        this.mapShoot= new boolean[10][10];
-        for(int i = 0; i < 10; i++)
+    public void initShoot(int size){
+        this.mapShoot= new boolean[size][size];
+        for(int i = 0; i < size; i++)
         {
-          for(int y = 0; y < 10; y++)
+          for(int y = 0; y < size; y++)
           {
             this.mapShoot[i][y] = false;
           }
@@ -146,9 +150,10 @@ public class Maps {
     public ArrayList<Coordinate> initCheckedMap(int rowsLength, int colsLength, int probaWall){
         Solveur solv = new Solveur(randomInitMap(rowsLength, colsLength, probaWall));
         ArrayList<Coordinate> coords = solv.estFaisable();
-        while(coords == null && coords.size()<=5){
+        while((coords=solv.estFaisable()) == null || coords.size()<=5){
             solv.setMap(randomInitMap(rowsLength, colsLength, probaWall));
         }
+        System.out.println(coords);
         map = solv.getMap();
         return coords;
     }

@@ -84,7 +84,9 @@ public class Solveur {
         Coordinate c;
         while(!p.isEmpty()){
             c = p.peek();
+            System.out.println(c + " " +end);
             if(c.equals(end)){
+                System.out.println();
                 found = true;
                 break;
             }
@@ -99,6 +101,7 @@ public class Solveur {
                 }
             }
         }
+        System.out.println(found);
         if(found){
             ArrayList<Coordinate> res = new ArrayList<>();
             while(!p.isEmpty()){

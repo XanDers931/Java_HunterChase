@@ -20,11 +20,11 @@ public class GameModel {
 
     private Maps map;
 
-    public GameModel(Monster monster, Hunter hunter){
+    public GameModel(Monster monster, Hunter hunter,int size){
         this.monster = monster;
         this.hunter = hunter;
         this.turn = 0;
-        this.map = new Maps();
+        this.map = new Maps(size,size,10);
         this.path = new HashMap<>();
         currentPlayer= 1;
         this.addPath(this.map.getCordUser(CellInfo.MONSTER));
