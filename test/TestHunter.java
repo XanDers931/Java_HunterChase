@@ -1,7 +1,10 @@
 package test;
 
 import Main.Maps;
+import Model.GameModel;
 import Model.Hunter;
+import Model.Monster;
+import Utils.Coordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 import org.junit.Before;
@@ -10,43 +13,73 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestHunter {
-
-    private Hunter hunter;
-
-    @Before
-    public void setUp() {
-        hunter = new Hunter("TestHunter");
-    }
-
-    @Test
+   @Test
     public void testVictory() {
-        Maps map = hunter.getMap();
-        map.getMaps()[0][0] = CellInfo.MONSTER;
+        // Taille du modèle de jeu pour l'initialisation
+        int size = 10;
+
+        // Créer un GameModel
+        GameModel gameModel = new GameModel(null, null, size);
+
+        // Créer un Hunter pour le test
+        Hunter hunter = new Hunter("TestHunter", gameModel);
+
+        // Simuler la position du monstre
+        Monster monster = new Monster("TestMonster", gameModel);
+        monster.addCurrentCordMonster(0, 0);
+
+        // Tester la victoire en tirant sur le monstre
         assertTrue(hunter.victory(0, 0));
 
-        map.getMaps()[1][1] = CellInfo.EMPTY;
+        // Tester la non-victoire en tirant dans une autre position
         assertFalse(hunter.victory(1, 1));
     }
 
     @Test
     public void testChangeCanMove() {
+        // Taille du modèle de jeu pour l'initialisation
+        int size = 10;
+
+        // Créer un GameModel
+        GameModel gameModel = new GameModel(null, null, size);
+
+        // Créer un Hunter pour le test
+        Hunter hunter = new Hunter("TestHunter", gameModel);
+
+        // Vérifier l'état initial
         assertFalse(hunter.canMoove);
+
+        // Changer l'état et vérifier
         hunter.changeCanMoove();
         assertTrue(hunter.canMoove);
+
+        // Changer à nouveau et vérifier
         hunter.changeCanMoove();
         assertFalse(hunter.canMoove);
     }
 
     @Test
     public void testShoot() {
-        Maps map = hunter.getMap();
+        // Taille du modèle de jeu pour l'initialisation
+        int size = 10;
+
+        // Créer un GameModel
+        GameModel gameModel = new GameModel(null, null, size);
+
+        // Créer un Hunter pour le test
+        Hunter hunter = new Hunter("TestHunter", gameModel);
+
+        // Coordonnées de tir
         int x = 2;
-        int y = 2;
+        int y = 3;
 
-        assertFalse(map.getMapShoot()[x][y]);
+        // Tirer et vérifier les coordonnées
         hunter.shoot(x, y);
-        assertTrue(map.getMapShoot()[x][y]);
+        Coordinate hunted = hunter.getHunted();
+        assertEquals(x, hunted.getRow());
+        assertEquals(y, hunted.getCol());
+
+        // Vérifier que la case correspondante dans la carte de tir est marquée
+        assertTrue(gameModel.getMap().getMapShoot()[x][y]);
     }
-
-
 }
