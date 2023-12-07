@@ -1,10 +1,15 @@
 package Main;
 
+import javax.swing.text.html.HTMLDocument.BlockElement;
+
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
 import View.VueMonster;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -68,28 +73,36 @@ public class Menus {
 
         // Ajout de la liste déroulante du choix du mode de jeu
         VBox choixBots = new VBox();
+        final ObservableList<String> lst = FXCollections.observableArrayList("Joueur","Bot");
+
 
         ComboBox<String> choixMonstreComboBox = new ComboBox<>();
-        Label choixMonstreLabel = new Label("Sélection :");
-        choixMonstreComboBox.getItems().addAll("Joueur", "Bot");
-        choixMonstreComboBox.setValue("Gamemode");
+        Label choixMonstreLabel = new Label("Sélection  Monstre:");
+        choixMonstreComboBox.setItems(lst);
         choixBots.getChildren().add(choixMonstreLabel);
         choixBots.getChildren().add(choixMonstreComboBox);
 
         ComboBox<String> choixChasseurComboBox = new ComboBox<>();
-        choixChasseurComboBox.getItems().addAll("Joueur", "Bot");
-        choixChasseurComboBox.setValue("Gamemode");
-        Label choixChasseurLabel = new Label("Sélection :");
+        choixChasseurComboBox.setItems(lst);
+        Label choixChasseurLabel = new Label("Sélection chasseur:");
         choixBots.getChildren().add(choixChasseurLabel);
         choixBots.getChildren().add(choixChasseurComboBox);
         choixBots.setAlignment(Pos.CENTER);
         GridPane.setHalignment(choixBots, HPos.CENTER);
 
+        String[] bots = new String[2];
+
+        choixMonstreComboBox.valueProperty().addListener(observable -> bots[0] = choixMonstreComboBox.getValue());
+        choixChasseurComboBox.valueProperty().addListener(observable -> bots[1] = choixChasseurComboBox.getValue());
+
+        
+
         playButton.setOnAction(event -> {
-            if(tabSize.getText().isEmpty()) play("test",10);
-            else play("test",Integer.parseInt(tabSize.getText()));
+            if(tabSize.getText().isEmpty()) play("test",10, bots);
+            else play("test",Integer.parseInt(tabSize.getText()), bots);
         });
 
+        
         rulesButton.setOnAction(event -> {
             primaryStage.setScene(rulesScene);
         });
@@ -118,7 +131,7 @@ public class Menus {
         rulesScene = new Scene(vbox, 600, 400);
     }
 
-    public void play(String nickname,int tailleTab) {
+    public void play(String nickname,int tailleTab, String[] bots) {
         primaryStage.close();
 
         //Création des objets
@@ -129,7 +142,7 @@ public class Menus {
         // Puis, utilisez le GameModel et le Monster pour créer un Hunter
         Hunter hunter = new Hunter("STYLESHEET_CASPIAN", gameModel);
 
-    // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
+        // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
         VueHunter hunterView = new VueHunter(hunter);
@@ -160,5 +173,8 @@ public class Menus {
         monsterStage.setY(hunterStage.getY());
         hunterStage.show();
         monsterStage.show();
+
+        System.out.println(bots[0]);
+        System.out.println(bots[1]);
     }
 }
