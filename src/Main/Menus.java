@@ -2,6 +2,10 @@ package Main;
 
 import javax.swing.text.html.HTMLDocument.BlockElement;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
@@ -116,12 +120,13 @@ public class Menus {
         mainMenuScene = new Scene(root, 400, 400);
     }
 
-    public void createRulesPage() {
-        Label rulesLabel = new Label("A hunter and a monster play against each other on a variable-sized board. Each turn, the monster moves first to one of the 8 neighboring squares, provided it is empty. Thereafter, the hunter shoots on a square of his choice. He will then see if the square has already been visited. The hunter's aim is to hit the monster. The monster's aim is to reach the exit square without getting hit.");
+    public void createRulesPage() throws IOException {
+        String rules = readRulesFromFile();
+        Label rulesLabel = new Label(rules);
         rulesLabel.setWrapText(true);
 
         Button backButton = new Button("Retour");
-        backButton.setOnAction(event -> {
+           backButton.setOnAction(event -> {
             primaryStage.setScene(mainMenuScene);
         });
 
@@ -129,6 +134,22 @@ public class Menus {
         vbox.setStyle("-fx-background-color: #f0f0f0; -fx-padding: 20px;");
         vbox.getChildren().addAll(rulesLabel, backButton);
         rulesScene = new Scene(vbox, 600, 400);
+    }
+
+    private String readRulesFromFile() throws IOException {
+        FileReader fileReader = new FileReader("../../res/rules.txt");
+
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        String line;
+        StringBuilder rulesBuilder = new StringBuilder();
+        while ((line = bufferedReader.readLine()) != null) {
+            rulesBuilder.append(line).append("\n");
+        }
+
+        fileReader.close();
+        return rulesBuilder.toString();
+
     }
 
     public void play(String nickname,int tailleTab, String[] bots) {
