@@ -10,8 +10,12 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+
+import java.util.ArrayList;
+
 import Model.Monster;
 import Utils.Coordinate;
+import Utils.Solveur;
 import View.VueMonster;
 
 
@@ -135,6 +139,10 @@ public class ControlMonster {
                 int clickedCol = tab[view.getMonster().getGameModel().getTurn()].getCol();
                 this.clickedCase = new Coordinate(clickedRow, clickedCol);
                 Monster monster = view.getMonster();
+
+                Solveur solve = new Solveur(view.getMonster().getGameModel().getMap().getMaps());
+                ArrayList<Coordinate> solution = solve.estFaisable();
+
     
                 if (monster.getGameModel().currentPlayer == 1) {
                     if (monster.victory(clickedRow, clickedCol) && monster.moveMonster(clickedRow, clickedCol)) {
