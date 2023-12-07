@@ -5,6 +5,7 @@ import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
 import View.VueMonster;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -66,14 +67,23 @@ public class Menus {
         param.add(tabSize, 0, 3, 2, 1);
 
         // Ajout de la liste déroulante du choix du mode de jeu
-        ComboBox<String> choixComboBox = new ComboBox<>();
-        choixComboBox.getItems().addAll("Chasseur", "Monstre");
-        choixComboBox.setValue("Chasseur");
-        Label choixLabel = new Label("Choix :");
-        GridPane.setHalignment(choixLabel, javafx.geometry.HPos.CENTER);
-        param.add(choixLabel, 0, 4, 2, 1);
-        GridPane.setHalignment(choixComboBox, javafx.geometry.HPos.CENTER);
-        param.add(choixComboBox, 0, 5, 2, 1);
+        VBox choixBots = new VBox();
+
+        ComboBox<String> choixMonstreComboBox = new ComboBox<>();
+        Label choixMonstreLabel = new Label("Sélection :");
+        choixMonstreComboBox.getItems().addAll("Joueur", "Bot");
+        choixMonstreComboBox.setValue("Gamemode");
+        choixBots.getChildren().add(choixMonstreLabel);
+        choixBots.getChildren().add(choixMonstreComboBox);
+
+        ComboBox<String> choixChasseurComboBox = new ComboBox<>();
+        choixChasseurComboBox.getItems().addAll("Joueur", "Bot");
+        choixChasseurComboBox.setValue("Gamemode");
+        Label choixChasseurLabel = new Label("Sélection :");
+        choixBots.getChildren().add(choixChasseurLabel);
+        choixBots.getChildren().add(choixChasseurComboBox);
+        choixBots.setAlignment(Pos.CENTER);
+        GridPane.setHalignment(choixBots, HPos.CENTER);
 
         playButton.setOnAction(event -> {
             if(tabSize.getText().isEmpty()) play("test",10);
@@ -86,7 +96,7 @@ public class Menus {
         param.setAlignment(Pos.CENTER);
         VBox vbox = new VBox(20);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(titleLabel, param, playButton, rulesButton);
+        vbox.getChildren().addAll(titleLabel, param, choixBots, playButton, rulesButton);
 
         StackPane root = new StackPane();
         root.getChildren().add(vbox);
