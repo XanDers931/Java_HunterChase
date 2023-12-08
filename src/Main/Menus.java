@@ -1,10 +1,20 @@
 package Main;
 
+import javax.swing.text.html.HTMLDocument.BlockElement;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
 import View.VueMonster;
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -66,39 +76,57 @@ public class Menus {
         param.add(tabSize, 0, 3, 2, 1);
 
         // Ajout de la liste déroulante du choix du mode de jeu
-        ComboBox<String> choixComboBox = new ComboBox<>();
-        choixComboBox.getItems().addAll("Chasseur", "Monstre");
-        choixComboBox.setValue("Chasseur");
-        Label choixLabel = new Label("Choix :");
-        GridPane.setHalignment(choixLabel, javafx.geometry.HPos.CENTER);
-        param.add(choixLabel, 0, 4, 2, 1);
-        GridPane.setHalignment(choixComboBox, javafx.geometry.HPos.CENTER);
-        param.add(choixComboBox, 0, 5, 2, 1);
+        VBox choixBots = new VBox();
+        final ObservableList<String> lst = FXCollections.observableArrayList("Joueur","Bot");
+
+
+        ComboBox<String> choixMonstreComboBox = new ComboBox<>();
+        Label choixMonstreLabel = new Label("Sélection  Monstre:");
+        choixMonstreComboBox.setItems(lst);
+        choixBots.getChildren().add(choixMonstreLabel);
+        choixBots.getChildren().add(choixMonstreComboBox);
+
+        ComboBox<String> choixChasseurComboBox = new ComboBox<>();
+        choixChasseurComboBox.setItems(lst);
+        Label choixChasseurLabel = new Label("Sélection chasseur:");
+        choixBots.getChildren().add(choixChasseurLabel);
+        choixBots.getChildren().add(choixChasseurComboBox);
+        choixBots.setAlignment(Pos.CENTER);
+        GridPane.setHalignment(choixBots, HPos.CENTER);
+
+        String[] bots = new String[2];
+
+        choixMonstreComboBox.valueProperty().addListener(observable -> bots[0] = choixMonstreComboBox.getValue());
+        choixChasseurComboBox.valueProperty().addListener(observable -> bots[1] = choixChasseurComboBox.getValue());
+
+        
 
         playButton.setOnAction(event -> {
-            if(tabSize.getText().isEmpty()) play("test",10);
-            else play("test",Integer.parseInt(tabSize.getText()));
+            if(tabSize.getText().isEmpty()) play("test",10, bots);
+            else play("test",Integer.parseInt(tabSize.getText()), bots);
         });
 
+        
         rulesButton.setOnAction(event -> {
             primaryStage.setScene(rulesScene);
         });
         param.setAlignment(Pos.CENTER);
         VBox vbox = new VBox(20);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(titleLabel, param, playButton, rulesButton);
+        vbox.getChildren().addAll(titleLabel, param, choixBots, playButton, rulesButton);
 
         StackPane root = new StackPane();
         root.getChildren().add(vbox);
         mainMenuScene = new Scene(root, 400, 400);
     }
 
-    public void createRulesPage() {
-        Label rulesLabel = new Label("A hunter and a monster play against each other on a variable-sized board. Each turn, the monster moves first to one of the 8 neighboring squares, provided it is empty. Thereafter, the hunter shoots on a square of his choice. He will then see if the square has already been visited. The hunter's aim is to hit the monster. The monster's aim is to reach the exit square without getting hit.");
+    public void createRulesPage() throws IOException {
+        String rules = readRulesFromFile();
+        Label rulesLabel = new Label(rules);
         rulesLabel.setWrapText(true);
 
         Button backButton = new Button("Retour");
-        backButton.setOnAction(event -> {
+           backButton.setOnAction(event -> {
             primaryStage.setScene(mainMenuScene);
         });
 
@@ -108,7 +136,23 @@ public class Menus {
         rulesScene = new Scene(vbox, 600, 400);
     }
 
-    public void play(String nickname,int tailleTab) {
+    private String readRulesFromFile() throws IOException {
+        FileReader fileReader = new FileReader("../../res/rules.txt");
+
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+        String line;
+        StringBuilder rulesBuilder = new StringBuilder();
+        while ((line = bufferedReader.readLine()) != null) {
+            rulesBuilder.append(line).append("\n");
+        }
+
+        fileReader.close();
+        return rulesBuilder.toString();
+
+    }
+
+    public void play(String nickname,int tailleTab, String[] bots) {
         primaryStage.close();
 
         //Création des objets
@@ -119,7 +163,7 @@ public class Menus {
         // Puis, utilisez le GameModel et le Monster pour créer un Hunter
         Hunter hunter = new Hunter("STYLESHEET_CASPIAN", gameModel);
 
-    // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
+        // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
         VueHunter hunterView = new VueHunter(hunter);
@@ -150,5 +194,8 @@ public class Menus {
         monsterStage.setY(hunterStage.getY());
         hunterStage.show();
         monsterStage.show();
+
+        System.out.println(bots[0]);
+        System.out.println(bots[1]);
     }
 }
