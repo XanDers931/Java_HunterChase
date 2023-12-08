@@ -3,10 +3,10 @@ package Utils;
 import java.util.ArrayList;
 import java.util.EmptyStackException;
 
-public class Stack<E> {
-    private ArrayList<E> cells;
+public class File<E> {
+    public ArrayList<E> cells;
 
-    public Stack(){
+    public File(){
         this.cells = new ArrayList<E>();
     }
 
@@ -20,19 +20,18 @@ public class Stack<E> {
         if(cells.isEmpty()){
             throw new EmptyStackException();
         }
-        return cells.remove(cells.size()-1);
+        return cells.remove(0);
     }
 
     public E peek(){
         if(cells.isEmpty()){
             throw new EmptyStackException();
         }
-        return cells.get(cells.size()-1);
+        return cells.get(0);
     }
 
-    @Override
-    public String toString() {
-        return "Stack [cells=" + cells + "]";
+    public boolean isLast() {
+        return cells.size()==1;
     }
 
     public boolean isEmpty () {
