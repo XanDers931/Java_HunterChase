@@ -3,12 +3,10 @@ package Model;
 import Main.Maps;
 import Utils.Coordinate;
 import Utils.Subject;
-import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 
-public class Monster extends Subject implements IMonsterStrategy{
+
+public class Monster extends Subject {
 
     public String nickname;
     public boolean tour;
@@ -16,6 +14,7 @@ public class Monster extends Subject implements IMonsterStrategy{
     public static Coordinate cordMonster;
     public GameModel gameModel;
     public int[][] path;
+    private MonsterStrategy strategy;
   
 
     public Monster(String nickname,GameModel gameModel){
@@ -23,20 +22,25 @@ public class Monster extends Subject implements IMonsterStrategy{
         this.nickname = nickname;
         this.gameModel= gameModel;
         canMoove=true;
-        //initPath();
-        /*for(int i=0; i<map.getMaps().length; i++){
-            for(int j=0;j<map.getMaps()[i].length; j++){
-                if(map.getMaps()[i][j]==CellInfo.MONSTER){
-                    cordMonster.setCol(j);
-                    cordMonster.setRow(i);
-                }
-            }
-        }*/
         cordMonster= gameModel.getMap().getCordUser(CellInfo.MONSTER);
-        //cordMonster= new Coordinate(0, 0);
         initPath();
+        this.strategy= new MonsterStrategy();
     }
+
     
+    
+    public MonsterStrategy getStrategy() {
+        return strategy;
+    }
+
+
+
+    public void setStrategy(MonsterStrategy strategy) {
+        this.strategy = strategy;
+    }
+
+
+
     public static Coordinate getCordMonster() {
         return cordMonster;
     }
@@ -117,21 +121,5 @@ public class Monster extends Subject implements IMonsterStrategy{
         return gameModel;
     }
 
-    @Override
-    public ICoordinate play() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'play'");
-    }
-
-    @Override
-    public void update(ICellEvent arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
-
-    @Override
-    public void initialize(boolean[][] arg0) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'initialize'");
-    }
+   
 }

@@ -20,7 +20,7 @@ public class Main extends Application{
         menu.setPrimaryStage(primaryStage);
         menu.getPrimaryStage().setTitle("Monster Hunter");
         menu.createMainMenu();
-        menu.createRulesPage();
+        //menu.createRulesPage();
         primaryStage.setScene(menu.getMainMenuScene());
         primaryStage.show();
 

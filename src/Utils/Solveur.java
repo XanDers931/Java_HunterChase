@@ -79,7 +79,6 @@ public class Solveur {
         int[] sortie = getSortie();
         Coordinate end = new Coordinate(sortie[0], sortie[1]);
         Coordinate start = new Coordinate(entre[0], entre[1]);
-        System.out.println("SORTIE: " + end + "\nENTREE " + start);
         Coordinate voisin;
         boolean found = false;
         p.push(new Coordinate(entre[0], entre[1]));
