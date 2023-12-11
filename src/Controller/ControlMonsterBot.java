@@ -7,6 +7,11 @@ import View.VueMonster;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 
@@ -68,9 +73,30 @@ public class ControlMonsterBot implements ControlMonster{
                         }
                     }
                 }
+
+            Coordinate cord = view.getMonster().getGameModel().getHunter().getHunted();
+            StackPane stackPane = getStackPaneByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
+            if (stackPane != null) {
+                ImageView imageView = (ImageView) stackPane.getChildren().get(0);
+                ColorAdjust color = new ColorAdjust();
+                color.setHue(0.5);
+                imageView.setEffect(color);
+            }
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
+
+     public StackPane getStackPaneByRowColumnIndex(final int row, final int column, GridPane gridPane) {
+        for (Node node : gridPane.getChildren()) {
+            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
+                if (node instanceof StackPane) {
+                    return (StackPane) node;
+                }
+            }
+        }
+        return null;
+    }
+    
 }

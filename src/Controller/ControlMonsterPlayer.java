@@ -3,6 +3,7 @@ package Controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
@@ -82,7 +83,6 @@ public class ControlMonsterPlayer implements ControlMonster {
 
     private void handleMonsterMove(Monster monster, int clickedRow, int clickedCol) {
         if (monster.moveMonster(clickedRow, clickedCol)) {
-            System.out.println(clickedRow + " " + clickedCol);
             view.updatePlateau(clickedRow, clickedCol);
             monster.addCurrentCordMonster(clickedRow, clickedCol);
             monster.getGameModel().changeCurrentPlayer();
@@ -107,6 +107,11 @@ public class ControlMonsterPlayer implements ControlMonster {
                 ColorAdjust color = new ColorAdjust();
                 color.setHue(0.5);
                 imageView.setEffect(color);
+            }
+            if (view.getMonster().getGameModel().currentPlayer==1) {
+                view.getCurrentLabel().setText("C'est au tour du Monstre");
+            }else{
+                view.getCurrentLabel().setText("C'est au tour du Chasseur");
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);

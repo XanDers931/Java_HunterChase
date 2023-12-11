@@ -27,6 +27,7 @@ public class VueMonster implements Observer {
     private ControlMonster controlleur;
     private GridPane gridPane;
     private Stage stage;
+    private Label currentLabel;
 
     public void setMonster(Monster monster) {
         this.monster = monster;
@@ -55,15 +56,27 @@ public class VueMonster implements Observer {
         Stage stage = new Stage();
         gridPane = new GridPane();
         chargePlateau();
-        HBox hbox = new HBox(new Label("MONSTER"));
-        hbox.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox(new Label("MONSTRE : "+monster.getNickname()));
+        currentLabel = new Label("C'est au tour du Monstre");
+        vbox.getChildren().add(currentLabel);
+        vbox.setAlignment(Pos.CENTER);
         int imageSize = 50; 
         controlleur.mMouvement();
-        VBox vbox = new VBox(hbox, gridPane);
+        VBox vboxall = new VBox(vbox, gridPane);
         styleGridPane(imageSize);
-        Scene scene = new Scene(vbox, imageSize * 11,imageSize * 11);
+        Scene scene = new Scene(vboxall, imageSize * 11,imageSize * 11);
         stage.setScene(scene);
         return stage;
+    }
+
+   
+
+    public Label getCurrentLabel() {
+        return currentLabel;
+    }
+
+    public void setCurrentLabel(Label currentLabel) {
+        this.currentLabel = currentLabel;
     }
 
     public void chargePlateau() {
@@ -198,6 +211,9 @@ public class VueMonster implements Observer {
         victoryStage.setScene(victoryScene);
 
         victoryStage.show();
+
+        
+        
     }
 
     @Override
