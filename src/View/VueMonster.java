@@ -13,6 +13,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import Controller.ControlMonster;
+import Controller.ControlMonsterBot;
+import Controller.ControlMonsterPlayer;
 import Main.Maps;
 import Model.Hunter;
 import Model.Monster;
@@ -25,6 +27,7 @@ public class VueMonster implements Observer {
     private ControlMonster controlleur;
     private GridPane gridPane;
     private Stage stage;
+    private Label currentLabel;
 
     public void setMonster(Monster monster) {
         this.monster = monster;
@@ -38,9 +41,13 @@ public class VueMonster implements Observer {
         return gridPane;
     }
 
-    public VueMonster(Monster monster, Hunter hunter) {
+    public VueMonster(Monster monster, Hunter hunter, boolean control) {
         this.monster = monster;
-        this.controlleur = new ControlMonster(this);
+        if (!control) {
+            this.controlleur = new ControlMonsterPlayer(this);
+        } else {
+            this.controlleur = new ControlMonsterBot(this);
+        }
         this.stage = creerStage();
         monster.attach(this);
     }
@@ -49,19 +56,27 @@ public class VueMonster implements Observer {
         Stage stage = new Stage();
         gridPane = new GridPane();
         chargePlateau();
-        HBox hbox = new HBox(new Label("MONSTER"));
-        hbox.setAlignment(Pos.CENTER);
-
-        int imageSize = 50; // Taille de l'image ajustée à 50
-        
+        VBox vbox = new VBox(new Label("MONSTRE : "+monster.getNickname()));
+        currentLabel = new Label("C'est au tour du Monstre");
+        vbox.getChildren().add(currentLabel);
+        vbox.setAlignment(Pos.CENTER);
+        int imageSize = 50; 
         controlleur.mMouvement();
-        //controlleur.botMouvement();
-
-        VBox vbox = new VBox(hbox, gridPane);
+        VBox vboxall = new VBox(vbox, gridPane);
         styleGridPane(imageSize);
-        Scene scene = new Scene(vbox, imageSize * 11,imageSize * 11);
+        Scene scene = new Scene(vboxall, imageSize * 11,imageSize * 11);
         stage.setScene(scene);
         return stage;
+    }
+
+   
+
+    public Label getCurrentLabel() {
+        return currentLabel;
+    }
+
+    public void setCurrentLabel(Label currentLabel) {
+        this.currentLabel = currentLabel;
     }
 
     public void chargePlateau() {
@@ -70,8 +85,6 @@ public class VueMonster implements Observer {
         for (int i = 0; i < map.getRow(); i++) {
             for (int j = 0; j < map.getCol(); j++) {
                 StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
-               
-    
                 gridPane.add(stackPane, j, i);
             }
         }
@@ -81,11 +94,9 @@ public class VueMonster implements Observer {
         StackPane stackPane = new StackPane();
         String imagePath = determineImagePath(cellInfo);
         Image image = new Image(getClass().getResourceAsStream(imagePath));
-    
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(50);
         imageView.setFitHeight(50);
-    
         stackPane.getChildren().add(imageView);
     
         return stackPane;
@@ -112,7 +123,6 @@ public class VueMonster implements Observer {
         int row = Monster.getCordMonster().getRow();
         int col = Monster.getCordMonster().getCol();
         
-    
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
         Node nodeMonster = getNodeByRowColumnIndex(row, col, gridPane);
     
@@ -201,6 +211,9 @@ public class VueMonster implements Observer {
         victoryStage.setScene(victoryScene);
 
         victoryStage.show();
+
+        
+        
     }
 
     @Override

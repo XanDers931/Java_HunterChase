@@ -1,6 +1,8 @@
 package View;
 
 import Controller.ControlHunter;
+import Controller.ControlHunterBot;
+import Controller.ControlHunterPlayer;
 import Main.Maps;
 import Model.Hunter;
 import Utils.Coordinate;
@@ -25,9 +27,13 @@ public class VueHunter implements Observer {
     private ControlHunter controlleur;
     private Stage stage;
 
-    public VueHunter(Hunter hunter) {
+    public VueHunter(Hunter hunter,boolean control) {
         this.hunter = hunter;
-        this.controlleur = new ControlHunter(this);
+        if(!control){
+            this.controlleur = new ControlHunterPlayer(this);
+        }else{
+            this.controlleur = new ControlHunterBot(this);
+        }
         this.stage = creerStage();
         hunter.attach(this);
     }

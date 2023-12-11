@@ -3,6 +3,8 @@ package Model;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.platform.console.shadow.picocli.CommandLine.IHelpCommandInitializable;
+
 import Main.Maps;
 import Utils.Coordinate;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
@@ -18,7 +20,8 @@ public class GameModel {
 
     private Map<Coordinate, Integer> path;
 
-    private Maps map;
+    public static Maps map;
+
 
     public GameModel(Monster monster, Hunter hunter,int size){
         this.monster = monster;
@@ -28,7 +31,13 @@ public class GameModel {
         this.path = new HashMap<>();
         currentPlayer= 1;
         this.addPath(this.map.getCordUser(CellInfo.MONSTER));
+       
     }
+
+    
+
+  
+
 
     //retourne le tour actuel
     public int getTurn(){

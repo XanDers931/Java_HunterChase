@@ -13,8 +13,8 @@ public class GameView {
     private Stage stage;
 
     public GameView(Hunter hunter, Monster monster) {
-        this.vueHunter = new VueHunter(hunter);
-        this.vueMonster = new VueMonster(monster, hunter);
+        this.vueHunter = new VueHunter(hunter,false);
+        this.vueMonster = new VueMonster(monster, hunter,false);
         this.stage = createStage();
     }
 

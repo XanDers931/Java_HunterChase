@@ -179,8 +179,11 @@ public class Menus {
         // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
-        VueHunter hunterView = new VueHunter(hunter);
-        VueMonster monsterView = new VueMonster(monster,hunter);
+        boolean controlMonster = bots[0].equals("Bot");
+        boolean controlHunter = bots[1].equals("Bot");
+
+        VueHunter hunterView = new VueHunter(hunter,controlHunter);
+        VueMonster monsterView = new VueMonster(monster,hunter,controlMonster);
 
         //Création des deux stages joueurs
         Stage hunterStage= hunterView.creerStage();
