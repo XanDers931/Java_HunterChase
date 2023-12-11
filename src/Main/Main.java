@@ -1,5 +1,7 @@
 package Main;
 
+import java.io.IOException;
+
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
@@ -20,7 +22,12 @@ public class Main extends Application{
         menu.setPrimaryStage(primaryStage);
         menu.getPrimaryStage().setTitle("Monster Hunter");
         menu.createMainMenu();
-        menu.createRulesPage();
+        try {
+            menu.createRulesPage();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         primaryStage.setScene(menu.getMainMenuScene());
         primaryStage.show();
 
