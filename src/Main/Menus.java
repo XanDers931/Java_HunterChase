@@ -71,7 +71,7 @@ public class Menus {
         Label pseudoChasseur = new Label("Pseudo Chasseur : ");
         pseudoField.getChildren().add(pseudoChasseur);
         pseudoField.getChildren().add(pseudoHunter);
-        
+
         pseudoField.setAlignment(Pos.CENTER);
         GridPane.setHalignment(pseudoField, HPos.CENTER);
 
@@ -130,7 +130,7 @@ public class Menus {
 
         StackPane root = new StackPane();
         root.getChildren().add(vbox);
-        mainMenuScene = new Scene(root, 400, 400);
+        mainMenuScene = new Scene(root, 800, 600);
     }
 
     public void createRulesPage() throws IOException {
