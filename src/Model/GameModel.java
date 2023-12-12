@@ -3,7 +3,7 @@ package Model;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.platform.console.shadow.picocli.CommandLine.IHelpCommandInitializable;
+
 
 import Main.Maps;
 import Utils.Coordinate;
@@ -27,10 +27,10 @@ public class GameModel {
         this.monster = monster;
         this.hunter = hunter;
         this.turn = 0;
-        this.map = new Maps(size,size,10);
+        map = new Maps(size,size,10);
         this.path = new HashMap<>();
         currentPlayer= 1;
-        this.addPath(this.map.getCordUser(CellInfo.MONSTER));
+        this.addPath(map.getCordUser(CellInfo.MONSTER));
        
     }
 

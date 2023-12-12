@@ -1,21 +1,30 @@
 package View;
 
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+import javafx.stage.WindowEvent;
+
+import java.util.Objects;
+
 import Controller.ControlMonster;
 import Controller.ControlMonsterBot;
 import Controller.ControlMonsterPlayer;
 import Main.Maps;
+import Main.Menus;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Observer;
@@ -198,11 +207,23 @@ public class VueMonster implements Observer {
         victoryStage.setTitle("Victory!");
 
         Label victoryLabel = new Label("Congratulations! Monster won!");
+        Button replay = new Button("Replay");
+
+        replay.setOnAction(e->{
+            victoryStage.close();
+            fermerTousLesStages();
+            fermerStage();
+            createMenu().show();
+        });
 
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> victoryStage.close());
-
-        VBox vbox = new VBox(victoryLabel, closeButton);
+        closeButton.setOnAction(e -> {
+            // Ferme toutes les fenêtres ouvertes
+           victoryStage.close();
+           fermerTousLesStages();
+           fermerStage();
+        });
+        VBox vbox = new VBox(victoryLabel, replay,closeButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(20);
 
@@ -212,9 +233,36 @@ public class VueMonster implements Observer {
 
         victoryStage.show();
 
-        
-        
+
     }
+    public Stage createMenu(){
+        Stage primaryStage= new Stage();
+        Menus menu = new Menus();
+        menu.setPrimaryStage(primaryStage);
+        menu.getPrimaryStage().setTitle("Monster Hunter");
+        menu.createMainMenu();
+        //menu.createRulesPage();
+        primaryStage.setScene(menu.getMainMenuScene());
+        return primaryStage;
+    }
+
+    public void fermerStage() {
+        Stage stage = (Stage) gridPane.getScene().getWindow();
+        stage.close();
+    }
+    
+
+    private void fermerTousLesStages() {
+        for (Window window : Window.getWindows()) {
+            if (window instanceof Stage && !((Stage) window).isIconified()) {
+                ((Stage) window).close();
+            }
+        }
+
+      
+    }
+    
+  
 
     @Override
     public void update(Subject subj) {

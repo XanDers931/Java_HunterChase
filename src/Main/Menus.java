@@ -2,8 +2,6 @@ package Main;
 
 import javax.swing.text.html.HTMLDocument.BlockElement;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -52,8 +50,7 @@ public class Menus {
         Label titleLabel = new Label("Monster Hunter");
         titleLabel.setStyle("-fx-font-size: 20px;");
 
-        TextField pseudoMonster = new TextField();
-        TextField pseudoHunter = new TextField();
+        TextField pseudo = new TextField();
         TextField tabSize = new TextField();
         GridPane param = new GridPane();
         Button playButton = new Button("Play");
@@ -62,19 +59,9 @@ public class Menus {
         param.setPadding(new Insets(10, 10, 10, 10));
         param.setVgap(5);
         param.setHgap(5);
-        //ajout des textfields pour les pseudos
-        VBox pseudoField = new VBox();
-        Label pseudoMonstre = new Label("Pseudo Monstre : ");
-        pseudoField.getChildren().add(pseudoMonstre);
-        pseudoField.getChildren().add(pseudoMonster);
-
-        Label pseudoChasseur = new Label("Pseudo Chasseur : ");
-        pseudoField.getChildren().add(pseudoChasseur);
-        pseudoField.getChildren().add(pseudoHunter);
-
-        pseudoField.setAlignment(Pos.CENTER);
-        GridPane.setHalignment(pseudoField, HPos.CENTER);
-
+        //ajout du textfield pour le pseudo
+        param.add(new Label("Pseudo :"), 0, 0,2,1);
+        param.add(pseudo, 0, 1,2,1);
 
         //Ajout du TextField qui ne prend que des int pour la taille de plateau
         param.add(new Label("Taille du plateau :"), 0, 2, 2, 1);
@@ -126,11 +113,11 @@ public class Menus {
         param.setAlignment(Pos.CENTER);
         VBox vbox = new VBox(20);
         vbox.setAlignment(Pos.CENTER);
-        vbox.getChildren().addAll(titleLabel, pseudoField, param, choixBots, playButton, rulesButton);
+        vbox.getChildren().addAll(titleLabel, param, choixBots, playButton, rulesButton);
 
         StackPane root = new StackPane();
         root.getChildren().add(vbox);
-        mainMenuScene = new Scene(root, 800, 600);
+        mainMenuScene = new Scene(root, 400, 400);
     }
 
     public void createRulesPage() throws IOException {
@@ -210,6 +197,5 @@ public class Menus {
         monsterStage.setY(hunterStage.getY());
         hunterStage.show();
         monsterStage.show();
-
     }
 }

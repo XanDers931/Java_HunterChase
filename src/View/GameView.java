@@ -41,4 +41,10 @@ public class GameView {
     public VueMonster getVueMonster() {
         return vueMonster;
     }
+
+    public Stage getStage() {
+        return stage;
+    }
+
+    
 }

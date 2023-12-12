@@ -1,5 +1,8 @@
 package View;
 
+import java.util.List;
+import java.util.Objects;
+
 import Controller.ControlHunter;
 import Controller.ControlHunterBot;
 import Controller.ControlHunterPlayer;
@@ -9,6 +12,7 @@ import Utils.Coordinate;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -19,6 +23,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 
 public class VueHunter implements Observer {
@@ -167,25 +172,50 @@ public class VueHunter implements Observer {
         return this.stage;
     }
 
+   
+
+    private void fermerToutesLesFenetres() {
+        int nombreDeFenetres = Stage.getWindows().size();
+    
+        if (nombreDeFenetres == 1) {
+            return;
+        }
+    
+        for (Window stage : Stage.getWindows()) {
+            Stage stageCasted = Objects.requireNonNull((Stage) stage);
+            stageCasted.close();
+        }
+    }
+    
+
+
+    
+
+
     public void showVictoryMessage() {
         Stage victoryStage = new Stage();
         victoryStage.setTitle("Victory!");
-
+    
         Label victoryLabel = new Label("Congratulations! Hunter won!");
-
+    
         Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> victoryStage.close());
-
+        closeButton.setOnAction(e -> {
+            // Ferme toutes les fenêtres ouvertes
+            fermerToutesLesFenetres();
+           
+        });
+    
         VBox vbox = new VBox(victoryLabel, closeButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(20);
-
+    
         Scene victoryScene = new Scene(vbox, 300, 200);
-
+    
         victoryStage.setScene(victoryScene);
-
+    
         victoryStage.show();
     }
+    
 
     @Override
     public void update(Subject subj) {

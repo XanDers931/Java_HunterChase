@@ -17,7 +17,7 @@ public class Hunter extends Subject {
         this.nickname = nickname;
         this.canMoove=false;
         this.gameModel=gameModel;
-        this.hunted= null;
+        this.hunted= new Coordinate(1000, 1000);
     }
 
     public Coordinate getHunted() {
