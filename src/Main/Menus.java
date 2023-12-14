@@ -50,7 +50,8 @@ public class Menus {
         Label titleLabel = new Label("Monster Hunter");
         titleLabel.setStyle("-fx-font-size: 20px;");
 
-        TextField pseudo = new TextField();
+        TextField pseudoHunterField = new TextField();
+        TextField pseudoChasseurField = new TextField();
         TextField tabSize = new TextField();
         GridPane param = new GridPane();
         Button playButton = new Button("Play");
@@ -60,11 +61,13 @@ public class Menus {
         param.setVgap(5);
         param.setHgap(5);
         //ajout du textfield pour le pseudo
-        param.add(new Label("Pseudo :"), 0, 0,2,1);
-        param.add(pseudo, 0, 1,2,1);
+        param.add(new Label("Pseudo Hunter :"), 0, 0,2,1);
+        param.add(pseudoHunterField, 0, 1,2,1);
+        param.add(new Label("Pseudo chasseur :"), 0,2,2,1);
+        param.add(pseudoChasseurField, 0,3,2,1);
 
         //Ajout du TextField qui ne prend que des int pour la taille de plateau
-        param.add(new Label("Taille du plateau :"), 0, 2, 2, 1);
+        param.add(new Label("Taille du plateau :"), 0, 4, 2, 1);
         TextFormatter<String> textFormatter = new TextFormatter<>(change -> {
             if (change.getControlNewText().matches("\\d*")) {
                 return change;
@@ -73,7 +76,7 @@ public class Menus {
         });
         // Lie le filtre au TextField
         tabSize.setTextFormatter(textFormatter);
-        param.add(tabSize, 0, 3, 2, 1);
+        param.add(tabSize, 0, 5, 2, 1);
 
         // Ajout de la liste déroulante du choix du mode de jeu
         VBox choixBots = new VBox();
@@ -117,7 +120,7 @@ public class Menus {
 
         StackPane root = new StackPane();
         root.getChildren().add(vbox);
-        mainMenuScene = new Scene(root, 400, 400);
+        mainMenuScene = new Scene(root, 400, 600);
     }
 
     public void createRulesPage() throws IOException {
@@ -195,6 +198,8 @@ public class Menus {
         // Déplacez le deuxième stage à droite du premier
         monsterStage.setX(hunterStage.getX() + hunterStage.getWidth());
         monsterStage.setY(hunterStage.getY());
+        hunterStage.sizeToScene();
+        monsterStage.sizeToScene();
         hunterStage.show();
         monsterStage.show();
     }
