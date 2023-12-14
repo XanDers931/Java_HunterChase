@@ -52,8 +52,9 @@ public class ControlMonsterBot implements ControlMonster{
 
     @Override
     public void mMouvement() {
+        MonsterStrategy strategy = new MonsterStrategy();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-                MonsterStrategy strategy = new MonsterStrategy();
+                
                 ICoordinate coord = strategy.play();
                 int clickedRow = coord.getRow();
                 int clickedCol = coord.getCol();

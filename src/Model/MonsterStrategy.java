@@ -13,8 +13,12 @@ public class MonsterStrategy implements IMonsterStrategy {
    
     @Override
     public ICoordinate play() {
-        ICoordinate caseToPlay= solution.get(0);
-        solution.remove(0);
+         ICoordinate caseToPlay=null;
+        if(solution!=null){
+            caseToPlay= solution.get(0);
+            solution.remove(0);
+        }
+        
         return caseToPlay;
     }
 
