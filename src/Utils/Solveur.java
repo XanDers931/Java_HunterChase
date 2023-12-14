@@ -88,12 +88,10 @@ public class Solveur {
             c = p.peek();
             if(c.equals(end)){
                 found = true;
-                System.out.println(found);
                 break;
             }
             else{
                 voisin = getVoisinesDiagonal(c, start);  
-                System.out.println("Case actuel : "+c+ " | Case voisine choisi : "+voisin);
                 if(voisin!= null){
                     p.push(voisin);
                     poserMarque(voisin.toArray());
