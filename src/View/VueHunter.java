@@ -1,6 +1,6 @@
 package View;
 
-import java.util.List;
+
 import java.util.Objects;
 
 import Controller.ControlHunter;
@@ -12,7 +12,6 @@ import Utils.Coordinate;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -63,8 +62,8 @@ public class VueHunter implements Observer {
         controlleur.hMouvement();
         styleGridPane(gridPane, imageSize);
 
-        int rowCount = 11 ;
-        int colCount = 11 ;
+        int rowCount = hunter.getGameModel().getMap().getRow()+1 ;
+        int colCount = hunter.getGameModel().getMap().getCol()+1;
 
         VBox vbox = new VBox(hbox, gridPane);
         Scene scene = new Scene(vbox, colCount * imageSize, rowCount * imageSize);
@@ -89,7 +88,6 @@ public class VueHunter implements Observer {
                     stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
                     stackPane.setStyle("-fx-border-color: red; -fx-border-width: 1;"); // Bordure rouge pour les tirs
                 }
-
                 gridPane.add(stackPane, j, i);
             }
         }
@@ -123,27 +121,51 @@ public class VueHunter implements Observer {
     }
 
     public void updatePlateau() {
-        int clickedRow = controlleur.getClickedCase().getRow();
-        int clickedCol = controlleur.getClickedCase().getCol();
-
+        // Récupération des coordonnées de la case cliquée
+        Coordinate clickedCoordinates = controlleur.getClickedCase();
+        int clickedRow = clickedCoordinates.getRow();
+        int clickedCol = clickedCoordinates.getCol();
+    
+        // Récupération du nœud correspondant à la case cliquée dans le GridPane
         Node node = getNodeByRowColumnIndex(clickedRow, clickedCol, gridPane);
-
+    
         if (node != null && node instanceof StackPane) {
             StackPane existingStackPane = (StackPane) node;
-            
-            String imagePathClicked = determineImagePath(hunter.getGameModel().getMap().getMaps()[clickedRow][clickedCol]);
-            Image imageClicked = new Image(getClass().getResourceAsStream(imagePathClicked));
-            ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
-            existingImageView.setImage(imageClicked);
-            existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 0.5;");
-            if(hunter.getGameModel().getPath().containsKey(new Coordinate(clickedRow, clickedCol))){
-                int path =hunter.getGameModel().getPath(new Coordinate(clickedRow, clickedCol));
-                Label label = new Label(path+"");
-                existingStackPane.getChildren().add(label);
-            }
+    
+            // Mise à jour de l'image de la case cliquée
+            updateClickedImage(existingStackPane, clickedRow, clickedCol);
+    
+            // Mise à jour du style de l'image
+            updateImageStyle(existingStackPane);
+    
+            // Vérification et ajout d'un label s'il y a un chemin
+            addPathLabel(existingStackPane, clickedRow, clickedCol);
+    
+            // Réarrangement du panneau dans le GridPane
             existingStackPane.toBack();
         }
     }
+    
+    private void updateClickedImage(StackPane existingStackPane, int clickedRow, int clickedCol) {
+        String imagePathClicked = determineImagePath(hunter.getGameModel().getMap().getMaps()[clickedRow][clickedCol]);
+        Image imageClicked = new Image(getClass().getResourceAsStream(imagePathClicked));
+        ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
+        existingImageView.setImage(imageClicked);
+    }
+    
+    private void updateImageStyle(StackPane existingStackPane) {
+        ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
+        existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 0.5;");
+    }
+    
+    private void addPathLabel(StackPane existingStackPane, int clickedRow, int clickedCol) {
+        if (hunter.getGameModel().getPath().containsKey(new Coordinate(clickedRow, clickedCol))) {
+            int path = hunter.getGameModel().getPath(new Coordinate(clickedRow, clickedCol));
+            Label label = new Label(String.valueOf(path));
+            existingStackPane.getChildren().add(label);
+        }
+    }
+    
 
     private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
@@ -187,11 +209,6 @@ public class VueHunter implements Observer {
             stageCasted.close();
         }
     }
-    
-
-
-    
-
 
     public void showVictoryMessage() {
         Stage victoryStage = new Stage();
@@ -205,6 +222,7 @@ public class VueHunter implements Observer {
             fermerTousLesStages();
             fermerStage();
             createMenu().show();
+            fermerToutesLesFenetres();
         });
 
         Button closeButton = new Button("Close");
@@ -213,6 +231,7 @@ public class VueHunter implements Observer {
            victoryStage.close();
            fermerTousLesStages();
            fermerStage();
+           fermerToutesLesFenetres();
         });
         VBox vbox = new VBox(victoryLabel, replay,closeButton);
         vbox.setAlignment(Pos.CENTER);

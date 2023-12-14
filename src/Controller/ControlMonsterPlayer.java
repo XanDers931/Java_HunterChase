@@ -3,22 +3,16 @@ package Controller;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.Node;
-import javafx.scene.control.Label;
-import javafx.scene.effect.BoxBlur;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
-
-
 import Model.Monster;
-import Model.MonsterStrategy;
 import Utils.Coordinate;
-
 import View.VueMonster;
-import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
+
 
 
 public class ControlMonsterPlayer implements ControlMonster {

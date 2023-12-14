@@ -13,7 +13,7 @@ public class MonsterStrategy implements IMonsterStrategy {
    
     @Override
     public ICoordinate play() {
-         ICoordinate caseToPlay=null;
+        ICoordinate caseToPlay=null;
         if(solution!=null){
             caseToPlay= solution.get(0);
             solution.remove(0);
@@ -30,7 +30,6 @@ public class MonsterStrategy implements IMonsterStrategy {
     @Override
     public void initialize(boolean[][] arg0) {
         // do nothing
-  
     }
     
 }

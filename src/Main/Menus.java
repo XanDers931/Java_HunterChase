@@ -1,7 +1,5 @@
 package Main;
 
-import javax.swing.text.html.HTMLDocument.BlockElement;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -11,7 +9,6 @@ import Model.Hunter;
 import Model.Monster;
 import View.VueHunter;
 import View.VueMonster;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;

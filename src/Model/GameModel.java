@@ -34,11 +34,6 @@ public class GameModel {
        
     }
 
-    
-
-  
-
-
     //retourne le tour actuel
     public int getTurn(){
         return this.turn;
@@ -51,7 +46,6 @@ public class GameModel {
 
     //Ajoute une les coordonnées
     public void addPath(Coordinate co){
-        System.out.println("Adding path for coordinates: " + co.toString());
         path.put(co, turn+1);
     }
 

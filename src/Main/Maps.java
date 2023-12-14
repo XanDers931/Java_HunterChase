@@ -38,25 +38,7 @@ public class Maps {
         initShoot(row);
     }
 
-    /**
-     * Initialise la carte du jeu, créant une matrice 2D de CellInfo de taille 10x5,
-     * initialisant toutes les cellules à CellInfo.EMPTY, plaçant un monstre dans la
-     * case (0,0), marquant la sortie dans la case (9,4) et mettant un mur dans la
-     * case (0,1).
-     */
-    public void initMap(){
-        this.map= new CellInfo[10][10];
-        for(int i = 0; i < 10; i++)
-        {
-          for(int y = 0; y < 10; y++)
-          {
-            this.map[i][y] = CellInfo.EMPTY;
-          }
-        }
-        this.map[0][0]=CellInfo.MONSTER;
-        this.map[9][4]= CellInfo.EXIT;
-        this.map[0][1]=CellInfo.WALL;
-    }
+    
 
     /**
      * Initialise la carte de suivi des tirs du chasseur, créant une matrice 2D de

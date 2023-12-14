@@ -15,10 +15,7 @@ public class HunterStrategy implements IHunterStrategy {
 
        int caseToPlayCol = (int) (Math.random() * tailleCol);
        int caseToPlayRow = (int) (Math.random() * tailleRow);
-       
-
     
-
        ICoordinate caseToPlay = new Coordinate(caseToPlayRow, caseToPlayCol);
 
        return caseToPlay;
@@ -26,12 +23,12 @@ public class HunterStrategy implements IHunterStrategy {
 
     @Override
     public void update(ICellEvent arg0) {
-       
+       // do nothing
     }
 
     @Override
     public void initialize(int arg0, int arg1) {
-       
+       // do nothing
     }
     
 }
