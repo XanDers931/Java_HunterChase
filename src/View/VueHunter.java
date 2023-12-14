@@ -24,6 +24,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import Main.Menus;
 
 
 public class VueHunter implements Observer {
@@ -195,25 +196,61 @@ public class VueHunter implements Observer {
     public void showVictoryMessage() {
         Stage victoryStage = new Stage();
         victoryStage.setTitle("Victory!");
-    
+
         Label victoryLabel = new Label("Congratulations! Hunter won!");
-    
+        Button replay = new Button("Replay");
+
+        replay.setOnAction(e->{
+            victoryStage.close();
+            fermerTousLesStages();
+            fermerStage();
+            createMenu().show();
+        });
+
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> {
             // Ferme toutes les fenêtres ouvertes
-            fermerToutesLesFenetres();
-           
+           victoryStage.close();
+           fermerTousLesStages();
+           fermerStage();
         });
-    
-        VBox vbox = new VBox(victoryLabel, closeButton);
+        VBox vbox = new VBox(victoryLabel, replay,closeButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(20);
-    
+
         Scene victoryScene = new Scene(vbox, 300, 200);
-    
+
         victoryStage.setScene(victoryScene);
-    
+
         victoryStage.show();
+
+
+    }
+    public void fermerStage() {
+        Stage stage = (Stage) gridPane.getScene().getWindow();
+        stage.close();
+    }
+    
+
+    private void fermerTousLesStages() {
+        for (Window window : Window.getWindows()) {
+            if (window instanceof Stage && !((Stage) window).isIconified()) {
+                ((Stage) window).close();
+            }
+        }
+
+      
+    }
+    
+    public Stage createMenu(){
+        Stage primaryStage= new Stage();
+        Menus menu = new Menus();
+        menu.setPrimaryStage(primaryStage);
+        menu.getPrimaryStage().setTitle("Monster Hunter");
+        menu.createMainMenu();
+        //menu.createRulesPage();
+        primaryStage.setScene(menu.getMainMenuScene());
+        return primaryStage;
     }
     
 
