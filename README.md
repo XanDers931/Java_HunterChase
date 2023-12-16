@@ -16,3 +16,9 @@ Déroulement du Jeu :
 Un tour de jeu consiste en un coup du monstre suivi d'un coup du chasseur.
 Phase Monstre : Le monstre débute sur l'entrée du labyrinthe et marque cette case comme "1". À chaque tour, le monstre se déplace sur une case adjacente libre et marque cette case avec le numéro de tour en cours.
 Phase Chasseur : Le chasseur choisit une case de l'espace de jeu et "tire" dessus pour révéler l'état de la case (inexplorée, explorée lors du n-ième tour, occupée par le monstre, ou occupée par un obstacle). Si la case est la sortie, le chasseur n'en est pas informé. Le chasseur peut ainsi retracer l'itinéraire du monstre et le débusquer.
+
+Pour lancer le jeu :
+
+cd /Users/juju/Documents/BUT\ 2/SAEDEV/J4_SAE3A ; /usr/bin/env /Library/Jav
+a/JavaVirtualMachines/temurin-17.jdk/Contents/Home/bin/java @/var/folders/3_/1x68_pr1137996qv7znd0ym80000gn/T/cp_d
+oi4v1rv43ipbvelhr2pcce59.argfile Main.Main 

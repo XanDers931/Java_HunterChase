@@ -10,15 +10,15 @@ public class MonsterStrategy implements IMonsterStrategy {
 
     Utils.Solveur solve = new Utils.Solveur(GameModel.map.getMaps());
     ArrayList<Utils.Coordinate> solution = solve.estFaisable();
-   
+
     @Override
     public ICoordinate play() {
-        ICoordinate caseToPlay=null;
-        if(solution!=null){
-            caseToPlay= solution.get(0);
+        ICoordinate caseToPlay = null;
+        if (solution != null) {
+            caseToPlay = solution.get(0);
             solution.remove(0);
         }
-        
+
         return caseToPlay;
     }
 
@@ -31,5 +31,5 @@ public class MonsterStrategy implements IMonsterStrategy {
     public void initialize(boolean[][] arg0) {
         // do nothing
     }
-    
+
 }

@@ -10,15 +10,15 @@ public class Coordinate implements ICoordinate {
     private int col;
     private Coordinate father;
 
-    public Coordinate(int row,int col){
-        this.row=row;
-        this.col=col;
+    public Coordinate(int row, int col) {
+        this.row = row;
+        this.col = col;
         father = null;
     }
 
-    public Coordinate(int row,int col, Coordinate father){
-        this.row=row;
-        this.col=col;
+    public Coordinate(int row, int col, Coordinate father) {
+        this.row = row;
+        this.col = col;
         this.father = father;
     }
 
@@ -42,28 +42,29 @@ public class Coordinate implements ICoordinate {
 
     public void setCol(int col) {
         this.col = col;
-    }    
+    }
 
     @Override
-public boolean equals(Object obj) {
-    if (this == obj) return true;
-    if (obj == null || getClass() != obj.getClass()) return false;
-    Coordinate other = (Coordinate) obj;
-    return this.row == other.row && this.col == other.col;
-}
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Coordinate other = (Coordinate) obj;
+        return this.row == other.row && this.col == other.col;
+    }
 
-@Override
-public int hashCode() {
-    return Objects.hash(row, col);
-}
-
+    @Override
+    public int hashCode() {
+        return Objects.hash(row, col);
+    }
 
     int[] toArray() {
-        return new int[] {row, col};
+        return new int[] { row, col };
     }
 
     @Override
     public String toString() {
         return "Coordinate [row=" + row + ", col=" + col + "]";
-    }    
+    }
 }

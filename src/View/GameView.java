@@ -1,6 +1,5 @@
 package View;
 
-
 import Model.Hunter;
 import Model.Monster;
 import javafx.scene.Scene;
@@ -13,8 +12,8 @@ public class GameView {
     private Stage stage;
 
     public GameView(Hunter hunter, Monster monster) {
-        this.vueHunter = new VueHunter(hunter,false);
-        this.vueMonster = new VueMonster(monster, hunter,false);
+        this.vueHunter = new VueHunter(hunter, false);
+        this.vueMonster = new VueMonster(monster, hunter, false);
         this.stage = createStage();
     }
 
@@ -46,5 +45,4 @@ public class GameView {
         return stage;
     }
 
-    
 }

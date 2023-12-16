@@ -18,7 +18,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size,10);
+        GameModel gameModel = new GameModel(null, null, size, 10);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);
@@ -38,7 +38,7 @@ public class TestMonster {
         // Coordonnées actuelles du monstre après le mouvement
         Coordinate newCord = monster.getCordMonster();
         assertEquals(newX, newCord.getRow());
-        //  assertEquals(newY, newCord.getCol());
+        // assertEquals(newY, newCord.getCol());
 
         // Test de mouvement vers une position non adjacente
         int invalidX = currentCord.getRow() + 2;
@@ -60,7 +60,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size,10);
+        GameModel gameModel = new GameModel(null, null, size, 10);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);
@@ -81,7 +81,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size,10);
+        GameModel gameModel = new GameModel(null, null, size, 10);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);

@@ -6,14 +6,15 @@ import java.util.Collections;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 
 public class Solveur {
-    
+
     private CellInfo[][] map;
     // les marques
     private char[][] marque;
 
     public Solveur(CellInfo[][] map) {
         this.map = map;
-        initMarque();;
+        initMarque();
+
     }
 
     public void setMap(CellInfo[][] map) {
@@ -24,19 +25,21 @@ public class Solveur {
         return map;
     }
 
-    private int[] getEntre(){
+    private int[] getEntre() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if(map[i][j]==CellInfo.MONSTER) return new int[] {i,j};
+                if (map[i][j] == CellInfo.MONSTER)
+                    return new int[] { i, j };
             }
         }
         return null;
     }
 
-    private int[] getSortie(){
+    private int[] getSortie() {
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
-                if(map[i][j]==CellInfo.EXIT) return new int[] {i,j};
+                if (map[i][j] == CellInfo.EXIT)
+                    return new int[] { i, j };
             }
         }
         return null;
@@ -47,9 +50,9 @@ public class Solveur {
         return map[x][y].equals(CellInfo.WALL);
     }
 
-    private final char VIDE = 'a',  ROSE = 'c';
+    private final char VIDE = 'a', ROSE = 'c';
 
-    private void initMarque(){
+    private void initMarque() {
         marque = new char[map.length][map[0].length];
         for (int i = 0; i < map.length; i++) {
             for (int j = 0; j < map[i].length; j++) {
@@ -72,8 +75,9 @@ public class Solveur {
         marque[c[0]][c[1]] = ROSE;
     }
 
-    //renvoi une ArrayList du plus court chemin en partant du monstre et commencant directement par le premier coup à jouer
-    public ArrayList<Coordinate> estFaisable(){       
+    // renvoi une ArrayList du plus court chemin en partant du monstre et commencant
+    // directement par le premier coup à jouer
+    public ArrayList<Coordinate> estFaisable() {
         File<Coordinate> p = new File<Coordinate>();
         int[] entre = getEntre();
         int[] sortie = getSortie();
@@ -84,64 +88,61 @@ public class Solveur {
         p.push(new Coordinate(entre[0], entre[1]));
         poserMarque(start.getRow(), start.getCol());
         Coordinate c;
-        while(!p.isEmpty()){
+        while (!p.isEmpty()) {
             c = p.peek();
-            if(c.equals(end)){
+            if (c.equals(end)) {
                 found = true;
                 break;
-            }
-            else{
-                voisin = getVoisinesDiagonal(c, start);  
-                if(voisin!= null){
+            } else {
+                voisin = getVoisinesDiagonal(c, start);
+                if (voisin != null) {
                     p.push(voisin);
                     poserMarque(voisin.toArray());
-                }
-                else{
+                } else {
                     p.pop();
                 }
             }
         }
-        if(found){
+        if (found) {
             ArrayList<Coordinate> res = new ArrayList<>();
             Coordinate tmp = p.pop();
-            while(!tmp.equals(start)){
+            while (!tmp.equals(start)) {
                 res.add(tmp);
                 tmp = tmp.getFather();
             }
             reverseArrayList(res);
             return res;
-        }
-        else{
+        } else {
             return null;
         }
     }
 
-    private  Coordinate getVoisinesDiagonal(Coordinate c,Coordinate start) {
+    private Coordinate getVoisinesDiagonal(Coordinate c, Coordinate start) {
         int[] cell = c.toArray();
-        if (!estMarque(cell[0],cell[1]+1 ) && !estMur(cell[0],cell[1]+1  )) {
-            return new Coordinate(cell[0],cell[1]+1, c);
+        if (!estMarque(cell[0], cell[1] + 1) && !estMur(cell[0], cell[1] + 1)) {
+            return new Coordinate(cell[0], cell[1] + 1, c);
         }
-        if (!estMarque(cell[0]+1,cell[1] ) && !estMur(cell[0]+1,cell[1] )) {
-            return new Coordinate(cell[0]+1,cell[1], c);
+        if (!estMarque(cell[0] + 1, cell[1]) && !estMur(cell[0] + 1, cell[1])) {
+            return new Coordinate(cell[0] + 1, cell[1], c);
         }
-        if (!estMarque(cell[0]-1,cell[1] ) && !estMur(cell[0]-1,cell[1] )) {
-            return new Coordinate(cell[0]-1,cell[1], c);
+        if (!estMarque(cell[0] - 1, cell[1]) && !estMur(cell[0] - 1, cell[1])) {
+            return new Coordinate(cell[0] - 1, cell[1], c);
         }
-        if (!estMarque(cell[0],cell[1]-1 ) && !estMur(cell[0],cell[1]-1 )) {
-            return new Coordinate(cell[0],cell[1]-1, c);
+        if (!estMarque(cell[0], cell[1] - 1) && !estMur(cell[0], cell[1] - 1)) {
+            return new Coordinate(cell[0], cell[1] - 1, c);
         }
 
-        if (!estMarque(cell[0]+1,cell[1]+1 ) && !estMur(cell[0]+1,cell[1]+1 )) {
-            return new Coordinate(cell[0]+1,cell[1]+1, c);
+        if (!estMarque(cell[0] + 1, cell[1] + 1) && !estMur(cell[0] + 1, cell[1] + 1)) {
+            return new Coordinate(cell[0] + 1, cell[1] + 1, c);
         }
-        if (!estMarque(cell[0]-1,cell[1]+1 ) && !estMur(cell[0]-1,cell[1]+1 )) {
-            return new Coordinate(cell[0]-1,cell[1]+1, c);
+        if (!estMarque(cell[0] - 1, cell[1] + 1) && !estMur(cell[0] - 1, cell[1] + 1)) {
+            return new Coordinate(cell[0] - 1, cell[1] + 1, c);
         }
-        if (!estMarque(cell[0]-1,cell[1]-1 ) && !estMur(cell[0]-1,cell[1]-1 )) {
-            return new Coordinate(cell[0]-1,cell[1]-1, c);
+        if (!estMarque(cell[0] - 1, cell[1] - 1) && !estMur(cell[0] - 1, cell[1] - 1)) {
+            return new Coordinate(cell[0] - 1, cell[1] - 1, c);
         }
-        if (!estMarque(cell[0]+1,cell[1]-1 ) && !estMur(cell[0]+1,cell[1]-1 )) {
-            return new Coordinate(cell[0]+1,cell[1]-1, c);
+        if (!estMarque(cell[0] + 1, cell[1] - 1) && !estMur(cell[0] + 1, cell[1] - 1)) {
+            return new Coordinate(cell[0] + 1, cell[1] - 1, c);
         }
         return null;
     }

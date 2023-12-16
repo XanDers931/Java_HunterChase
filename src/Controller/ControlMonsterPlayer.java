@@ -13,38 +13,82 @@ import Model.Monster;
 import Utils.Coordinate;
 import View.VueMonster;
 
-
-
+/**
+ * La classe ControlMonsterPlayer gère le mouvement du monstre dans le jeu en
+ * réponse aux clics de souris sur la grille.
+ * Le monstre peut se déplacer en cliquant sur une case de la grille. Cette
+ * classe récupère les objets Monster et Hunter à partir
+ * de la vue et actualise l'affichage du jeu en appelant la méthode refresh().
+ * Elle configure ensuite un gestionnaire d'événements
+ * pour les clics de souris sur la grille, permettant au monstre de se déplacer
+ * vers la case cliquée.
+ *
+ * @implNote Le monstre ne peut se déplacer que si son état "canMove" le permet.
+ * @implNote Lorsque le monstre se déplace, la case d'origine devient vide et la
+ *           case de destination est occupée par le monstre.
+ *           Le monstre met à jour sa position interne et le plateau de jeu est
+ *           rechargé pour refléter les changements.
+ * @implNote Le monstre change son état "canMove" pour indiquer qu'il a effectué
+ *           un mouvement, et le chasseur fait de même.
+ *           De plus, le monstre enregistre le chemin suivi dans le tableau
+ *           "path". Chaque case visitée est enregistrée avec le numéro du tour.
+ */
 public class ControlMonsterPlayer implements ControlMonster {
+
+    /**
+     * Vue du monstre associée à cette instance de ControlMonsterPlayer.
+     */
     private VueMonster view;
+
+    /**
+     * Coordonnée de la case cliquée par le monstre.
+     */
     private Coordinate clickedCase;
 
-
+    /**
+     * Constructeur de la classe ControlMonsterPlayer.
+     *
+     * @param view La VueMonster associée à cette instance.
+     */
     public ControlMonsterPlayer(VueMonster view) {
         this.view = view;
-        this.clickedCase= new Coordinate(0, 0);
+        this.clickedCase = new Coordinate(0, 0);
     }
 
     /**
-     * Gère le mouvement du monstre dans le jeu. Le monstre peut se déplacer en cliquant
-     * sur une case de la grille. La méthode récupère les objets Monster et Hunter à partir
-     * de la vue et actualise l'affichage du jeu en appelant la méthode refresh(). Ensuite,
-     * elle configure un gestionnaire d'événements pour les clics de souris sur la grille, permettant
-     * au monstre de se déplacer vers la case cliquée.
+     * Obtient la VueMonster associée à cette instance.
      *
-     * @implNote Le monstre ne peut se déplacer que si son état "canMoove" le permet.
-     * @implNote Lorsque le monstre se déplace, la case d'origine devient vide et la case de destination
-     *           est occupée par le monstre. Le monstre met à jour sa position interne et le plateau de jeu
-     *           est rechargé pour refléter les changements.
-     * @implNote Le monstre change son état "canMoove" pour indiquer qu'il a effectué un mouvement, et le
-     *           chasseur fait de même. De plus, le monstre enregistre le chemin suivi dans le tableau "path".
-     *           Chaque case visitée est enregistrée avec le numéro du tour (tourCpt).
+     * @return La VueMonster associée à cette instance.
+     */
+    public VueMonster getView() {
+        return view;
+    }
+
+    /**
+     * Obtient la coordonnée de la case cliquée par le monstre.
+     *
+     * @return La coordonnée de la case cliquée par le monstre.
+     */
+    public Coordinate getClickedCase() {
+        return clickedCase;
+    }
+
+    /**
+     * Gère le mouvement du monstre en utilisant une interaction avec la grille.
+     * Configure un gestionnaire d'événements pour les clics de souris sur la
+     * grille.
      */
     public void mMouvement() {
         refresh();
         view.getGridPane().setOnMouseClicked(this::handleMouseClickMonster);
     }
 
+    /**
+     * Gère l'événement de clic de souris sur la grille par le monstre.
+     * Identifie la case cliquée et effectue les actions appropriées.
+     *
+     * @param event L'événement de clic de souris.
+     */
     private void handleMouseClickMonster(MouseEvent event) {
         Node source = event.getPickResult().getIntersectedNode();
         StackPane clickedStackPane = findClickedStackPane(source);
@@ -62,6 +106,13 @@ public class ControlMonsterPlayer implements ControlMonster {
         }
     }
 
+    /**
+     * Gère le tour du monstre lorsqu'il est joué par le joueur.
+     *
+     * @param monster    Le monstre en jeu.
+     * @param clickedRow L'indice de ligne de la case cliquée.
+     * @param clickedCol L'indice de colonne de la case cliquée.
+     */
     private void handleMonsterPlayerTurn(Monster monster, int clickedRow, int clickedCol) {
         Model.GameModel gameModel = monster.getGameModel();
 
@@ -73,14 +124,26 @@ public class ControlMonsterPlayer implements ControlMonster {
         }
     }
 
+    /**
+     * Effectue le déplacement du monstre sur la grille.
+     *
+     * @param monster    Le monstre en jeu.
+     * @param clickedRow L'indice de ligne de la case cliquée.
+     * @param clickedCol L'indice de colonne de la case cliquée.
+     */
     private void handleMonsterMove(Monster monster, int clickedRow, int clickedCol) {
         if (monster.moveMonster(clickedRow, clickedCol)) {
-            view.updatePlateau(clickedRow, clickedCol);
             monster.addCurrentCordMonster(clickedRow, clickedCol);
             monster.getGameModel().changeCurrentPlayer();
         }
     }
 
+    /**
+     * Identifie la StackPane associée à un nœud cliqué.
+     *
+     * @param source Le nœud cliqué.
+     * @return La StackPane associée au nœud cliqué, ou null si non trouvée.
+     */
     private StackPane findClickedStackPane(Node source) {
         if (source instanceof ImageView) {
             return (StackPane) source.getParent();
@@ -89,10 +152,14 @@ public class ControlMonsterPlayer implements ControlMonster {
         }
         return null;
     }
-        
+
+    /**
+     * Rafraîchit l'affichage du label indiquant le tour du joueur et applique un
+     * effet visuel à la position actuelle du monstre.
+     */
     public void refresh() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            Coordinate cord = view.getMonster().getGameModel().getHunter().getHunted();
+            Coordinate cord = view.getMonster().getHunted();
             StackPane stackPane = getStackPaneByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
             if (stackPane != null) {
                 ImageView imageView = (ImageView) stackPane.getChildren().get(0);
@@ -100,17 +167,25 @@ public class ControlMonsterPlayer implements ControlMonster {
                 color.setHue(0.5);
                 imageView.setEffect(color);
             }
-            if (view.getMonster().getGameModel().currentPlayer==1) {
+            if (view.getMonster().getGameModel().currentPlayer == 1) {
                 view.getCurrentLabel().setText("C'est au tour du Monstre");
-            }else{
+            } else {
                 view.getCurrentLabel().setText("C'est au tour du Chasseur");
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-    
-    
+
+    /**
+     * Obtient la StackPane associée à une position donnée dans une grille.
+     *
+     * @param row      L'indice de ligne.
+     * @param column   L'indice de colonne.
+     * @param gridPane La grille dans laquelle rechercher.
+     * @return La StackPane associée à la position spécifiée, ou null si non
+     *         trouvée.
+     */
     public StackPane getStackPaneByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
@@ -121,12 +196,4 @@ public class ControlMonsterPlayer implements ControlMonster {
         }
         return null;
     }
-
-    public Coordinate getClickedCase() {
-        return clickedCase;
-    }
-
-    
-
-    
 }

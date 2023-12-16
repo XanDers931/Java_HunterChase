@@ -1,6 +1,5 @@
 package test;
 
-
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
@@ -10,13 +9,13 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class TestHunter {
-   @Test
+    @Test
     public void testVictory() {
         // Taille du modèle de jeu pour l'initialisation
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size,10);
+        GameModel gameModel = new GameModel(null, null, size, 10);
 
         // Créer un Hunter pour le test
         Hunter hunter = new Hunter("TestHunter", gameModel);
@@ -38,21 +37,21 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size,10);
+        GameModel gameModel = new GameModel(null, null, size, 10);
 
         // Créer un Hunter pour le test
         Hunter hunter = new Hunter("TestHunter", gameModel);
 
         // Vérifier l'état initial
-        assertFalse(hunter.canMoove);
+        assertFalse(hunter.getCanMoove());
 
         // Changer l'état et vérifier
         hunter.changeCanMoove();
-        assertTrue(hunter.canMoove);
+        assertTrue(hunter.getCanMoove());
 
         // Changer à nouveau et vérifier
         hunter.changeCanMoove();
-        assertFalse(hunter.canMoove);
+        assertFalse(hunter.getCanMoove());
     }
 
     @Test
@@ -61,7 +60,7 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size,10);
+        GameModel gameModel = new GameModel(null, null, size, 10);
 
         // Créer un Hunter pour le test
         Hunter hunter = new Hunter("TestHunter", gameModel);

@@ -6,12 +6,24 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-public class Menu{
-   
-  
+/**
+ * La classe Menu est responsable de la création de la fenêtre du menu principal
+ * du jeu "Monster Hunter".
+ * Elle charge le fichier FXML associé et crée une nouvelle scène pour afficher
+ * la fenêtre.
+ */
+public class Menu {
+
+    /**
+     * Crée et configure la scène du menu principal du jeu "Monster Hunter".
+     *
+     * @return La fenêtre du menu principal du jeu.
+     */
     public Stage createStage() {
         try {
-            Stage stage= new Stage();
+            Stage stage = new Stage();
+
+            // Charger le fichier FXML associé au menu
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
             Parent root = loader.load();
 
@@ -21,6 +33,7 @@ public class Menu{
             // Configurer la scène et afficher la fenêtre
             stage.setTitle("Monster Hunter");
             stage.setScene(scene);
+
             return stage;
         } catch (IOException e) {
             e.printStackTrace(); // Gérer l'exception d'entrée/sortie ici
