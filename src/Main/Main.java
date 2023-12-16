@@ -1,6 +1,6 @@
 package Main;
 
-
+import Menu.Menu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -11,11 +11,8 @@ public class Main extends Application{
 
     @Override
     public void start(Stage primaryStage) {
-        Menus menu = new Menus();
-        menu.setPrimaryStage(primaryStage);
-        menu.getPrimaryStage().setTitle("Monster Hunter");
-        menu.createMainMenu();
-        primaryStage.setScene(menu.getMainMenuScene());
+        Menu app = new Menu();
+        primaryStage = app.createStage();
         primaryStage.show();
     }
 }

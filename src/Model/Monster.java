@@ -11,7 +11,7 @@ public class Monster extends Subject {
     public String nickname;
     public boolean tour;
     public boolean canMoove;
-    public static Coordinate cordMonster;
+    public Coordinate cordMonster;
     public GameModel gameModel;
     public int[][] path;
     private MonsterStrategy strategy;
@@ -41,8 +41,8 @@ public class Monster extends Subject {
 
 
 
-    public static Coordinate getCordMonster() {
-        return cordMonster;
+    public Coordinate getCordMonster() {
+        return this.cordMonster;
     }
 
     public String getNickname() {

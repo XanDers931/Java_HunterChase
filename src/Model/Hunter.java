@@ -1,5 +1,6 @@
 package Model;
 
+
 import Utils.Coordinate;
 import Utils.Subject;
 
@@ -28,12 +29,9 @@ public class Hunter extends Subject {
         return nickname;
     }
 
-    
-
-   public boolean victory(int x, int y){
-        Coordinate co = Monster.getCordMonster();
-        return co.getRow()==x && co.getCol()==y;
-   }
+    public boolean victory(int x, int y){
+        return gameModel.isMonster(new Coordinate(x, y));
+    }
 
     public void changeCanMoove(){
         canMoove=!canMoove;

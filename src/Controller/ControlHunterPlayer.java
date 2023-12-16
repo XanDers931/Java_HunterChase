@@ -1,12 +1,18 @@
 package Controller;
 
+
 import Utils.Coordinate;
 import View.VueHunter;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.Node;
+
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.util.Duration;
 
 
 
@@ -34,6 +40,7 @@ public class ControlHunterPlayer implements ControlHunter {
      *           pour éliminer le monstre. La victoire est déterminée en fonction de la position du chasseur.
      */
     public void hMouvement() {
+        refresh();
         view.getGridPane().setOnMouseClicked(this::handleMouseClick);
     }
 
@@ -86,6 +93,20 @@ public class ControlHunterPlayer implements ControlHunter {
     
     public Coordinate getClickedCase() {
         return clickedCase;
+    }
+
+
+    public void refresh(){
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        if (view.getHunter().getGameModel().currentPlayer==1) {
+            view.getCurrentLabel().setText("C'est au tour du Monstre");
+        }else{
+            view.getCurrentLabel().setText("C'est au tour du Chasseur");
+        }
+        }));
+        // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
     }
 
     

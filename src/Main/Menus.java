@@ -156,7 +156,7 @@ public class Menus {
         primaryStage.close();
 
         //Création des objets
-        GameModel gameModel = new GameModel(null, null, tailleTab);
+        GameModel gameModel = new GameModel(null, null, tailleTab,10);
         // Ensuite, utilisez ce GameModel pour créer un Monster
         Monster monster = new Monster("STYLESHEET_CASPIAN", gameModel);
 

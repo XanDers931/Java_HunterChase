@@ -23,11 +23,11 @@ public class GameModel {
     public static Maps map;
 
 
-    public GameModel(Monster monster, Hunter hunter,int size){
+    public GameModel(Monster monster, Hunter hunter,int size,int probaWall){
         this.monster = monster;
         this.hunter = hunter;
         this.turn = 0;
-        map = new Maps(size,size,10);
+        map = new Maps(size,size,probaWall);
         this.path = new HashMap<>();
         currentPlayer= 1;
         this.addPath(map.getCordUser(CellInfo.MONSTER));
@@ -56,6 +56,10 @@ public class GameModel {
 
     public boolean isWall(Coordinate co){
         return map.getMaps()[co.getRow()][co.getCol()]==CellInfo.WALL;
+    }
+
+    public boolean isMonster(Coordinate co){
+        return map.getMaps()[co.getRow()][co.getCol()]==CellInfo.MONSTER;
     }
 
     public void changeCurrentPlayer(){

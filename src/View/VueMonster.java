@@ -1,30 +1,22 @@
 package View;
 
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import javafx.stage.WindowEvent;
-
-import java.util.Objects;
-
 import Controller.ControlMonster;
 import Controller.ControlMonsterBot;
 import Controller.ControlMonsterPlayer;
 import Main.Maps;
-import Main.Menus;
+import Menu.Menu;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
@@ -66,13 +58,15 @@ public class VueMonster implements Observer {
         Stage stage = new Stage();
         gridPane = new GridPane();
         chargePlateau();
-        VBox vbox = new VBox(new Label("MONSTRE : "+monster.getNickname()));
+        HBox hbox = new HBox(new Label("MONSTER"));
+        hbox.setAlignment(Pos.CENTER);
+        VBox vbox = new VBox();
         currentLabel = new Label("C'est au tour du Monstre");
         vbox.getChildren().add(currentLabel);
         vbox.setAlignment(Pos.CENTER);
         int imageSize = 50; 
         controlleur.mMouvement();
-        VBox vboxall = new VBox(vbox, gridPane);
+        VBox vboxall = new VBox(hbox,vbox, gridPane);
         styleGridPane(imageSize);
         int rowCount = monster.getGameModel().getMap().getRow()+2 ;
         int colCount = monster.getGameModel().getMap().getCol()+2;
@@ -80,8 +74,6 @@ public class VueMonster implements Observer {
         stage.setScene(scene);
         return stage;
     }
-
-   
 
     public Label getCurrentLabel() {
         return currentLabel;
@@ -114,8 +106,6 @@ public class VueMonster implements Observer {
         return stackPane;
     }
     
-    
-
     private String determineImagePath(CellInfo cellInfo) {
         switch (cellInfo) {
             case WALL:
@@ -129,11 +119,9 @@ public class VueMonster implements Observer {
         }
     }
 
-   
-
     public void updatePlateau(int clickedRow, int clickedCol) {
         // Récupération des coordonnées du monstre
-        Coordinate monsterCoordinates = Monster.getCordMonster();
+        Coordinate monsterCoordinates = monster.getCordMonster();
         int row = monsterCoordinates.getRow();
         int col = monsterCoordinates.getCol();
     
@@ -199,9 +187,6 @@ public class VueMonster implements Observer {
         existingStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
         monsterStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
     }
-    
-    
-    
 
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
@@ -213,20 +198,20 @@ public class VueMonster implements Observer {
     }
 
     
-        private void styleGridPane(double imageSize) {
-            gridPane.setStyle("-fx-background-color: #ececec;");
-            gridPane.setPadding(new Insets(20));
-            gridPane.setHgap(1);
-            gridPane.setVgap(1);
+    private void styleGridPane(double imageSize) {
+        gridPane.setStyle("-fx-background-color: #ececec;");
+        gridPane.setPadding(new Insets(20));
+        gridPane.setHgap(1);          
+        gridPane.setVgap(1);
         
-            for (Node node : gridPane.getChildren()) {
-                if (node instanceof StackPane) {
-                    StackPane stackPane = (StackPane) node;
-                    stackPane.setMinSize(imageSize, imageSize);
-                    stackPane.setMaxSize(imageSize, imageSize);
-                }
+        for (Node node : gridPane.getChildren()) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                stackPane.setMinSize(imageSize, imageSize);
+                stackPane.setMaxSize(imageSize, imageSize);
             }
         }
+    }
 
     public Stage getStage() {
         return this.stage;
@@ -235,15 +220,14 @@ public class VueMonster implements Observer {
     public void showVictoryMessage() {
         Stage victoryStage = new Stage();
         victoryStage.setTitle("Victory!");
-
         Label victoryLabel = new Label("Congratulations! Monster won!");
-        Button replay = new Button("Replay");
-
+        Button replay = new Button("Retour au menu");
         replay.setOnAction(e->{
+            Menu menu = new Menu();
             victoryStage.close();
             fermerTousLesStages();
             fermerStage();
-            createMenu().show();
+            menu.createStage().show();
         });
 
         Button closeButton = new Button("Close");
@@ -256,23 +240,9 @@ public class VueMonster implements Observer {
         VBox vbox = new VBox(victoryLabel, replay,closeButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(20);
-
         Scene victoryScene = new Scene(vbox, 300, 200);
-
         victoryStage.setScene(victoryScene);
         victoryStage.show();
-
-
-    }
-
-    public Stage createMenu(){
-        Stage primaryStage= new Stage();
-        Menus menu = new Menus();
-        menu.setPrimaryStage(primaryStage);
-        menu.getPrimaryStage().setTitle("Monster Hunter");
-        menu.createMainMenu();
-        primaryStage.setScene(menu.getMainMenuScene());
-        return primaryStage;
     }
 
     public void fermerStage() {
@@ -280,19 +250,14 @@ public class VueMonster implements Observer {
         stage.close();
     }
     
-
     private void fermerTousLesStages() {
         for (Window window : Window.getWindows()) {
             if (window instanceof Stage && !((Stage) window).isIconified()) {
                 ((Stage) window).close();
             }
         }
-
-      
     }
     
-  
-
     @Override
     public void update(Subject subj) {
         update(subj, null);

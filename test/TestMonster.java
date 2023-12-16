@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
 import Model.GameModel;
-import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
 
@@ -19,7 +18,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size);
+        GameModel gameModel = new GameModel(null, null, size,10);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);
@@ -61,7 +60,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size);
+        GameModel gameModel = new GameModel(null, null, size,10);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);
@@ -82,7 +81,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size);
+        GameModel gameModel = new GameModel(null, null, size,10);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);

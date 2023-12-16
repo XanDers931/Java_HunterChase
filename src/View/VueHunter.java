@@ -1,8 +1,5 @@
 package View;
 
-
-import java.util.Objects;
-
 import Controller.ControlHunter;
 import Controller.ControlHunterBot;
 import Controller.ControlHunterPlayer;
@@ -12,6 +9,7 @@ import Utils.Coordinate;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -23,7 +21,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import Main.Menus;
+import Menu.Menu;
 
 
 public class VueHunter implements Observer {
@@ -31,6 +29,7 @@ public class VueHunter implements Observer {
     private GridPane gridPane;
     private ControlHunter controlleur;
     private Stage stage;
+    Label currentLabel;
 
     public VueHunter(Hunter hunter,boolean control) {
         this.hunter = hunter;
@@ -51,6 +50,14 @@ public class VueHunter implements Observer {
         return hunter;
     }
 
+    public Label getCurrentLabel() {
+        return currentLabel;
+    }
+
+    public void setCurrentLabel(Label currentLabel) {
+        this.currentLabel = currentLabel;
+    }
+
     public Stage creerStage() {
         Stage stage = new Stage();
         gridPane = new GridPane();
@@ -64,8 +71,12 @@ public class VueHunter implements Observer {
 
         int rowCount = hunter.getGameModel().getMap().getRow()+1 ;
         int colCount = hunter.getGameModel().getMap().getCol()+1;
+        VBox vboxCurrent = new VBox();
+        currentLabel = new Label("C'est au tour du Monstre");
+        vboxCurrent.getChildren().add(currentLabel);
+        vboxCurrent.setAlignment(Pos.CENTER);
 
-        VBox vbox = new VBox(hbox, gridPane);
+        VBox vbox = new VBox(hbox,vboxCurrent, gridPane);
         Scene scene = new Scene(vbox, colCount * imageSize, rowCount * imageSize);
         stage.setScene(scene);
         return stage;
@@ -195,55 +206,30 @@ public class VueHunter implements Observer {
         return this.stage;
     }
 
-   
-
-    private void fermerToutesLesFenetres() {
-        int nombreDeFenetres = Stage.getWindows().size();
-    
-        if (nombreDeFenetres == 1) {
-            return;
-        }
-    
-        for (Window stage : Stage.getWindows()) {
-            Stage stageCasted = Objects.requireNonNull((Stage) stage);
-            stageCasted.close();
-        }
-    }
-
     public void showVictoryMessage() {
         Stage victoryStage = new Stage();
         victoryStage.setTitle("Victory!");
-
         Label victoryLabel = new Label("Congratulations! Hunter won!");
-        Button replay = new Button("Replay");
-
+        Button replay = new Button("Retour au menu");
         replay.setOnAction(e->{
+            Menu menu = new Menu();
             victoryStage.close();
             fermerTousLesStages();
             fermerStage();
-            createMenu().show();
-            fermerToutesLesFenetres();
+            menu.createStage().show();
         });
-
         Button closeButton = new Button("Close");
         closeButton.setOnAction(e -> {
             // Ferme toutes les fenêtres ouvertes
            victoryStage.close();
-           fermerTousLesStages();
-           fermerStage();
-           fermerToutesLesFenetres();
+           Platform.exit();
         });
         VBox vbox = new VBox(victoryLabel, replay,closeButton);
         vbox.setAlignment(Pos.CENTER);
         vbox.setSpacing(20);
-
         Scene victoryScene = new Scene(vbox, 300, 200);
-
         victoryStage.setScene(victoryScene);
-
         victoryStage.show();
-
-
     }
     public void fermerStage() {
         Stage stage = (Stage) gridPane.getScene().getWindow();
@@ -257,19 +243,6 @@ public class VueHunter implements Observer {
                 ((Stage) window).close();
             }
         }
-
-      
-    }
-    
-    public Stage createMenu(){
-        Stage primaryStage= new Stage();
-        Menus menu = new Menus();
-        menu.setPrimaryStage(primaryStage);
-        menu.getPrimaryStage().setTitle("Monster Hunter");
-        menu.createMainMenu();
-        //menu.createRulesPage();
-        primaryStage.setScene(menu.getMainMenuScene());
-        return primaryStage;
     }
     
 

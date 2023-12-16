@@ -116,24 +116,6 @@ public class Solveur {
         }
     }
 
-    private  Coordinate getVoisines(Coordinate c, Coordinate start) {
-        int[] cell = c.toArray();
-        if (!estMarque(cell[0],cell[1]+1 ) && !estMur(cell[0],cell[1]+1  )) {
-            return new Coordinate(cell[0],cell[1]+1, c);
-        }
-        if (!estMarque(cell[0]+1,cell[1] ) && !estMur(cell[0]+1,cell[1] )) {
-            return new Coordinate(cell[0]+1,cell[1], c);
-        }
-        if (!estMarque(cell[0]-1,cell[1] ) && !estMur(cell[0]-1,cell[1] )) {
-            return new Coordinate(cell[0]-1,cell[1], c);
-        }
-        
-        if (!estMarque(cell[0],cell[1]-1 ) && !estMur(cell[0],cell[1]-1 )) {
-            return new Coordinate(cell[0],cell[1]-1, c);
-        }
-        return null;
-    }
-
     private  Coordinate getVoisinesDiagonal(Coordinate c,Coordinate start) {
         int[] cell = c.toArray();
         if (!estMarque(cell[0],cell[1]+1 ) && !estMur(cell[0],cell[1]+1  )) {

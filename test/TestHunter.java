@@ -1,13 +1,10 @@
 package test;
 
-import Main.Maps;
+
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
-import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -19,7 +16,7 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size);
+        GameModel gameModel = new GameModel(null, null, size,10);
 
         // Créer un Hunter pour le test
         Hunter hunter = new Hunter("TestHunter", gameModel);
@@ -41,7 +38,7 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size);
+        GameModel gameModel = new GameModel(null, null, size,10);
 
         // Créer un Hunter pour le test
         Hunter hunter = new Hunter("TestHunter", gameModel);
@@ -64,7 +61,7 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size);
+        GameModel gameModel = new GameModel(null, null, size,10);
 
         // Créer un Hunter pour le test
         Hunter hunter = new Hunter("TestHunter", gameModel);

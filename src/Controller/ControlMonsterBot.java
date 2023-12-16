@@ -83,6 +83,12 @@ public class ControlMonsterBot implements ControlMonster{
                 color.setHue(0.5);
                 imageView.setEffect(color);
             }
+
+            if (view.getMonster().getGameModel().currentPlayer==1) {
+                view.getCurrentLabel().setText("C'est au tour du Monstre");
+            }else{
+                view.getCurrentLabel().setText("C'est au tour du Chasseur");
+            }
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
