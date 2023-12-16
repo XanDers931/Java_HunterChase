@@ -19,36 +19,20 @@ import javafx.util.Duration;
 public class ControlMonsterBot implements ControlMonster{
 
     private View.VueMonster view;
-    private int tourCpt;
     private Coordinate clickedCase;
 
-    
     
     public ControlMonsterBot(VueMonster view) {
         this.view = view;
     }
 
-
-
     public View.VueMonster getView() {
         return view;
     }
 
-
-
-    public int getTourCpt() {
-        return tourCpt;
-    }
-
-
-
     public Coordinate getClickedCase() {
         return clickedCase;
     }
-
-
-
-
 
     @Override
     public void mMouvement() {

@@ -17,13 +17,11 @@ import View.VueMonster;
 
 public class ControlMonsterPlayer implements ControlMonster {
     private VueMonster view;
-    private int tourCpt;
     private Coordinate clickedCase;
 
 
     public ControlMonsterPlayer(VueMonster view) {
         this.view = view;
-        this.tourCpt = 0;
         this.clickedCase= new Coordinate(0, 0);
     }
 
@@ -122,10 +120,6 @@ public class ControlMonsterPlayer implements ControlMonster {
             }
         }
         return null;
-    }
-    
-    public int getTour(){
-        return this.tourCpt;
     }
 
     public Coordinate getClickedCase() {

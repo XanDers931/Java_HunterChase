@@ -62,6 +62,7 @@
     - Rédaction du suivi.md
 - **Julien Bouin :**
     - Ajout de l'affichage de la case touchée par le chasseur dans le visuel du monstre
+    - Refonte Globale du menu 
 - **Alexandre Martel :**
     - Résolution des bugs dans le menu
     - Ajout des pseudo pour le monstre et le chasseur (TextField) dans le menu

@@ -63,9 +63,6 @@ public class ControlHunterBot implements ControlHunter {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-    
-
-
 
     private void updateHunterPosition(int row, int col) {
         view.getHunter().getHunted().setCol(col);
