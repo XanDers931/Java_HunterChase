@@ -14,7 +14,7 @@ public class MonsterStrategy implements IMonsterStrategy {
     @Override
     public ICoordinate play() {
         ICoordinate caseToPlay = null;
-        if (solution != null) {
+        if (solution.size() > 0) {
             caseToPlay = solution.get(0);
             solution.remove(0);
         }

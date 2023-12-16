@@ -74,14 +74,14 @@ public class ControlMonsterBot implements ControlMonster {
     public void mMouvement() {
         MonsterStrategy strategy = new MonsterStrategy();
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-
-            ICoordinate coord = strategy.play();
-            int clickedRow = coord.getRow();
-            int clickedCol = coord.getCol();
-            this.clickedCase = new Coordinate(clickedRow, clickedCol);
             Monster monster = view.getMonster();
 
             if (monster.getGameModel().currentPlayer == 1) {
+                ICoordinate coord = strategy.play();
+                int clickedRow = coord.getRow();
+                int clickedCol = coord.getCol();
+                this.clickedCase = new Coordinate(clickedRow, clickedCol);
+
                 if (monster.victory(clickedRow, clickedCol) && monster.moveMonster(clickedRow, clickedCol)) {
                     monster.getGameModel().currentPlayer = 3;
                     view.showVictoryMessage();
