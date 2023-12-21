@@ -101,6 +101,9 @@ public class MenuControlleur implements Initializable {
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
 
+        comboBox.getSelectionModel().selectFirst();
+        comboBox2.getSelectionModel().selectFirst();
+
         boolean controlHunter = comboBox2.getValue().equals("bot");
         boolean controlMonster = comboBox.getValue().equals("bot");
 
