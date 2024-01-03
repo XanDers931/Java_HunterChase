@@ -51,6 +51,7 @@ public class ControlHunterPlayer implements ControlHunter {
      */
     public ControlHunterPlayer(VueHunter view) {
         this.view = view;
+        clickedCase = new Coordinate(0, 0);
     }
 
     /**

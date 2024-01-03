@@ -8,10 +8,10 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-image: ;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Menu.MenuControlleur">
    <children>
 
-      <Button layoutX="239.0" layoutY="118.0" mnemonicParsing="false" onAction="#jouer" prefHeight="54.0" prefWidth="108.0" text="Jouer" />
-      <Button layoutX="239.0" layoutY="200.0" mnemonicParsing="false" onAction="#option" prefHeight="54.0" prefWidth="108.0" text="Options" />
-      <Button layoutX="239.0" layoutY="280.0" mnemonicParsing="false" onAction="#quitter" prefHeight="54.0" prefWidth="108.0" text="Quitter" />
-      <Label layoutX="153.0" layoutY="43.0" text="MONSTER HUNTER">
+      <Button fx:id="buttonPlay" layoutX="239.0" layoutY="118.0" mnemonicParsing="false" onAction="#jouer" prefHeight="54.0" prefWidth="108.0" text="Jouer" />
+      <Button fx:id="buttonOption" layoutX="239.0" layoutY="200.0" mnemonicParsing="false" onAction="#option" prefHeight="54.0" prefWidth="108.0" text="Options" />
+      <Button fx:id="buttonLeave" layoutX="239.0" layoutY="280.0" mnemonicParsing="false" onAction="#quitter" prefHeight="54.0" prefWidth="108.0" text="Quitter" />
+      <Label fx:id="main" layoutX="153.0" layoutY="43.0" text="MONSTER HUNTER">
          <font>
             <Font size="34.0" />
          </font>

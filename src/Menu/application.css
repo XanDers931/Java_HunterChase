@@ -1,0 +1,21 @@
+ /*.root {
+    -fx-background-image: url('fond.jpeg');
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
+}
+
+#main {
+    -fx-text-fill: black;
+}
+
+#buttonPlay,
+#buttonOption,
+#buttonLeave {
+    -fx-background-color: none;
+    -fx-text-fill: black;
+    -fx-font-size: 25;
+}
+
+#buttonPlay:hover {
+    -fx-background-color: rgb(81, 81, 81);
+}

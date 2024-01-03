@@ -133,6 +133,9 @@ public class ControlMonsterPlayer implements ControlMonster {
      */
     private void handleMonsterMove(Monster monster, int clickedRow, int clickedCol) {
         if (monster.moveMonster(clickedRow, clickedCol)) {
+            if (view.isFogOfWar()) {
+                view.applyFogOfWar(view.getGridPane(), true, 2, clickedRow, clickedCol);
+            }
             monster.addCurrentCordMonster(clickedRow, clickedCol);
             monster.getGameModel().changeCurrentPlayer();
         }
@@ -172,6 +175,7 @@ public class ControlMonsterPlayer implements ControlMonster {
             } else {
                 view.getCurrentLabel().setText("C'est au tour du Chasseur");
             }
+
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();

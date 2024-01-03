@@ -1,17 +1,24 @@
 package View;
 
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import Controller.ControlMonster;
 import Controller.ControlMonsterBot;
 import Controller.ControlMonsterPlayer;
@@ -46,6 +53,20 @@ public class VueMonster implements Observer {
     private Label currentLabel;
 
     /**
+     * Boolean du brouillard mis de base à false , cela veut dire que le brouillard
+     * n'est pas activé
+     */
+    private boolean fogOfWar = false;
+
+    public boolean isFogOfWar() {
+        return fogOfWar;
+    }
+
+    public void setFogOfWar(boolean fogOfWar) {
+        this.fogOfWar = fogOfWar;
+    }
+
+    /**
      * Setter pour le monstre associé à la vue.
      *
      * @param monster Le nouveau monstre associé à la vue.
@@ -70,6 +91,10 @@ public class VueMonster implements Observer {
      */
     public GridPane getGridPane() {
         return gridPane;
+    }
+
+    public Scene getScene() {
+        return stage.getScene();
     }
 
     /**
@@ -112,7 +137,7 @@ public class VueMonster implements Observer {
         styleGridPane(imageSize);
         int rowCount = monster.getGameModel().getMap().getRow() + 2;
         int colCount = monster.getGameModel().getMap().getCol() + 2;
-        Scene scene = new Scene(vboxall, imageSize * rowCount, imageSize * colCount);
+        Scene scene = new Scene(vboxall, 40 * rowCount, 40 * colCount);
         stage.setScene(scene);
         return stage;
     }
@@ -144,9 +169,48 @@ public class VueMonster implements Observer {
         for (int i = 0; i < map.getRow(); i++) {
             for (int j = 0; j < map.getCol(); j++) {
                 StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
+                Coordinate coordMonster = monster.getCordMonster();
+
+                // Brouillard de deux
+                if (fogOfWar && monster.isWithinRange(coordMonster.getRow(),
+                        coordMonster.getCol(), i, j, 2)) {
+                    applyFogOfWarOne(stackPane);
+                }
+
                 gridPane.add(stackPane, j, i);
             }
         }
+
+    }
+
+    public void applyFogOfWar(GridPane gridPane, boolean fogOfWar, int range, int x, int y) {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
+
+                if (colIndex != null && rowIndex != null) {
+                    // On remet la case à la valeur de base avant de la (re) modifier
+                    resetStackPane(stackPane);
+                    // Brouillard avec une portée spécifiée
+                    if (fogOfWar && monster.isWithinRange(x, y, rowIndex,
+                            colIndex, range)) {
+                        applyFogOfWarOne(stackPane);
+                    }
+                }
+            }
+        }
+    }
+
+    private void resetStackPane(StackPane stackPane) {
+        // Réinitialiser les propriétés du StackPane ici
+        // Par exemple, vous pouvez remettre l'opacité à 1, le filtre, etc.
+        stackPane.setStyle(""); // Remettre le style à sa valeur par défaut
+        stackPane.setEffect(null); // Supprimer les effets
+        // Ajoutez d'autres réinitialisations si nécessaire
     }
 
     /**
@@ -160,11 +224,34 @@ public class VueMonster implements Observer {
         String imagePath = determineImagePath(cellInfo);
         Image image = new Image(getClass().getResourceAsStream(imagePath));
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(50);
-        imageView.setFitHeight(50);
+        imageView.setFitWidth(40);
+        imageView.setFitHeight(40);
         stackPane.getChildren().add(imageView);
 
         return stackPane;
+    }
+
+    /**
+     * Applique le brouillard sur la cellule si activé.
+     *
+     * @param stackPane Le StackPane de la cellule.
+     */
+    private void applyFogOfWarOne(StackPane stackPane) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(-0.88); // Ajustez la luminosité en fonction de vos besoins
+
+        stackPane.setEffect(colorAdjust);
+        stackPane.setBlendMode(BlendMode.MULTIPLY);
+    }
+
+    /**
+     * Active ou désactive le brouillard.
+     *
+     * @param fogEnabled true pour activer le brouillard, false pour le désactiver.
+     */
+    public void setFogEnabled(boolean fogEnabled) {
+        setFogOfWar(fogEnabled);
+        chargePlateau(); // Mettre à jour la grille après avoir activé/désactivé le brouillard
     }
 
     /**
@@ -180,7 +267,7 @@ public class VueMonster implements Observer {
             case MONSTER:
                 return "loup.jpg";
             case EXIT:
-                return "monstre.avif";
+                return "sortie.png";
             default:
                 return "green.jpg";
         }
@@ -221,6 +308,7 @@ public class VueMonster implements Observer {
 
             // Application du style aux panneaux
             applyPaneStyles(existingStackPane, monsterStackPane);
+
         }
     }
 
@@ -316,15 +404,15 @@ public class VueMonster implements Observer {
      */
     private void styleGridPane(double imageSize) {
         gridPane.setStyle("-fx-background-color: #ececec;");
-        gridPane.setPadding(new Insets(20));
+        gridPane.setPadding(new Insets(5));
         gridPane.setHgap(1);
         gridPane.setVgap(1);
 
         for (Node node : gridPane.getChildren()) {
             if (node instanceof StackPane) {
                 StackPane stackPane = (StackPane) node;
-                stackPane.setMinSize(imageSize, imageSize);
-                stackPane.setMaxSize(imageSize, imageSize);
+                stackPane.setMinSize(40, 40);
+                stackPane.setMaxSize(40, 40);
             }
         }
     }
@@ -381,10 +469,18 @@ public class VueMonster implements Observer {
      * Ferme tous les stages ouverts dans l'application.
      */
     private void fermerTousLesStages() {
+        List<Stage> stagesToClose = new ArrayList<>();
+
+        // Collect open stages
         for (Window window : Window.getWindows()) {
             if (window instanceof Stage && !((Stage) window).isIconified()) {
-                ((Stage) window).close();
+                stagesToClose.add((Stage) window);
             }
+        }
+
+        // Close the collected stages
+        for (Stage stage : stagesToClose) {
+            stage.close();
         }
     }
 
@@ -400,6 +496,7 @@ public class VueMonster implements Observer {
             int row = coordonnees.getRow();
             int col = coordonnees.getCol();
             updatePlateau(row, col);
+
         }
     }
 }

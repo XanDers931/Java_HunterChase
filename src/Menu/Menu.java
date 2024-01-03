@@ -14,6 +14,8 @@ import javafx.stage.Stage;
  */
 public class Menu {
 
+    private String css = this.getClass().getResource("application.css").toExternalForm();
+
     /**
      * Crée et configure la scène du menu principal du jeu "Monster Hunter".
      *
@@ -29,6 +31,7 @@ public class Menu {
 
             // Créer la scène
             Scene scene = new Scene(root);
+            scene.getStylesheets().add(css);
 
             // Configurer la scène et afficher la fenêtre
             stage.setTitle("Monster Hunter");

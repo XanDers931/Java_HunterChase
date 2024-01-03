@@ -1,5 +1,8 @@
 package View;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import Controller.ControlHunter;
 import Controller.ControlHunterBot;
 import Controller.ControlHunterPlayer;
@@ -43,6 +46,8 @@ public class VueHunter implements Observer {
 
     /** Le label affichant les informations actuelles. */
     private Label currentLabel;
+
+    private VBox mainBox;
 
     /**
      * Constructeur de la classe VueHunter.
@@ -98,6 +103,10 @@ public class VueHunter implements Observer {
         this.currentLabel = currentLabel;
     }
 
+    public Scene getScene() {
+        return stage.getScene();
+    }
+
     /**
      * Crée et configure le stage (fenêtre) associé à cette vue.
      *
@@ -114,17 +123,22 @@ public class VueHunter implements Observer {
         controlleur.hMouvement();
         styleGridPane(gridPane, imageSize);
 
-        int rowCount = hunter.getGameModel().getMap().getRow() + 1;
-        int colCount = hunter.getGameModel().getMap().getCol() + 1;
+        int rowCount = hunter.getGameModel().getMap().getRow() + 2;
+        int colCount = hunter.getGameModel().getMap().getCol() + 2;
         VBox vboxCurrent = new VBox();
         currentLabel = new Label("C'est au tour du Monstre");
         vboxCurrent.getChildren().add(currentLabel);
         vboxCurrent.setAlignment(Pos.CENTER);
 
         VBox vbox = new VBox(hbox, vboxCurrent, gridPane);
-        Scene scene = new Scene(vbox, colCount * imageSize, rowCount * imageSize);
+        this.mainBox = vbox;
+        Scene scene = new Scene(vbox, colCount * 40, rowCount * 40);
         stage.setScene(scene);
         return stage;
+    }
+
+    public VBox getMainBox() {
+        return mainBox;
     }
 
     /**
@@ -184,11 +198,16 @@ public class VueHunter implements Observer {
     private StackPane createStackPaneWithBorder(CellInfo cellInfo) {
         StackPane stackPane = new StackPane();
         String imagePath = determineImagePath(cellInfo);
-        Image image = new Image(getClass().getResourceAsStream(imagePath));
+        Image image = null;
+        try {
+            image = new Image(getClass().getResourceAsStream(imagePath));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(50);
-        imageView.setFitHeight(50);
+        imageView.setFitWidth(40);
+        imageView.setFitHeight(40);
 
         stackPane.getChildren().add(imageView);
 
@@ -297,8 +316,8 @@ public class VueHunter implements Observer {
         for (Node node : pane.getChildren()) {
             if (node instanceof ImageView) {
                 ImageView imageView = (ImageView) node;
-                imageView.setFitWidth(imageSize);
-                imageView.setFitHeight(imageSize);
+                imageView.setFitWidth(40);
+                imageView.setFitHeight(40);
             }
         }
     }
@@ -340,14 +359,24 @@ public class VueHunter implements Observer {
 
     public void fermerStage() {
         Stage stage = (Stage) gridPane.getScene().getWindow();
-        stage.close();
+        if (stage != null) {
+            stage.close();
+        }
     }
 
     private void fermerTousLesStages() {
+        List<Stage> stagesToClose = new ArrayList<>();
+
+        // Collect open stages
         for (Window window : Window.getWindows()) {
             if (window instanceof Stage && !((Stage) window).isIconified()) {
-                ((Stage) window).close();
+                stagesToClose.add((Stage) window);
             }
+        }
+
+        // Close the collected stages
+        for (Stage stage : stagesToClose) {
+            stage.close();
         }
     }
 

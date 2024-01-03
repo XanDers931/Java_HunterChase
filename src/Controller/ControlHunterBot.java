@@ -2,6 +2,7 @@ package Controller;
 
 import Model.HunterStrategy;
 import Utils.Coordinate;
+import View.GameView;
 import View.VueHunter;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
@@ -57,7 +58,7 @@ public class ControlHunterBot implements ControlHunter {
      * intervalles réguliers.
      */
     public void hMouvement() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             HunterStrategy strategy = new HunterStrategy();
             ICoordinate coordinate = strategy.play();
             int clickedRow = coordinate.getRow();
@@ -80,6 +81,7 @@ public class ControlHunterBot implements ControlHunter {
             } else {
                 view.getCurrentLabel().setText("C'est au tour du Chasseur");
             }
+
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le
         // rafraîchissement continuera indéfiniment.

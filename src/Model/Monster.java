@@ -122,6 +122,16 @@ public class Monster extends Subject {
         return (dx >= 0 && dx <= 1 && dy >= 0 && dy <= 1);
     }
 
+    public boolean isWithinRange(int currentX, int currentY, int newX, int newY, int range) {
+        int dx = Math.abs(newX - currentX);
+        int dy = Math.abs(newY - currentY);
+
+        // Vérifiez si les coordonnées (newX, newY) sont adjacentes avec une portée de
+        // range
+        // cases
+        return !(dx >= 0 && dx <= range && dy >= 0 && dy <= range);
+    }
+
     /**
      * Déplace le monstre vers les nouvelles coordonnées (x, y) sur la grille.
      *

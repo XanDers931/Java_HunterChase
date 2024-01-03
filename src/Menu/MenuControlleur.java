@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
+import View.GameView;
 import View.VueHunter;
 import View.VueMonster;
 import javafx.event.ActionEvent;
@@ -16,7 +17,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -30,6 +33,9 @@ public class MenuControlleur implements Initializable {
     TextField taille;
 
     @FXML
+    Label label;
+
+    @FXML
     TextField pourcentage;
 
     @FXML
@@ -38,13 +44,31 @@ public class MenuControlleur implements Initializable {
     @FXML
     ComboBox<String> comboBox2;
 
+    @FXML
+    ChoiceBox<String> comboBox3;
+
+    @FXML
+    ChoiceBox<String> fog;
+
     String[] players = { "bot", "joueur" };
+    String[] affichages = { "1 fenêtre", "2 fenêtres" };
+    String[] brouillard = { "activé", "désactivé" };
 
     public static String stringTaillePlateau;
     public static String stringProbaWall;
+    public static String affichage;
+    public static String fogOfWar;
 
     public void option(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("option.fxml"));
+        // Accède au label
+        Label monLabel = (Label) root.lookup("#label");
+
+        // Modifie la valeur du label
+        if (monLabel != null) {
+            monLabel.setText("Hello world !");
+        }
+
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -52,8 +76,13 @@ public class MenuControlleur implements Initializable {
     }
 
     public void retour(ActionEvent e) throws IOException {
+        if (label != null) {
+            label.setText("fnjdnffdnindf");
+        }
         stringTaillePlateau = taille.getText();
         stringProbaWall = pourcentage.getText();
+        affichage = comboBox3.getValue();
+        fogOfWar = fog.getValue();
         Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -106,6 +135,7 @@ public class MenuControlleur implements Initializable {
 
         VueHunter hunterView = new VueHunter(hunter, controlHunter);
         VueMonster monsterView = new VueMonster(monster, hunter, controlMonster);
+        GameView gameView = new GameView(hunter, monster);
 
         // Création des deux stages joueurs
         Stage hunterStage = hunterView.creerStage();
@@ -132,8 +162,38 @@ public class MenuControlleur implements Initializable {
         monsterStage.setY(hunterStage.getY());
         hunterStage.sizeToScene();
         monsterStage.sizeToScene();
-        hunterStage.show();
-        monsterStage.show();
+
+        if (fogOfWar != null) {
+            if (fogOfWar.equals("activé")) {
+                gameView.getVueMonster().setFogEnabled(true);
+                monsterView.setFogEnabled(true);
+            }
+        }
+
+        if (affichage != null) {
+            if (affichage.equals("1 fenêtre")) {
+                gameView.show();
+            } else {
+                if (!controlHunter && controlMonster) {
+                    hunterStage.show();
+                } else if (!controlMonster && controlHunter) {
+                    monsterStage.show();
+                } else {
+                    monsterStage.show();
+                    hunterStage.show();
+                }
+            }
+        } else {
+            if (!controlHunter && controlMonster) {
+                hunterStage.show();
+            } else if (!controlMonster && controlHunter) {
+                monsterStage.show();
+            } else {
+                monsterStage.show();
+                hunterStage.show();
+            }
+        }
+
     }
 
     @Override
@@ -143,6 +203,13 @@ public class MenuControlleur implements Initializable {
         }
         if (comboBox2 != null) {
             comboBox2.getItems().addAll(players);
+        }
+
+        if (comboBox3 != null) {
+            comboBox3.getItems().addAll(affichages);
+        }
+        if (fog != null) {
+            fog.getItems().addAll(brouillard);
         }
     }
 }

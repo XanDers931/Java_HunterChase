@@ -3,6 +3,7 @@ package Controller;
 import Model.Monster;
 import Model.MonsterStrategy;
 import Utils.Coordinate;
+import View.GameView;
 import View.VueMonster;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
@@ -73,9 +74,8 @@ public class ControlMonsterBot implements ControlMonster {
     @Override
     public void mMouvement() {
         MonsterStrategy strategy = new MonsterStrategy();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
             Monster monster = view.getMonster();
-
             if (monster.getGameModel().currentPlayer == 1) {
                 ICoordinate coord = strategy.play();
                 int clickedRow = coord.getRow();
@@ -87,6 +87,9 @@ public class ControlMonsterBot implements ControlMonster {
                     view.showVictoryMessage();
                 } else {
                     if (monster.moveMonster(clickedRow, clickedCol)) {
+                        if (view.isFogOfWar()) {
+                            view.applyFogOfWar(view.getGridPane(), true, 2, clickedRow, clickedCol);
+                        }
                         monster.addCurrentCordMonster(clickedRow, clickedCol);
                         monster.getGameModel().changeCurrentPlayer();
                     }
@@ -107,11 +110,13 @@ public class ControlMonsterBot implements ControlMonster {
             } else {
                 view.getCurrentLabel().setText("C'est au tour du Chasseur");
             }
+
         }));
         // Configure la répétition indéfinie de la timeline, ce qui signifie que le
         // rafraîchissement continuera indéfiniment.
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+
     }
 
     /**
@@ -133,4 +138,5 @@ public class ControlMonsterBot implements ControlMonster {
         }
         return null;
     }
+
 }
