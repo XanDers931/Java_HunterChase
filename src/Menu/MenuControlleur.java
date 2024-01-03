@@ -61,14 +61,6 @@ public class MenuControlleur implements Initializable {
 
     public void option(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("option.fxml"));
-        // Accède au label
-        Label monLabel = (Label) root.lookup("#label");
-
-        // Modifie la valeur du label
-        if (monLabel != null) {
-            monLabel.setText("Hello world !");
-        }
-
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -76,9 +68,6 @@ public class MenuControlleur implements Initializable {
     }
 
     public void retour(ActionEvent e) throws IOException {
-        if (label != null) {
-            label.setText("fnjdnffdnindf");
-        }
         stringTaillePlateau = taille.getText();
         stringProbaWall = pourcentage.getText();
         affichage = comboBox3.getValue();
@@ -130,8 +119,8 @@ public class MenuControlleur implements Initializable {
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
 
-        comboBox.getSelectionModel().selectFirst();
-        comboBox2.getSelectionModel().selectFirst();
+        // comboBox.getSelectionModel().selectFirst();
+        // comboBox2.getSelectionModel().selectFirst();
 
         boolean controlHunter = comboBox2.getValue().equals("bot");
         boolean controlMonster = comboBox.getValue().equals("bot");
