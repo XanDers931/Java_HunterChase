@@ -52,7 +52,7 @@ public class MenuControlleur implements Initializable {
 
     String[] players = { "bot", "joueur" };
     String[] affichages = { "1 fenêtre", "2 fenêtres" };
-    String[] brouillard = { "activé", "désactivé" };
+    String[] brouillard = { "Activé ( brouillard de 1 )", "Activé ( brouillard de 2 )", "Désactivé" };
 
     public static String stringTaillePlateau;
     public static String stringProbaWall;
@@ -60,7 +60,7 @@ public class MenuControlleur implements Initializable {
     public static String fogOfWar;
 
     public void option(ActionEvent e) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("option.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/option.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -72,7 +72,7 @@ public class MenuControlleur implements Initializable {
         stringProbaWall = pourcentage.getText();
         affichage = comboBox3.getValue();
         fogOfWar = fog.getValue();
-        Parent root = FXMLLoader.load(getClass().getResource("Menu.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/Menu.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -85,7 +85,7 @@ public class MenuControlleur implements Initializable {
     }
 
     public void jouer(ActionEvent e) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("PreGame.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/PreGame.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -127,7 +127,7 @@ public class MenuControlleur implements Initializable {
 
         VueHunter hunterView = new VueHunter(hunter, controlHunter);
         VueMonster monsterView = new VueMonster(monster, hunter, controlMonster);
-        GameView gameView = new GameView(hunter, monster);
+        GameView gameView = new GameView(hunter, monster, 1);
 
         // Création des deux stages joueurs
         Stage hunterStage = hunterView.creerStage();
@@ -156,9 +156,12 @@ public class MenuControlleur implements Initializable {
         monsterStage.sizeToScene();
 
         if (fogOfWar != null) {
-            if (fogOfWar.equals("activé")) {
-                gameView.getVueMonster().setFogEnabled(true);
-                monsterView.setFogEnabled(true);
+            if (fogOfWar.equals("Activé ( brouillard de 1 )")) {
+                gameView.getVueMonster().setFogEnabled(true, 1);
+                monsterView.setFogEnabled(true, 1);
+            } else if (fogOfWar.equals("Activé ( brouillard de 2 )")) {
+                gameView.getVueMonster().setFogEnabled(true, 2);
+                monsterView.setFogEnabled(true, 2);
             }
         }
 

@@ -14,7 +14,7 @@ import javafx.stage.Stage;
  */
 public class Menu {
 
-    private String css = this.getClass().getResource("application.css").toExternalForm();
+    private String css = this.getClass().getResource("/res/css/application.css").toExternalForm();
 
     /**
      * Crée et configure la scène du menu principal du jeu "Monster Hunter".
@@ -26,7 +26,7 @@ public class Menu {
             Stage stage = new Stage();
 
             // Charger le fichier FXML associé au menu
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Menu.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/res/fxml/Menu.fxml"));
             Parent root = loader.load();
 
             // Créer la scène

@@ -1,8 +1,5 @@
 package View;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import Controller.ControlHunter;
 import Controller.ControlHunterBot;
 import Controller.ControlHunterPlayer;
@@ -12,26 +9,21 @@ import Utils.Maps;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
-import javafx.application.Platform;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-import Menu.Menu;
 
 /**
  * La classe VueHunter est une classe qui gère l'interface utilisateur pour le
  * chasseur dans le jeu. Elle affiche la grille de jeu, les informations
  * actuelles, et elle permet au joueur (ou à l'IA) de faire des mouvements.
  */
-public class VueHunter implements Observer {
+public class VueHunter extends View.AbstractView implements Observer {
     /** Le chasseur associé à cette vue. */
     private Hunter hunter;
 
@@ -171,50 +163,6 @@ public class VueHunter implements Observer {
     }
 
     /**
-     * Détermine le chemin de l'image associée à la cellule spécifiée.
-     *
-     * @param cellInfo La cellule pour laquelle déterminer le chemin de l'image.
-     * @return Le chemin de l'image associée à la cellule.
-     */
-    private String determineImagePath(CellInfo cellInfo) {
-        switch (cellInfo) {
-            case WALL:
-                return "trou.jpg";
-            case MONSTER:
-                return "loup.jpg";
-            case EXIT:
-                return "monstre.avif";
-            default:
-                return "green.jpg";
-        }
-    }
-
-    /**
-     * Crée un StackPane avec une bordure autour de l'image associée à la cellule.
-     *
-     * @param cellInfo La cellule pour laquelle créer le StackPane.
-     * @return Le StackPane créé.
-     */
-    private StackPane createStackPaneWithBorder(CellInfo cellInfo) {
-        StackPane stackPane = new StackPane();
-        String imagePath = determineImagePath(cellInfo);
-        Image image = null;
-        try {
-            image = new Image(getClass().getResourceAsStream(imagePath));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
-
-        stackPane.getChildren().add(imageView);
-
-        return stackPane;
-    }
-
-    /**
      * Met à jour la grille de jeu après un mouvement du chasseur.
      */
     public void updatePlateau() {
@@ -231,9 +179,6 @@ public class VueHunter implements Observer {
 
             // Mise à jour de l'image de la case cliquée
             updateClickedImage(existingStackPane, clickedRow, clickedCol);
-
-            // Mise à jour du style de l'image
-            updateImageStyle(existingStackPane);
 
             // Vérification et ajout d'un label s'il y a un chemin
             addPathLabel(existingStackPane, clickedRow, clickedCol);
@@ -258,16 +203,6 @@ public class VueHunter implements Observer {
     }
 
     /**
-     * Met à jour le style de l'image de la case cliquée.
-     *
-     * @param existingStackPane Le StackPane existant pour la case cliquée.
-     */
-    private void updateImageStyle(StackPane existingStackPane) {
-        ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
-        existingImageView.setStyle("-fx-border-color: black; -fx-border-width: 0.5;");
-    }
-
-    /**
      * Ajoute un label avec le chemin s'il y a un chemin dans la case cliquée.
      *
      * @param existingStackPane Le StackPane existant pour la case cliquée.
@@ -283,101 +218,12 @@ public class VueHunter implements Observer {
     }
 
     /**
-     * Retourne le nœud correspondant à l'indice de ligne et de colonne spécifié
-     * dans le GridPane.
-     *
-     * @param row      L'indice de la ligne.
-     * @param column   L'indice de la colonne.
-     * @param gridPane Le GridPane dans lequel chercher le nœud.
-     * @return Le nœud correspondant à l'indice de ligne et de colonne, ou null si
-     *         non trouvé.
-     */
-    private Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                return node;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Applique des styles au GridPane pour améliorer l'apparence.
-     *
-     * @param pane      Le GridPane à styliser.
-     * @param imageSize La taille des images.
-     */
-    public void styleGridPane(GridPane pane, double imageSize) {
-        pane.setStyle("-fx-background-color: #ececec;");
-        pane.setPadding(new Insets(2));
-        pane.setHgap(1);
-        pane.setVgap(1);
-
-        for (Node node : pane.getChildren()) {
-            if (node instanceof ImageView) {
-                ImageView imageView = (ImageView) node;
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
-            }
-        }
-    }
-
-    /**
      * Getter pour le stage (fenêtre) associé à cette vue.
      *
      * @return Le stage associé à cette vue.
      */
     public Stage getStage() {
         return this.stage;
-    }
-
-    public void showVictoryMessage() {
-        Stage victoryStage = new Stage();
-        victoryStage.setTitle("Victory!");
-        Label victoryLabel = new Label("Congratulations! Hunter won!");
-        Button replay = new Button("Retour au menu");
-        replay.setOnAction(e -> {
-            Menu menu = new Menu();
-            victoryStage.close();
-            fermerTousLesStages();
-            fermerStage();
-            menu.createStage().show();
-        });
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> {
-            // Ferme toutes les fenêtres ouvertes
-            victoryStage.close();
-            Platform.exit();
-        });
-        VBox vbox = new VBox(victoryLabel, replay, closeButton);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(20);
-        Scene victoryScene = new Scene(vbox, 300, 200);
-        victoryStage.setScene(victoryScene);
-        victoryStage.show();
-    }
-
-    public void fermerStage() {
-        Stage stage = (Stage) gridPane.getScene().getWindow();
-        if (stage != null) {
-            stage.close();
-        }
-    }
-
-    private void fermerTousLesStages() {
-        List<Stage> stagesToClose = new ArrayList<>();
-
-        // Collect open stages
-        for (Window window : Window.getWindows()) {
-            if (window instanceof Stage && !((Stage) window).isIconified()) {
-                stagesToClose.add((Stage) window);
-            }
-        }
-
-        // Close the collected stages
-        for (Stage stage : stagesToClose) {
-            stage.close();
-        }
     }
 
     @Override
@@ -389,4 +235,5 @@ public class VueHunter implements Observer {
     public void update(Subject subj, Object data) {
         updatePlateau();
     }
+
 }

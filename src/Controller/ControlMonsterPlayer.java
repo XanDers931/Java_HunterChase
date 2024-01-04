@@ -118,7 +118,7 @@ public class ControlMonsterPlayer implements ControlMonster {
 
         if (monster.victory(clickedRow, clickedCol) && monster.moveMonster(clickedRow, clickedCol)) {
             gameModel.currentPlayer = 3;
-            view.showVictoryMessage();
+            view.showVictoryMessage(view.getGridPane(), "monster");
         } else {
             handleMonsterMove(monster, clickedRow, clickedCol);
         }
@@ -134,7 +134,7 @@ public class ControlMonsterPlayer implements ControlMonster {
     private void handleMonsterMove(Monster monster, int clickedRow, int clickedCol) {
         if (monster.moveMonster(clickedRow, clickedCol)) {
             if (view.isFogOfWar()) {
-                view.applyFogOfWar(view.getGridPane(), true, 2, clickedRow, clickedCol);
+                view.applyFogOfWar(view.getGridPane(), true, view.getRangeOfFog(), clickedRow, clickedCol);
             }
             monster.addCurrentCordMonster(clickedRow, clickedCol);
             monster.getGameModel().changeCurrentPlayer();

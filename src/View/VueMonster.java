@@ -1,11 +1,9 @@
 package View;
 
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.ColorAdjust;
@@ -14,15 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.Window;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import Controller.ControlMonster;
 import Controller.ControlMonsterBot;
 import Controller.ControlMonsterPlayer;
-import Menu.Menu;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
@@ -36,7 +28,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
  * monstre dans le jeu. Elle affiche la grille de jeu, les informations
  * actuelles, et elle permet au joueur (ou à l'IA) de faire des mouvements.
  */
-public class VueMonster implements Observer {
+public class VueMonster extends AbstractView implements Observer {
     /** Le monstre associé à cette vue. */
     private Monster monster;
 
@@ -51,6 +43,16 @@ public class VueMonster implements Observer {
 
     /** Le label affichant les informations actuelles. */
     private Label currentLabel;
+
+    private int rangeOfFog;
+
+    public int getRangeOfFog() {
+        return rangeOfFog;
+    }
+
+    public void setRangeOfFog(int rangeOfFog) {
+        this.rangeOfFog = rangeOfFog;
+    }
 
     /**
      * Boolean du brouillard mis de base à false , cela veut dire que le brouillard
@@ -131,10 +133,9 @@ public class VueMonster implements Observer {
         currentLabel = new Label("C'est au tour du Monstre");
         vbox.getChildren().add(currentLabel);
         vbox.setAlignment(Pos.CENTER);
-        int imageSize = 50;
         controlleur.mMouvement();
         VBox vboxall = new VBox(hbox, vbox, gridPane);
-        styleGridPane(imageSize);
+        styleGridPane(gridPane, 40);
         int rowCount = monster.getGameModel().getMap().getRow() + 2;
         int colCount = monster.getGameModel().getMap().getCol() + 2;
         Scene scene = new Scene(vboxall, 40 * rowCount, 40 * colCount);
@@ -173,7 +174,7 @@ public class VueMonster implements Observer {
 
                 // Brouillard de deux
                 if (fogOfWar && monster.isWithinRange(coordMonster.getRow(),
-                        coordMonster.getCol(), i, j, 2)) {
+                        coordMonster.getCol(), i, j, rangeOfFog)) {
                     applyFogOfWarOne(stackPane);
                 }
 
@@ -210,25 +211,6 @@ public class VueMonster implements Observer {
         // Par exemple, vous pouvez remettre l'opacité à 1, le filtre, etc.
         stackPane.setStyle(""); // Remettre le style à sa valeur par défaut
         stackPane.setEffect(null); // Supprimer les effets
-        // Ajoutez d'autres réinitialisations si nécessaire
-    }
-
-    /**
-     * Crée un StackPane avec une bordure autour de l'image associée à la cellule.
-     *
-     * @param cellInfo La cellule pour laquelle créer le StackPane.
-     * @return Le StackPane créé.
-     */
-    private StackPane createStackPaneWithBorder(CellInfo cellInfo) {
-        StackPane stackPane = new StackPane();
-        String imagePath = determineImagePath(cellInfo);
-        Image image = new Image(getClass().getResourceAsStream(imagePath));
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(40);
-        imageView.setFitHeight(40);
-        stackPane.getChildren().add(imageView);
-
-        return stackPane;
     }
 
     /**
@@ -249,28 +231,10 @@ public class VueMonster implements Observer {
      *
      * @param fogEnabled true pour activer le brouillard, false pour le désactiver.
      */
-    public void setFogEnabled(boolean fogEnabled) {
+    public void setFogEnabled(boolean fogEnabled, int rangeOfFog) {
+        this.rangeOfFog = rangeOfFog;
         setFogOfWar(fogEnabled);
         chargePlateau(); // Mettre à jour la grille après avoir activé/désactivé le brouillard
-    }
-
-    /**
-     * Détermine le chemin de l'image associée à la cellule spécifiée.
-     *
-     * @param cellInfo La cellule pour laquelle déterminer le chemin de l'image.
-     * @return Le chemin de l'image associée à la cellule.
-     */
-    private String determineImagePath(CellInfo cellInfo) {
-        switch (cellInfo) {
-            case WALL:
-                return "trou.jpg";
-            case MONSTER:
-                return "loup.jpg";
-            case EXIT:
-                return "sortie.png";
-            default:
-                return "green.jpg";
-        }
     }
 
     /**
@@ -305,9 +269,6 @@ public class VueMonster implements Observer {
 
             // Mise à jour de l'image cliquée
             updateClickedImage(existingStackPane);
-
-            // Application du style aux panneaux
-            applyPaneStyles(existingStackPane, monsterStackPane);
 
         }
     }
@@ -368,120 +329,12 @@ public class VueMonster implements Observer {
     }
 
     /**
-     * Applique des styles aux panneaux pour améliorer l'apparence.
-     *
-     * @param existingStackPane Le StackPane de la cellule cliquée.
-     * @param monsterStackPane  Le StackPane du monstre.
-     */
-    private void applyPaneStyles(StackPane existingStackPane, StackPane monsterStackPane) {
-        existingStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
-        monsterStackPane.setStyle("-fx-border-color: black; -fx-border-width: 1;");
-    }
-
-    /**
-     * Retourne le nœud correspondant à l'indice de ligne et de colonne spécifié
-     * dans le GridPane.
-     *
-     * @param row      L'indice de la ligne.
-     * @param column   L'indice de la colonne.
-     * @param gridPane Le GridPane dans lequel chercher le nœud.
-     * @return Le nœud correspondant à l'indice de ligne et de colonne, ou null si
-     *         non trouvé.
-     */
-    public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                return node;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Applique des styles au GridPane pour améliorer l'apparence.
-     *
-     * @param imageSize La taille des images.
-     */
-    private void styleGridPane(double imageSize) {
-        gridPane.setStyle("-fx-background-color: #ececec;");
-        gridPane.setPadding(new Insets(5));
-        gridPane.setHgap(1);
-        gridPane.setVgap(1);
-
-        for (Node node : gridPane.getChildren()) {
-            if (node instanceof StackPane) {
-                StackPane stackPane = (StackPane) node;
-                stackPane.setMinSize(40, 40);
-                stackPane.setMaxSize(40, 40);
-            }
-        }
-    }
-
-    /**
      * Getter pour le stage (fenêtre) associé à cette vue.
      *
      * @return Le stage associé à cette vue.
      */
     public Stage getStage() {
         return this.stage;
-    }
-
-    /**
-     * Affiche un message de victoire lorsque le monstre gagne.
-     */
-    public void showVictoryMessage() {
-        Stage victoryStage = new Stage();
-        victoryStage.setTitle("Victory!");
-        Label victoryLabel = new Label("Congratulations! Monster won!");
-        Button replay = new Button("Retour au menu");
-        replay.setOnAction(e -> {
-            Menu menu = new Menu();
-            victoryStage.close();
-            fermerTousLesStages();
-            fermerStage();
-            menu.createStage().show();
-        });
-
-        Button closeButton = new Button("Close");
-        closeButton.setOnAction(e -> {
-            // Ferme toutes les fenêtres ouvertes
-            victoryStage.close();
-            fermerTousLesStages();
-            fermerStage();
-        });
-        VBox vbox = new VBox(victoryLabel, replay, closeButton);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setSpacing(20);
-        Scene victoryScene = new Scene(vbox, 300, 200);
-        victoryStage.setScene(victoryScene);
-        victoryStage.show();
-    }
-
-    /**
-     * Ferme le stage associé à cette vue.
-     */
-    public void fermerStage() {
-        Stage stage = (Stage) gridPane.getScene().getWindow();
-        stage.close();
-    }
-
-    /**
-     * Ferme tous les stages ouverts dans l'application.
-     */
-    private void fermerTousLesStages() {
-        List<Stage> stagesToClose = new ArrayList<>();
-
-        // Collect open stages
-        for (Window window : Window.getWindows()) {
-            if (window instanceof Stage && !((Stage) window).isIconified()) {
-                stagesToClose.add((Stage) window);
-            }
-        }
-
-        // Close the collected stages
-        for (Stage stage : stagesToClose) {
-            stage.close();
-        }
     }
 
     @Override

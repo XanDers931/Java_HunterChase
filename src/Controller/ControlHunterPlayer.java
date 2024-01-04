@@ -115,7 +115,7 @@ public class ControlHunterPlayer implements ControlHunter {
 
         if (hunter.victory(clickedRow, clickedCol)) {
             gameModel.currentPlayer = 3;
-            view.showVictoryMessage();
+            view.showVictoryMessage(view.getGridPane(), "hunter");
         } else {
             gameModel.changeCurrentPlayer();
         }

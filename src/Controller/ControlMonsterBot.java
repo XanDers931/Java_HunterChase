@@ -3,15 +3,12 @@ package Controller;
 import Model.Monster;
 import Model.MonsterStrategy;
 import Utils.Coordinate;
-import View.GameView;
 import View.VueMonster;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -84,11 +81,11 @@ public class ControlMonsterBot implements ControlMonster {
 
                 if (monster.victory(clickedRow, clickedCol) && monster.moveMonster(clickedRow, clickedCol)) {
                     monster.getGameModel().currentPlayer = 3;
-                    view.showVictoryMessage();
+                    view.showVictoryMessage(view.getGridPane(), "monster");
                 } else {
                     if (monster.moveMonster(clickedRow, clickedCol)) {
                         if (view.isFogOfWar()) {
-                            view.applyFogOfWar(view.getGridPane(), true, 2, clickedRow, clickedCol);
+                            view.applyFogOfWar(view.getGridPane(), true, view.getRangeOfFog(), clickedRow, clickedCol);
                         }
                         monster.addCurrentCordMonster(clickedRow, clickedCol);
                         monster.getGameModel().changeCurrentPlayer();
@@ -97,7 +94,8 @@ public class ControlMonsterBot implements ControlMonster {
             }
 
             Coordinate cord = view.getMonster().getHunted();
-            StackPane stackPane = getStackPaneByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
+            StackPane stackPane = (StackPane) view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(),
+                    view.getGridPane());
             if (stackPane != null) {
                 ImageView imageView = (ImageView) stackPane.getChildren().get(0);
                 ColorAdjust color = new ColorAdjust();
@@ -117,26 +115,6 @@ public class ControlMonsterBot implements ControlMonster {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
 
-    }
-
-    /**
-     * Obtient la StackPane associée à une position donnée dans une grille.
-     *
-     * @param row      L'indice de ligne.
-     * @param column   L'indice de colonne.
-     * @param gridPane La grille dans laquelle rechercher.
-     * @return La StackPane associée à la position spécifiée, ou null si non
-     *         trouvée.
-     */
-    public StackPane getStackPaneByRowColumnIndex(final int row, final int column, GridPane gridPane) {
-        for (Node node : gridPane.getChildren()) {
-            if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
-                if (node instanceof StackPane) {
-                    return (StackPane) node;
-                }
-            }
-        }
-        return null;
     }
 
 }

@@ -2,7 +2,6 @@ package Controller;
 
 import Model.HunterStrategy;
 import Utils.Coordinate;
-import View.GameView;
 import View.VueHunter;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
@@ -70,7 +69,7 @@ public class ControlHunterBot implements ControlHunter {
                 view.getHunter().shoot(clickedRow, clickedCol);
                 if (view.getHunter().victory(clickedRow, clickedCol)) {
                     view.getHunter().getGameModel().currentPlayer = 3;
-                    view.showVictoryMessage();
+                    view.showVictoryMessage(view.getGridPane(), "hunter");
                 } else {
                     view.getHunter().getGameModel().changeCurrentPlayer();
                 }
