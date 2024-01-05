@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -50,31 +51,48 @@ public class MenuControlleur implements Initializable {
     @FXML
     ChoiceBox<String> fog;
 
+    @FXML
+    Slider sliderObstacle;
+
+    @FXML
+    Slider sliderTaille;
+
+    @FXML
+    Label labelPlateau;
+
+    @FXML
+    Label labelObstacle;
+
     String[] players = { "bot", "joueur" };
     String[] affichages = { "1 fenêtre", "2 fenêtres" };
     String[] brouillard = { "Activé ( brouillard de 1 )", "Activé ( brouillard de 2 )", "Désactivé" };
 
-    public static String stringTaillePlateau;
-    public static String stringProbaWall;
+    public static int intTaillePlateau;
+    public static int intProbaWall;
     public static String affichage;
     public static String fogOfWar;
+
+    private String cssMenu = this.getClass().getResource("/res/css/application.css").toExternalForm();
+    private String cssOption = this.getClass().getResource("/res/css/option.css").toExternalForm();
 
     public void option(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/option.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
+        scene.getStylesheets().add(cssOption);
         stage.setScene(scene);
         stage.show();
     }
 
     public void retour(ActionEvent e) throws IOException {
-        stringTaillePlateau = taille.getText();
-        stringProbaWall = pourcentage.getText();
+        intTaillePlateau = (int) sliderTaille.getValue();
+        intProbaWall = (int) sliderObstacle.getValue();
         affichage = comboBox3.getValue();
         fogOfWar = fog.getValue();
         Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/Menu.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
+        scene.getStylesheets().add(cssMenu);
         stage.setScene(scene);
         stage.show();
     }
@@ -98,14 +116,12 @@ public class MenuControlleur implements Initializable {
 
         int size = 10;
 
-        if (stringTaillePlateau != null) {
-            size = Integer.parseInt(stringTaillePlateau);
-        }
+        size = intTaillePlateau;
+
         int probaWall = 20;
 
-        if (stringProbaWall != null) {
-            probaWall = Integer.parseInt(stringProbaWall);
-        }
+        probaWall = intProbaWall;
+
         // Création des objets
         GameModel gameModel = new GameModel(null, null, size, probaWall);
         // Ensuite, utilisez ce GameModel pour créer un Monster
@@ -118,9 +134,6 @@ public class MenuControlleur implements Initializable {
         // nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
-
-        // comboBox.getSelectionModel().selectFirst();
-        // comboBox2.getSelectionModel().selectFirst();
 
         boolean controlHunter = comboBox2.getValue().equals("bot");
         boolean controlMonster = comboBox.getValue().equals("bot");
@@ -193,6 +206,17 @@ public class MenuControlleur implements Initializable {
 
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
+        if (sliderTaille != null) {
+            sliderTaille.valueProperty().addListener((observable, oldValue, newValue) -> {
+                labelPlateau.setText(String.valueOf(newValue.intValue()));
+            });
+        }
+        if (sliderObstacle != null) {
+            sliderObstacle.valueProperty().addListener((observable, oldValue, newValue) -> {
+                labelObstacle.setText(String.valueOf(newValue.intValue()));
+            });
+        }
+
         if (comboBox != null) {
             comboBox.getItems().addAll(players);
         }

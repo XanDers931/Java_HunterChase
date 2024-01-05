@@ -2,6 +2,7 @@ package Controller;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.ImageView;
@@ -199,5 +200,29 @@ public class ControlMonsterPlayer implements ControlMonster {
             }
         }
         return null;
+    }
+
+    public void applyFogOfWar(GridPane gridPane) {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        for (Node node : children) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
+
+                if (colIndex != null && rowIndex != null) {
+                    // On remet la case à la valeur de base avant de la (re) modifier
+                    resetStackPane(stackPane);
+                }
+            }
+        }
+    }
+
+    private void resetStackPane(StackPane stackPane) {
+        // Réinitialiser les propriétés du StackPane ici
+        // Par exemple, vous pouvez remettre l'opacité à 1, le filtre, etc.
+        stackPane.setStyle(""); // Remettre le style à sa valeur par défaut
+        stackPane.setEffect(null); // Supprimer les effets
     }
 }
