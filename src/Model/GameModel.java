@@ -153,6 +153,10 @@ public class GameModel {
         }
     }
 
+    public int getSizeOfMap() {
+        return map.getCol();
+    }
+
     /**
      * Exécute un tour de jeu.
      */

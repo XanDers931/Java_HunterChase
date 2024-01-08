@@ -112,6 +112,7 @@ public class ControlHunterPlayer implements ControlHunter {
         Model.GameModel gameModel = hunter.getGameModel();
 
         hunter.shoot(clickedRow, clickedCol);
+        view.resetAllEffect();
 
         if (hunter.victory(clickedRow, clickedCol)) {
             gameModel.currentPlayer = 3;

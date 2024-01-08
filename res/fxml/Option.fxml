@@ -31,7 +31,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <ChoiceBox fx:id="fog" layoutX="225.0" layoutY="226.0" prefWidth="150.0"  styleClass="fog" />
+      <ChoiceBox fx:id="fog" layoutX="225.0" layoutY="226.0" prefWidth="150.0" styleClass="fog" />
       <Slider fx:id="sliderTaille" blockIncrement="1.0" layoutX="219.0" layoutY="73.0" max="16.0" min="8.0" />
       <Slider fx:id="sliderObstacle" blockIncrement="5.0" layoutX="219.0" layoutY="162.0" max="40.0" />
       <Label fx:id="labelPlateau" layoutX="181.0" layoutY="70.0" prefHeight="23.0" prefWidth="26.0" text="8">
@@ -39,7 +39,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelObstacle" layoutX="181.0" layoutY="158.0" prefHeight="23.0" prefWidth="26.0" text="8">
+      <Label fx:id="labelObstacle" layoutX="181.0" layoutY="158.0" prefHeight="23.0" prefWidth="26.0" text="0">
          <font>
             <Font size="18.0" />
          </font>
