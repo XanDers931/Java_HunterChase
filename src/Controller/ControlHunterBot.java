@@ -3,7 +3,6 @@ package Controller;
 import Model.HunterStrategy;
 import Utils.Coordinate;
 import View.VueHunter;
-import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.util.Duration;
@@ -53,6 +52,7 @@ public class ControlHunterBot implements ControlHunter {
     public ControlHunterBot(VueHunter view) {
         this.view = view;
         this.lastCaseClicked = new Coordinate(-1, -1);
+        this.clickedCase = new Coordinate(-1, -1);
     }
 
     /**
@@ -64,8 +64,8 @@ public class ControlHunterBot implements ControlHunter {
      */
     public void hMouvement() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            HunterStrategy strategy = new HunterStrategy();
-            Coordinate coordinate = strategy.smartPlay(lastCaseClicked, view);
+            HunterStrategy strategy = (HunterStrategy) view.getHunter().getStrategy();
+            Coordinate coordinate = strategy.smartPlay(clickedCase, view);
             int clickedRow = coordinate.getRow();
             int clickedCol = coordinate.getCol();
 

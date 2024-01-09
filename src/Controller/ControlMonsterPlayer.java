@@ -163,6 +163,7 @@ public class ControlMonsterPlayer implements ControlMonster {
      */
     public void refresh() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+            view.resetAllEffectImageView(view.getGridPane());
             Coordinate cord = view.getMonster().getHunted();
             StackPane stackPane = getStackPaneByRowColumnIndex(cord.getRow(), cord.getCol(), view.getGridPane());
             if (stackPane != null) {

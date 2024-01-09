@@ -30,8 +30,12 @@ public class Maps {
     private CellInfo[][] map;
     private boolean[][] mapShoot;
 
-    public Maps(int row, int col, int probaWall) {
-        this.map = randomInitMap(row, col, probaWall);
+    public Maps(int row, int col, int probaWall, boolean predefinedLaby) {
+        if (predefinedLaby) {
+            readMapFromCSV(10, 10);
+        } else {
+            this.map = randomInitMap(row, col, probaWall);
+        }
         this.row = row;
         this.col = col;
         initShoot(row);

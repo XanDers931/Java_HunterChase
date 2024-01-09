@@ -4,12 +4,15 @@ import Utils.Coordinate;
 import View.VueHunter;
 import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent;
+
 public class HunterStrategy implements IHunterStrategy {
+
+   Coordinate sizeOfMap;
 
    @Override
    public Coordinate play() {
-      int tailleCol = GameModel.map.getCol();
-      int tailleRow = GameModel.map.getRow();
+      int tailleCol = sizeOfMap.getCol();
+      int tailleRow = sizeOfMap.getRow();
 
       int caseToPlayCol = (int) (Math.random() * tailleCol);
       int caseToPlayRow = (int) (Math.random() * tailleRow);
@@ -19,28 +22,32 @@ public class HunterStrategy implements IHunterStrategy {
       return caseToPlay;
    }
 
-   public Coordinate smartPlay(Coordinate lastCaseClicked, VueHunter view){
-      if(lastCaseClicked.getRow()==-1){
+   public Coordinate smartPlay(Coordinate lastCaseClicked, VueHunter view) {
+      if (lastCaseClicked.getRow() == -1) {
          return play();
       }
-      if(view.getHunter().getGameModel().getPath().containsKey(lastCaseClicked)){
+      if (view.getHunter().getGameModel().getPath().containsKey(lastCaseClicked)) {
          int nbTour = view.getHunter().getGameModel().getPath().get(lastCaseClicked);
 
-         int maxCol = lastCaseClicked.getCol()+nbTour;
-         int minCol = lastCaseClicked.getCol()-nbTour;
-         int maxRow = lastCaseClicked.getRow()+nbTour;
-         int minRow = lastCaseClicked.getRow()-nbTour;
+         int maxCol = lastCaseClicked.getCol() + nbTour;
+         int minCol = lastCaseClicked.getCol() - nbTour;
+         int maxRow = lastCaseClicked.getRow() + nbTour;
+         int minRow = lastCaseClicked.getRow() - nbTour;
 
          int tailleCol = GameModel.map.getCol();
          int tailleRow = GameModel.map.getRow();
 
-         if(maxCol>tailleCol) maxCol = tailleCol;
-         if(minCol<0) minCol = 0;
-         if(maxRow>tailleRow) maxRow = tailleRow;
-         if(minRow<0) minRow = 0;
+         if (maxCol > tailleCol)
+            maxCol = tailleCol;
+         if (minCol < 0)
+            minCol = 0;
+         if (maxRow > tailleRow)
+            maxRow = tailleRow;
+         if (minRow < 0)
+            minRow = 0;
 
-         int caseToPlayCol = (int) (Math.random() * (maxCol-minCol));
-         int caseToPlayRow = (int) (Math.random() * (maxRow-minRow));
+         int caseToPlayCol = (int) (Math.random() * (maxCol - minCol));
+         int caseToPlayRow = (int) (Math.random() * (maxRow - minRow));
 
          Coordinate caseToPlay = new Coordinate(caseToPlayRow, caseToPlayCol);
 
@@ -56,7 +63,7 @@ public class HunterStrategy implements IHunterStrategy {
 
    @Override
    public void initialize(int arg0, int arg1) {
-      // do nothing
+      this.sizeOfMap = new Coordinate(arg0, arg1);
    }
 
 }

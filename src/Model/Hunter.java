@@ -2,6 +2,7 @@ package Model;
 
 import Utils.Coordinate;
 import Utils.Subject;
+import fr.univlille.iutinfo.cam.player.hunter.IHunterStrategy;
 
 /**
  * La classe Hunter représente le chasseur dans le jeu "Monster Hunter". Un
@@ -21,16 +22,19 @@ public class Hunter extends Subject {
     /** Indique si le chasseur peut se déplacer. */
     private boolean canMoove;
 
+    private IHunterStrategy strategy;
+
     /**
      * Constructeur de la classe Hunter.
      *
      * @param nickname  Pseudo du chasseur.
      * @param gameModel Modèle du jeu associé au chasseur.
      */
-    public Hunter(String nickname, GameModel gameModel) {
+    public Hunter(String nickname, GameModel gameModel, IHunterStrategy strategy) {
         this.nickname = nickname;
         this.canMoove = false;
         this.gameModel = gameModel;
+        this.strategy = strategy;
     }
 
     /**
@@ -41,6 +45,14 @@ public class Hunter extends Subject {
      */
     public Coordinate getHunted() {
         return gameModel.getHunted();
+    }
+
+    public IHunterStrategy getStrategy() {
+        return strategy;
+    }
+
+    public void setStrategy(IHunterStrategy strategy) {
+        this.strategy = strategy;
     }
 
     /**
