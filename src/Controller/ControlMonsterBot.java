@@ -74,7 +74,7 @@ public class ControlMonsterBot implements ControlMonster {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
             Monster monster = view.getMonster();
             if (monster.getGameModel().currentPlayer == 1) {
-                ICoordinate coord = strategy.play();
+                ICoordinate coord = strategy.playBrouilard();
                 int clickedRow = coord.getRow();
                 int clickedCol = coord.getCol();
                 this.clickedCase = new Coordinate(clickedRow, clickedCol);

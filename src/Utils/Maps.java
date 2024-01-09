@@ -131,8 +131,8 @@ public class Maps {
     // minimum
     public ArrayList<Coordinate> initCheckedMap(int rowsLength, int colsLength, int probaWall) {
         Solveur solv = new Solveur(randomInitMap(rowsLength, colsLength, probaWall));
-        ArrayList<Coordinate> coords = solv.estFaisable();
-        while ((coords = solv.estFaisable()) == null || coords.size() <= 5) {
+        ArrayList<Coordinate> coords = solv.estFaisable(false);
+        while ((coords = solv.estFaisable(false)) == null || coords.size() <= 5) {
             solv.setMap(randomInitMap(rowsLength, colsLength, probaWall));
         }
         System.out.println(coords);

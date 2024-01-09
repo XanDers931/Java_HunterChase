@@ -9,7 +9,7 @@ import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 public class MonsterStrategy implements IMonsterStrategy {
 
     Utils.Solveur solve = new Utils.Solveur(GameModel.map.getMaps());
-    ArrayList<Utils.Coordinate> solution = solve.estFaisable();
+    ArrayList<Utils.Coordinate> solution = solve.estFaisable(false);
 
     @Override
     public ICoordinate play() {
@@ -32,4 +32,14 @@ public class MonsterStrategy implements IMonsterStrategy {
         // do nothing
     }
 
+    public ICoordinate playBrouilard() {
+        ICoordinate caseToPlay = null;
+        solve.updateModeBrouillard();
+        solution = solve.estFaisable(true);
+        System.out.println(solution);
+        if (solution.size() > 0) {
+            caseToPlay = solution.get(0);        
+        }
+        return caseToPlay;
+    }
 }

@@ -74,4 +74,8 @@ public class File<E> {
     public boolean isEmpty() {
         return cells.isEmpty();
     }
+
+    public ArrayList<E> getCells() {
+        return cells;
+    }
 }
