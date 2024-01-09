@@ -1,5 +1,7 @@
 package View;
 
+import java.util.ArrayList;
+
 import Controller.ControlHunter;
 import Controller.ControlHunterBot;
 import Controller.ControlHunterPlayer;
@@ -9,13 +11,18 @@ import Utils.Maps;
 import Utils.Observer;
 import Utils.Subject;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 /**
@@ -41,6 +48,8 @@ public class VueHunter extends View.AbstractView implements Observer {
 
     private VBox mainBox;
 
+    private boolean tipAvailable;
+
     /**
      * Constructeur de la classe VueHunter.
      *
@@ -57,6 +66,7 @@ public class VueHunter extends View.AbstractView implements Observer {
         }
         this.stage = creerStage();
         hunter.attach(this);
+        this.tipAvailable = true;
     }
 
     /**
@@ -119,10 +129,18 @@ public class VueHunter extends View.AbstractView implements Observer {
         int colCount = hunter.getGameModel().getMap().getCol() + 2;
         VBox vboxCurrent = new VBox();
         currentLabel = new Label("C'est au tour du Monstre");
+
+        Button tip = new Button("Aide");
+        VBox tips = new VBox();
+        tips.getChildren().add(tip);
+        tip.setOnAction(e -> {
+            showTipMessage();
+        });
+        tip.setAlignment(Pos.TOP_RIGHT);
         vboxCurrent.getChildren().add(currentLabel);
         vboxCurrent.setAlignment(Pos.CENTER);
 
-        VBox vbox = new VBox(hbox, vboxCurrent, gridPane);
+        VBox vbox = new VBox(hbox, vboxCurrent, tips, gridPane);
         this.mainBox = vbox;
         Scene scene = new Scene(vbox, colCount * 40, rowCount * 40);
         stage.setScene(scene);
@@ -215,6 +233,97 @@ public class VueHunter extends View.AbstractView implements Observer {
             Label label = new Label(String.valueOf(path));
             existingStackPane.getChildren().add(label);
         }
+    }
+
+    private void showRangeOfMonster(int range) {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        resetAllEffect();
+
+        // Calculez la nouvelle portée du monstre
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+        int monsterRow = hunter.getGameModel().getMonster().getCordMonster().getRow();
+        int monsterCol = hunter.getGameModel().getMonster().getCordMonster().getCol();
+
+        for (int i = 0; i < hunter.getGameModel().getSizeOfMap(); i++) {
+            for (int j = 0; j < hunter.getGameModel().getSizeOfMap(); j++) {
+                if (!hunter.isWithinRange(monsterRow, monsterCol, i, j, range)) {
+                    Coordinate newCoord = new Coordinate(i, j);
+                    if (!coordinates.contains(newCoord)) {
+                        coordinates.add(newCoord);
+                    }
+                }
+            }
+        }
+
+        // Appliquez l'effet uniquement aux cases dans la portée du monstre
+        for (Node node : children) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                Integer colIndex = GridPane.getColumnIndex(node);
+                Integer rowIndex = GridPane.getRowIndex(node);
+
+                if (colIndex != null && rowIndex != null) {
+                    for (Coordinate coord : coordinates) {
+                        if (coord.getRow() == rowIndex && coord.getCol() == colIndex) {
+                            // Réinitialisez l'effet avant de l'appliquer
+                            stackPane.setEffect(null);
+                            applyColorEffect(stackPane, Color.ALICEBLUE);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public void resetAllEffect() {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        // Réinitialisez l'effet pour toutes les cases
+        for (Node node : children) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                stackPane.setEffect(null);
+            }
+        }
+    }
+
+    private void applyColorEffect(StackPane stackPane, Color newColor) {
+        ColorAdjust colorAdjust = new ColorAdjust();
+        colorAdjust.setBrightness(0.80);
+
+        stackPane.setEffect(colorAdjust);
+        stackPane.setBlendMode(BlendMode.MULTIPLY);
+    }
+
+    public void showTipMessage() {
+        Stage tipStage = new Stage();
+        tipStage.setTitle("Message d'aide ");
+        Label text = new Label(
+                "Si vous voulez de l'aide vous pouvez appuyer \n sur boutton juste en dessous,\n cela permettra d'activer une couleur blachâtre sur la map, \n cette zone signifie \n que le monstre se situe quelque part dans cette zone au moment \n ou vous activez l'aide. Cette aide n'est valable \n qu'une seule fois ;)");
+        Label alreadyUse = new Label();
+        Button activateTip = new Button("Activer l'aider");
+        Button backToGame = new Button("Retourner au jeu ");
+        text.setAlignment(Pos.CENTER);
+        activateTip.setOnAction(e -> {
+            if (tipAvailable) {
+                showRangeOfMonster((int) hunter.getGameModel().getSizeOfMap() / 4);
+                tipAvailable = !tipAvailable;
+            } else {
+                alreadyUse.setText("Tu a déja utiliser ton aide !");
+            }
+        });
+        alreadyUse.setStyle("-fx-text-fill: red;");
+
+        backToGame.setOnAction(e -> {
+            tipStage.close();
+        });
+        VBox vbox = new VBox(text, alreadyUse, activateTip, backToGame);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setSpacing(20);
+        Scene tipScene = new Scene(vbox, 400, 340);
+        tipStage.setScene(tipScene);
+        tipStage.show();
     }
 
     /**

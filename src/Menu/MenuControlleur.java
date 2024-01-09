@@ -115,12 +115,12 @@ public class MenuControlleur implements Initializable {
         stage.close();
 
         int size = 10;
-
-        size = intTaillePlateau;
-
         int probaWall = 20;
 
-        probaWall = intProbaWall;
+        if (size <= 0 || probaWall <= 0) {
+            size = 10;
+            probaWall = 20;
+        }
 
         // Création des objets
         GameModel gameModel = new GameModel(null, null, size, probaWall);
@@ -134,9 +134,14 @@ public class MenuControlleur implements Initializable {
         // nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
-
-        boolean controlHunter = comboBox2.getValue().equals("bot");
-        boolean controlMonster = comboBox.getValue().equals("bot");
+        boolean controlHunter = false;
+        boolean controlMonster = false;
+        try {
+            controlHunter = comboBox2.getValue().equals("bot");
+            controlMonster = comboBox.getValue().equals("bot");
+        } catch (Exception exception) {
+            exception.printStackTrace();
+        }
 
         VueHunter hunterView = new VueHunter(hunter, controlHunter);
         VueMonster monsterView = new VueMonster(monster, hunter, controlMonster);

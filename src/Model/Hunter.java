@@ -110,6 +110,16 @@ public class Hunter extends Subject {
         performActionThatChangesState(x, y);
     }
 
+    public boolean isWithinRange(int currentX, int currentY, int newX, int newY, int range) {
+        int dx = Math.abs(newX - currentX);
+        int dy = Math.abs(newY - currentY);
+
+        // Vérifiez si les coordonnées (newX, newY) sont adjacentes avec une portée de
+        // range
+        // cases
+        return !(dx >= 0 && dx <= range && dy >= 0 && dy <= range);
+    }
+
     /**
      * Effectue des opérations qui modifient l'état du chasseur.
      *
