@@ -41,12 +41,18 @@ public class ControlHunterBot implements ControlHunter {
     public Coordinate clickedCase;
 
     /**
+     * Coordonnée de la dernière case cliqué par le chasseur
+     */
+    public Coordinate lastCaseClicked;
+
+    /**
      * Constructeur de la classe ControlHunterBot.
      *
      * @param view La VueHunter associée à cette instance.
      */
     public ControlHunterBot(VueHunter view) {
         this.view = view;
+        this.lastCaseClicked = new Coordinate(-1, -1);
     }
 
     /**
@@ -59,7 +65,7 @@ public class ControlHunterBot implements ControlHunter {
     public void hMouvement() {
         Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
             HunterStrategy strategy = new HunterStrategy();
-            ICoordinate coordinate = strategy.play();
+            Coordinate coordinate = strategy.smartPlay(lastCaseClicked, view);
             int clickedRow = coordinate.getRow();
             int clickedCol = coordinate.getCol();
 
