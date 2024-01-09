@@ -92,7 +92,9 @@ public class ControlMonsterBot implements ControlMonster {
                     }
                 }
             }
-            view.resetAllEffectImageView(view.getGridPane());
+            if (!view.isFogOfWar()) {
+                view.resetAllEffectImageView(view.getGridPane());
+            }
             Coordinate cord = view.getMonster().getHunted();
             StackPane stackPane = (StackPane) view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(),
                     view.getGridPane());
