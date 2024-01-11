@@ -179,7 +179,7 @@ public class MenuControlleur implements Initializable {
      * @throws IOException En cas d'erreur lors de l'initialisation et de
      *                     l'affichage du jeu.
      */
-    public void play(ActionEvent e) throws IOException {
+    public void play(ActionEvent e) {
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
 
@@ -214,7 +214,7 @@ public class MenuControlleur implements Initializable {
             controlHunter = comboBox2.getValue().equals("bot");
             controlMonster = comboBox.getValue().equals("bot");
         } catch (Exception exception) {
-            exception.printStackTrace();
+            exception.getMessage();
         }
         if (controlHunter) {
             hunter.setStrategy(new HunterStrategy());

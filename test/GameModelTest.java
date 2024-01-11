@@ -1,8 +1,6 @@
 package test;
 
 import Model.GameModel;
-import Model.Hunter;
-import Model.Monster;
 import Utils.Coordinate;
 import Utils.Maps;
 
@@ -15,12 +13,13 @@ import java.util.Map;
 public class GameModelTest {
     GameModel gameModel = new GameModel(null, null, 10, 20, false);
 
-@Test
+    @Test
     public void testGetTurn() {
         // Appelez la méthode getTurn
         int result = gameModel.getTurn();
 
-        // Ajoutez une assertion pour vérifier que le numéro du tour obtenu est égal à 0 (valeur initiale)
+        // Ajoutez une assertion pour vérifier que le numéro du tour obtenu est égal à 0
+        // (valeur initiale)
         assertEquals(0, result);
     }
 
@@ -33,10 +32,12 @@ public class GameModelTest {
         // Appelez la méthode addPath avec les coordonnées
         gameModel.addPath(coordinate);
 
-        // Appelez la méthode getPath pour obtenir le numéro du tour pour les coordonnées spécifiées
+        // Appelez la méthode getPath pour obtenir le numéro du tour pour les
+        // coordonnées spécifiées
         int result = gameModel.getPath(coordinate);
 
-        // Ajoutez une assertion pour vérifier que le numéro du tour obtenu est égal à 1 (tour suivant)
+        // Ajoutez une assertion pour vérifier que le numéro du tour obtenu est égal à 1
+        // (tour suivant)
         assertEquals(1, result);
     }
 
@@ -48,7 +49,8 @@ public class GameModelTest {
         // Appelez la méthode isMonster avec les coordonnées
         boolean result = gameModel.isMonster(coordinate);
 
-        // Ajoutez une assertion pour vérifier que le résultat obtenu est faux (la case ne contient pas le monstre)
+        // Ajoutez une assertion pour vérifier que le résultat obtenu est faux (la case
+        // ne contient pas le monstre)
         assertFalse(result);
     }
 
@@ -63,7 +65,8 @@ public class GameModelTest {
         // Obtenez le joueur actuel après le changement
         int currentPlayerAfter = gameModel.currentPlayer;
 
-        // Ajoutez une assertion pour vérifier que le joueur actuel après le changement est différent de celui avant
+        // Ajoutez une assertion pour vérifier que le joueur actuel après le changement
+        // est différent de celui avant
         assertNotEquals(currentPlayerBefore, currentPlayerAfter);
     }
 
@@ -78,7 +81,8 @@ public class GameModelTest {
         // Obtenez le numéro du tour après l'exécution de Playround
         int turnAfter = gameModel.getTurn();
 
-        // Ajoutez une assertion pour vérifier que le numéro du tour après l'exécution de Playround est égal à celui avant plus 1
+        // Ajoutez une assertion pour vérifier que le numéro du tour après l'exécution
+        // de Playround est égal à celui avant plus 1
         assertEquals(turnBefore + 1, turnAfter);
     }
 
@@ -87,10 +91,10 @@ public class GameModelTest {
         // Appelez la méthode getMap
         Maps result = gameModel.getMap();
 
-        // Ajoutez une assertion pour vérifier que la carte obtenue est la même que celle définie initialement
+        // Ajoutez une assertion pour vérifier que la carte obtenue est la même que
+        // celle définie initialement
         assertEquals(Maps.class, result.getClass());
     }
-
 
     @Test
     public void testGetPath() {
@@ -103,7 +107,8 @@ public class GameModelTest {
         // Appelez la méthode getPath pour obtenir le chemin parcouru
         Map<Coordinate, Integer> result = gameModel.getPath();
 
-        // Ajoutez une assertion pour vérifier que le chemin parcouru obtenu contient les coordonnées spécifiées
+        // Ajoutez une assertion pour vérifier que le chemin parcouru obtenu contient
+        // les coordonnées spécifiées
         assertTrue(result.containsKey(coordinate));
     }
 }
