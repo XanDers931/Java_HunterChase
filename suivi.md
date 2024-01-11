@@ -58,12 +58,36 @@
 
 ## Semaine du 11/12 au 17/12
 - **Paul Milleville :**
-    - Suppréssion des println dans les fonctions Solveur
+    - Suppression des println dans les fonctions Solveur
     - Rédaction du suivi.md
 - **Julien Bouin :**
     - Ajout de l'affichage de la case touchée par le chasseur dans le visuel du monstre
     - Refonte Globale du menu 
+    - Ajout de rajadoc + restructuration
 - **Alexandre Martel :**
     - Résolution des bugs dans le menu
     - Ajout des pseudo pour le monstre et le chasseur (TextField) dans le menu
     - Ajout de la fonctionnalité qui permet de retourner au menu après la fin du jeu
+
+## Semaine du 18/12 au 24/12
+- **Alexandre Martel :**
+    - Fix du menu automatique des BOTs
+
+## Semaine du 01/01 au 07/01
+- **Julien Bouin :**
+    - Ajout de la fonctionnalité du brouillard
+    - Finition affichage
+    - fix bug de résolution et menu
+    - Ajout de 2 range de brouillard
+    - Ajout CSS sur le menu
+
+## Semaine du 08/01 au 14/01
+- **Julien Bouin :**
+    - Ajouts de l'aide pour le Hunter
+    - Ajouts du labyrinthe prédéfini
+    - Fix bug de la taille du Plateau et de la probaWall
+- **Paul Milleville :**
+    - IA du monstre avec le Brouillard
+    - Réorganisation code
+    - Mise à jour du fichier suivi.md
+
