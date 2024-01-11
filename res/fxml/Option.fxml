@@ -44,12 +44,12 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelObstacle1" layoutX="26.0" layoutY="158.0" prefHeight="23.0" prefWidth="60.0" text="Valeur : ">
+      <Label fx:id="labelObstacle1" layoutX="-1.0" layoutY="158.0" prefHeight="23.0" prefWidth="93.0" text="Valeur : ">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelPlateau1" layoutX="23.0" layoutY="69.0" prefHeight="23.0" prefWidth="66.0" text="Valeur :">
+      <Label fx:id="labelPlateau1" layoutX="23.0" layoutY="69.0" prefHeight="23.0" prefWidth="87.0" text="Valeur :">
          <font>
             <Font size="18.0" />
          </font>
