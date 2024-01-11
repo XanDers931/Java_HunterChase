@@ -2,6 +2,7 @@ package test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ import Model.Monster;
 import Utils.Coordinate;
 
 public class TestMonster {
+    GameModel gameModel = new GameModel(null, null, 10, 20, false);
     @Test
     void testMoveMonster() {
         // Taille du modèle de jeu pour l'initialisation
@@ -96,5 +98,143 @@ public class TestMonster {
         // Changer à nouveau et vérifier
         monster.changeCanMoove();
         assertTrue(monster.getCanMoove());
+    }
+
+    @Test
+    public void testGetCordMonster() {
+        // Créez une instance de la classe GameModel pour le monstre
+        GameModel gameModel = new GameModel(null, null, 10, 20, false);
+
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode getCordMonster
+        Coordinate result = monster.getCordMonster();
+
+        // Ajoutez une assertion pour vérifier que les coordonnées obtenues sont non nulles
+        assertNotNull(result);
+    }
+    @Test
+    public void testGetStrategy() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode getStrategy
+        Model.MonsterStrategy result = monster.getStrategy();
+
+        // Ajoutez une assertion pour vérifier que la stratégie obtenue est la même que celle définie
+        assertNotNull(result);
+    }
+
+    @Test
+    public void testSetStrategy() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster",gameModel);
+
+        // Créez une instance de la classe MonsterStrategy pour définir la stratégie
+        Model.MonsterStrategy strategy = new Model.MonsterStrategy();
+
+        // Appelez la méthode setStrategy
+        monster.setStrategy(strategy);
+
+        // Appelez la méthode getStrategy pour obtenir la stratégie définie
+        Model.MonsterStrategy result = monster.getStrategy();
+
+        // Ajoutez une assertion pour vérifier que la stratégie obtenue est la même que celle définie
+        assertEquals(strategy, result);
+    }
+
+    @Test
+    public void testGetNickname() {
+        // Créez une instance de la classe Monster avec un pseudo spécifié
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode getNickname
+        String result = monster.getNickname();
+
+        // Ajoutez une assertion pour vérifier que le pseudo obtenu est celui défini
+        assertEquals("TestMonster", result);
+    }
+
+    @Test
+    public void testIsTour() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode isTour
+        boolean result = monster.isTour();
+
+        // Ajoutez une assertion pour vérifier que la valeur obtenue est celle par défaut (true)
+        assertTrue(result);
+    }
+
+    @Test
+    public void testGetCanMoove() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode getCanMoove
+        boolean result = monster.getCanMoove();
+
+        // Ajoutez une assertion pour vérifier que la valeur obtenue est celle par défaut (true)
+        assertTrue(result);
+    }
+
+    @Test
+    public void testIsAdjacent() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode isAdjacent avec des coordonnées adjacentes
+        boolean result = monster.isAdjacent(1, 1, 1, 2);
+
+        // Ajoutez une assertion pour vérifier que la valeur obtenue est true
+        assertTrue(result);
+    }
+
+    @Test
+    public void testAddCurrentCordMonster() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster",gameModel);
+
+        // Appelez la méthode addCurrentCordMonster avec des coordonnées
+        monster.addCurrentCordMonster(3, 4);
+
+        // Appelez la méthode getCordMonster pour obtenir les nouvelles coordonnées
+        Coordinate result = monster.getCordMonster();
+
+        // Ajoutez une assertion pour vérifier que les coordonnées obtenues sont les mêmes que celles définies
+        assertEquals(new Coordinate(3, 4), result);
+    }
+
+
+    @Test
+    public void testChangeCanMoove() {
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode changeCanMoove
+        monster.changeCanMoove();
+
+        // Appelez la méthode getCanMoove pour obtenir la nouvelle valeur
+        boolean result = monster.getCanMoove();
+
+        // Ajoutez une assertion pour vérifier que la valeur obtenue est inversée
+        assertFalse(result);
+    }
+
+    @Test
+    public void testGetHunted() {
+        // Créez une instance de la classe GameModel pour le monstre
+        GameModel gameModel = new GameModel(null, null, 10, 20, false);
+
+        // Créez une instance de la classe Monster
+        Monster monster = new Monster("TestMonster", gameModel);
+
+        // Appelez la méthode getHunted
+        Coordinate result = monster.getHunted();
+
+        // Ajoutez une assertion pour vérifier que les coordonnées obtenues sont non nulles
+        assertNotNull(result);
     }
 }

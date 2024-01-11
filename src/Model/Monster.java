@@ -114,7 +114,7 @@ public class Monster extends Subject {
      * @param newY     Coordonnée y nouvelle du monstre.
      * @return True si les coordonnées sont adjacentes, sinon False.
      */
-    private boolean isAdjacent(int currentX, int currentY, int newX, int newY) {
+    public boolean isAdjacent(int currentX, int currentY, int newX, int newY) {
         int dx = Math.abs(newX - currentX);
         int dy = Math.abs(newY - currentY);
         // Vérifiez si les coordonnées (newX, newY) sont adjacentes horizontalement,
