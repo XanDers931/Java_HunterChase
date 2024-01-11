@@ -4,7 +4,6 @@ import Model.Monster;
 import Model.MonsterStrategy;
 import Utils.Coordinate;
 import View.VueMonster;
-import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;

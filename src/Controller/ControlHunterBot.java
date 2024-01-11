@@ -57,13 +57,13 @@ public class ControlHunterBot implements ControlHunter {
 
     private void handleHunterMovement() {
         HunterStrategy strategy = (HunterStrategy) view.getHunter().getStrategy();
-        Coordinate coordinate = strategy.smartPlay(clickedCase, view);
-        int clickedRow = coordinate.getRow();
-        int clickedCol = coordinate.getCol();
-
-        this.clickedCase = new Coordinate(clickedRow, clickedCol);
-
         if (view.getHunter().getGameModel().currentPlayer == 2) {
+            Coordinate coordinate = strategy.smartPlay(clickedCase, view);
+            int clickedRow = coordinate.getRow();
+            int clickedCol = coordinate.getCol();
+
+            this.clickedCase = new Coordinate(clickedRow, clickedCol);
+
             view.getHunter().shoot(clickedRow, clickedCol);
             if (view.getHunter().victory(clickedRow, clickedCol)) {
                 view.getHunter().getGameModel().currentPlayer = 3;

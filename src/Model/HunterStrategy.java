@@ -9,16 +9,19 @@ public class HunterStrategy implements IHunterStrategy {
 
    Coordinate sizeOfMap;
 
+   
+
    @Override
    public Coordinate play() {
-      int tailleCol = sizeOfMap.getCol();
-      int tailleRow = sizeOfMap.getRow();
+      int tailleMinCol = 1;
+      int tailleMaxCol = sizeOfMap.getCol()-1;
+      int tailleMinRow = 1;
+      int tailleMaxRow = sizeOfMap.getRow()-1;
 
-      int caseToPlayCol = (int) (Math.random() * tailleCol);
-      int caseToPlayRow = (int) (Math.random() * tailleRow);
+      int caseToPlayCol = tailleMinCol + (int) (Math.random() * (tailleMaxCol-tailleMinCol));
+      int caseToPlayRow = tailleMinRow + (int) (Math.random() * (tailleMaxRow-tailleMinRow));
 
       Coordinate caseToPlay = new Coordinate(caseToPlayRow, caseToPlayCol);
-
       return caseToPlay;
    }
 
@@ -37,20 +40,19 @@ public class HunterStrategy implements IHunterStrategy {
          int tailleCol = GameModel.map.getCol();
          int tailleRow = GameModel.map.getRow();
 
-         if (maxCol > tailleCol)
-            maxCol = tailleCol;
-         if (minCol < 0)
-            minCol = 0;
-         if (maxRow > tailleRow)
-            maxRow = tailleRow;
-         if (minRow < 0)
-            minRow = 0;
+         if (maxCol >= tailleCol)
+            maxCol = tailleCol-1;
+         if (minCol <= 0)
+            minCol = 1;
+         if (maxRow >= tailleRow)
+            maxRow = tailleRow-1;
+         if (minRow <= 0)
+            minRow = 1;
 
-         int caseToPlayCol = (int) (Math.random() * (maxCol - minCol));
-         int caseToPlayRow = (int) (Math.random() * (maxRow - minRow));
+         int caseToPlayCol = minCol + (int) (Math.random() * (maxCol - minCol));
+         int caseToPlayRow = minRow + (int) (Math.random() * (maxRow - minRow));
 
          Coordinate caseToPlay = new Coordinate(caseToPlayRow, caseToPlayCol);
-
          return caseToPlay;
       }
       return play();

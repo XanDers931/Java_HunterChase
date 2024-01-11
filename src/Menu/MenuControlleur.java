@@ -82,7 +82,7 @@ public class MenuControlleur implements Initializable {
     private String cssOption = this.getClass().getResource("/res/css/option.css").toExternalForm();
 
     public void option(ActionEvent e) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/option.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/Option.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
         scene.getStylesheets().add(cssOption);
@@ -132,6 +132,7 @@ public class MenuControlleur implements Initializable {
 
         if (labyrinth != null) {
             if (labyrinth.equals("Activé")) {
+                size = 10;
                 isPredefined = true;
             }
         }
