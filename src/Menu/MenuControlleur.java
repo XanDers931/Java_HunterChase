@@ -1,3 +1,10 @@
+/**
+ * La classe MenuControlleur est le contrôleur associé à l'interface utilisateur du menu principal du jeu.
+ * Elle implémente l'interface Initializable de JavaFX pour l'initialisation des composants.
+ *
+ * Les fonctionnalités principales de cette classe incluent la gestion des actions liées aux boutons du menu,
+ * la récupération des options sélectionnées par l'utilisateur, et la navigation entre différentes vues du jeu.
+ */
 package Menu;
 
 import java.io.IOException;
@@ -26,11 +33,19 @@ import javafx.scene.control.TextField;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * La classe MenuControlleur implémente l'interface Initializable de JavaFX.
+ * Elle gère les actions liées au menu principal du jeu.
+ */
 public class MenuControlleur implements Initializable {
+
+    // Déclarations de membres pour la gestion de la scène et des composants
+    // graphiques du menu
     Stage stage;
     Parent root;
     Scene scene;
 
+    // Déclarations de composants graphiques utilisés dans le menu
     @FXML
     TextField taille;
 
@@ -67,20 +82,30 @@ public class MenuControlleur implements Initializable {
     @FXML
     ChoiceBox<String> laby;
 
+    // Tableaux de valeurs pour les options du jeu
     String[] players = { "bot", "joueur" };
     String[] affichages = { "1 fenêtre", "2 fenêtres" };
     String[] brouillard = { "Activé ( brouillard de 1 )", "Activé ( brouillard de 2 )", "Désactivé" };
     String[] labyrinthOption = { "Activé", "Désactivé" };
 
+    // Variables statiques pour stocker les options sélectionnées
     public static int intTaillePlateau;
     public static int intProbaWall;
     public static String affichage;
     public static String fogOfWar;
     public static String labyrinth;
 
+    // Chemins vers les feuilles de style CSS
     private String cssMenu = this.getClass().getResource("/res/css/application.css").toExternalForm();
     private String cssOption = this.getClass().getResource("/res/css/option.css").toExternalForm();
 
+    /**
+     * Méthode appelée lors du clic sur le bouton "Option". Charge la vue des
+     * options du jeu.
+     *
+     * @param e Objet ActionEvent représentant l'événement de clic.
+     * @throws IOException En cas d'erreur lors du chargement de la vue des options.
+     */
     public void option(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/Option.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -90,12 +115,25 @@ public class MenuControlleur implements Initializable {
         stage.show();
     }
 
+    /**
+     * Méthode appelée lors du clic sur le bouton "Retour". Enregistre les options
+     * sélectionnées
+     * par l'utilisateur et retourne à la vue du menu principal.
+     *
+     * @param e Objet ActionEvent représentant l'événement de clic.
+     * @throws IOException En cas d'erreur lors du chargement de la vue du menu
+     *                     principal.
+     */
     public void retour(ActionEvent e) throws IOException {
-        intTaillePlateau = (int) sliderTaille.getValue();
-        intProbaWall = (int) sliderObstacle.getValue();
-        affichage = comboBox3.getValue();
-        fogOfWar = fog.getValue();
-        labyrinth = laby.getValue();
+        try {
+            intTaillePlateau = (int) sliderTaille.getValue();
+            intProbaWall = (int) sliderObstacle.getValue();
+            affichage = comboBox3.getValue();
+            fogOfWar = fog.getValue();
+            labyrinth = laby.getValue();
+        } catch (Exception exception) {
+            exception.getMessage();
+        }
         Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/Menu.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -104,11 +142,25 @@ public class MenuControlleur implements Initializable {
         stage.show();
     }
 
+    /**
+     * Méthode appelée lors du clic sur le bouton "Quitter". Ferme l'application.
+     *
+     * @param e Objet ActionEvent représentant l'événement de clic.
+     * @throws IOException En cas d'erreur lors de la fermeture de l'application.
+     */
     public void quitter(ActionEvent e) throws IOException {
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Méthode appelée lors du clic sur le bouton "Jouer". Charge la vue de
+     * préparation du jeu.
+     *
+     * @param e Objet ActionEvent représentant l'événement de clic.
+     * @throws IOException En cas d'erreur lors du chargement de la vue de
+     *                     préparation du jeu.
+     */
     public void jouer(ActionEvent e) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/PreGame.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
@@ -117,6 +169,16 @@ public class MenuControlleur implements Initializable {
         stage.show();
     }
 
+    /**
+     * Méthode appelée lors du clic sur le bouton "Play". Initialise le jeu en
+     * fonction des options
+     * sélectionnées par l'utilisateur et affiche les vues du chasseur et du
+     * monstre.
+     *
+     * @param e Objet ActionEvent représentant l'événement de clic.
+     * @throws IOException En cas d'erreur lors de l'initialisation et de
+     *                     l'affichage du jeu.
+     */
     public void play(ActionEvent e) throws IOException {
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
@@ -137,16 +199,12 @@ public class MenuControlleur implements Initializable {
             }
         }
 
-        // Création des objets
         GameModel gameModel = new GameModel(null, null, size, probaWall, isPredefined);
-        // Ensuite, utilisez ce GameModel pour créer un Monster
+
         Monster monster = new Monster("STYLESHEET_CASPIAN", gameModel);
 
-        // Puis, utilisez le GameModel et le Monster pour créer un Hunter
         Hunter hunter = new Hunter("STYLESHEET_CASPIAN", gameModel, null);
 
-        // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si
-        // nécessaire
         gameModel.setMonster(monster);
         gameModel.setHunter(hunter);
         boolean controlHunter = false;
@@ -229,6 +287,13 @@ public class MenuControlleur implements Initializable {
 
     }
 
+    /**
+     * Méthode d'initialisation appelée lors de la création de la vue.
+     * Initialise les composants graphiques et leurs écouteurs d'événements.
+     *
+     * @param arg0 URL de localisation non utilisée.
+     * @param arg1 ResourceBundle non utilisée.
+     */
     @Override
     public void initialize(URL arg0, ResourceBundle arg1) {
         if (sliderTaille != null) {

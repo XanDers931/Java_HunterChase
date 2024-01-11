@@ -1,3 +1,10 @@
+/**
+ * La classe AbstractView est une classe abstraite qui fournit des méthodes et des fonctionnalités communes
+ * aux vues spécifiques du jeu. Elle contient des méthodes pour la gestion de l'interface utilisateur,
+ * l'affichage des messages de victoire, la réinitialisation des effets, etc.
+ *
+ * Les classes de vue spécifiques du jeu doivent étendre cette classe pour bénéficier de ses fonctionnalités.
+ */
 package View;
 
 import java.util.ArrayList;
@@ -22,6 +29,13 @@ import javafx.stage.Window;
 
 public abstract class AbstractView {
 
+    /**
+     * Détermine le chemin de l'image associée à un type de cellule spécifié.
+     *
+     * @param cellInfo Type de cellule (CellInfo) pour lequel trouver le chemin de
+     *                 l'image.
+     * @return Chemin de l'image associée au type de cellule spécifié.
+     */
     protected String determineImagePath(CellInfo cellInfo) {
         switch (cellInfo) {
             case WALL:
@@ -35,10 +49,39 @@ public abstract class AbstractView {
         }
     }
 
+    /**
+     * Ferme tous les stages (fenêtres) ouverts.
+     */
+    protected void fermerTousLesStages() {
+        List<Stage> stagesToClose = new ArrayList<>();
+
+        // Collecte les stages ouverts
+        for (Window window : Window.getWindows()) {
+            if (window instanceof Stage && !((Stage) window).isIconified()) {
+                stagesToClose.add((Stage) window);
+            }
+        }
+
+        // Ferme les stages collectés
+        for (Stage stage : stagesToClose) {
+            stage.close();
+        }
+    }
+
+    /**
+     * Crée et retourne un StackPane avec une bordure, contenant une image associée
+     * à un type de cellule spécifié.
+     *
+     * @param cellInfo Type de cellule (CellInfo) pour lequel créer le StackPane
+     *                 avec bordure.
+     * @return StackPane avec une bordure contenant l'image associée au type de
+     *         cellule spécifié.
+     */
     protected StackPane createStackPaneWithBorder(CellInfo cellInfo) {
         StackPane stackPane = new StackPane();
         String imagePath = determineImagePath(cellInfo);
         Image image = null;
+
         try {
             image = new Image(getClass().getResourceAsStream(imagePath));
         } catch (Exception e) {
@@ -54,6 +97,16 @@ public abstract class AbstractView {
         return stackPane;
     }
 
+    /**
+     * Récupère le nœud (Node) situé à la position spécifiée dans une grille
+     * (GridPane) en fonction de ses indices de ligne et de colonne.
+     *
+     * @param row      Indice de la ligne du nœud recherché.
+     * @param column   Indice de la colonne du nœud recherché.
+     * @param gridPane Grille (GridPane) dans laquelle rechercher le nœud.
+     * @return Nœud situé à la position spécifiée, ou null si aucun nœud n'est
+     *         trouvé.
+     */
     public Node getNodeByRowColumnIndex(final int row, final int column, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
             if (GridPane.getRowIndex(node) == row && GridPane.getColumnIndex(node) == column) {
@@ -63,6 +116,14 @@ public abstract class AbstractView {
         return null;
     }
 
+    /**
+     * Applique un style prédéfini à une grille (GridPane) en spécifiant la couleur
+     * de fond, le padding, l'espacement horizontal et vertical,
+     * et ajuste la taille des images (ImageView) dans la grille.
+     *
+     * @param pane      La grille (GridPane) à styliser.
+     * @param imageSize La taille souhaitée des images dans la grille.
+     */
     public void styleGridPane(GridPane pane, double imageSize) {
         pane.setStyle("-fx-background-color: #ececec;");
         pane.setPadding(new Insets(1));
@@ -72,25 +133,9 @@ public abstract class AbstractView {
         for (Node node : pane.getChildren()) {
             if (node instanceof ImageView) {
                 ImageView imageView = (ImageView) node;
-                imageView.setFitWidth(40);
-                imageView.setFitHeight(40);
+                imageView.setFitWidth(imageSize);
+                imageView.setFitHeight(imageSize);
             }
-        }
-    }
-
-    protected void fermerTousLesStages() {
-        List<Stage> stagesToClose = new ArrayList<>();
-
-        // Collect open stages
-        for (Window window : Window.getWindows()) {
-            if (window instanceof Stage && !((Stage) window).isIconified()) {
-                stagesToClose.add((Stage) window);
-            }
-        }
-
-        // Close the collected stages
-        for (Stage stage : stagesToClose) {
-            stage.close();
         }
     }
 
@@ -125,6 +170,11 @@ public abstract class AbstractView {
         victoryStage.show();
     }
 
+    /**
+     * Ferme le stage associé à la grille de jeu.
+     *
+     * @param gridPane La grille de jeu dont le stage doit être fermé.
+     */
     public void fermerStage(GridPane gridPane) {
         Stage stage = (Stage) gridPane.getScene().getWindow();
         if (stage != null) {
@@ -132,10 +182,15 @@ public abstract class AbstractView {
         }
     }
 
+    /**
+     * Réinitialise tous les effets appliqués aux cases de la grille de jeu.
+     *
+     * @param gridPane La grille de jeu dont les effets doivent être réinitialisés.
+     */
     public void resetAllEffect(GridPane gridPane) {
         ObservableList<Node> children = gridPane.getChildren();
 
-        // Réinitialisez l'effet pour toutes les cases
+        // Réinitialise l'effet pour toutes les cases
         for (Node node : children) {
             if (node instanceof StackPane) {
                 StackPane stackPane = (StackPane) node;
