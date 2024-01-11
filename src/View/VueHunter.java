@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Controller.ControlHunter;
 import Controller.ControlHunterBot;
 import Controller.ControlHunterPlayer;
+import Model.GameModel;
 import Model.Hunter;
 import Utils.Coordinate;
 import Utils.Maps;
@@ -130,8 +131,8 @@ public class VueHunter extends View.AbstractView implements Observer {
         VBox vboxCurrent = new VBox();
         currentLabel = new Label("C'est au tour du Monstre");
 
-        Button tip = new Button("Aide");
         VBox tips = new VBox();
+        Button tip = new Button("Aide");
         tips.getChildren().add(tip);
         tip.setOnAction(e -> {
             showTipMessage();
@@ -160,7 +161,7 @@ public class VueHunter extends View.AbstractView implements Observer {
      */
     public void chargePlateau(int row, int col, double imageSize) {
         gridPane.getChildren().clear();
-        Maps map = hunter.getGameModel().getMap();
+        Maps map = GameModel.map;
         boolean[][] mapShoot = map.getMapShoot();
         CellInfo[][] maps = map.getMaps();
 
@@ -238,7 +239,7 @@ public class VueHunter extends View.AbstractView implements Observer {
     private void showRangeOfMonster(int range) {
         ObservableList<Node> children = gridPane.getChildren();
 
-        resetAllEffect();
+        resetAllEffect(gridPane);
 
         // Calculez la nouvelle portée du monstre
         ArrayList<Coordinate> coordinates = new ArrayList<>();
@@ -272,18 +273,6 @@ public class VueHunter extends View.AbstractView implements Observer {
                         }
                     }
                 }
-            }
-        }
-    }
-
-    public void resetAllEffect() {
-        ObservableList<Node> children = gridPane.getChildren();
-
-        // Réinitialisez l'effet pour toutes les cases
-        for (Node node : children) {
-            if (node instanceof StackPane) {
-                StackPane stackPane = (StackPane) node;
-                stackPane.setEffect(null);
             }
         }
     }

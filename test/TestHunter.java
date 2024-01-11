@@ -15,10 +15,10 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size, 10);
+        GameModel gameModel = new GameModel(null, null, size, 10, false);
 
         // Créer un Hunter pour le test
-        Hunter hunter = new Hunter("TestHunter", gameModel);
+        Hunter hunter = new Hunter("TestHunter", gameModel, null);
 
         // Simuler la position du monstre
         Monster monster = new Monster("TestMonster", gameModel);
@@ -37,10 +37,10 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size, 10);
+        GameModel gameModel = new GameModel(null, null, size, 10, false);
 
         // Créer un Hunter pour le test
-        Hunter hunter = new Hunter("TestHunter", gameModel);
+        Hunter hunter = new Hunter("TestHunter", gameModel, null);
 
         // Vérifier l'état initial
         assertFalse(hunter.getCanMoove());
@@ -60,10 +60,10 @@ public class TestHunter {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size, 10);
+        GameModel gameModel = new GameModel(null, null, size, 10, false);
 
         // Créer un Hunter pour le test
-        Hunter hunter = new Hunter("TestHunter", gameModel);
+        Hunter hunter = new Hunter("TestHunter", gameModel, null);
 
         // Coordonnées de tir
         int x = 2;

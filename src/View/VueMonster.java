@@ -15,6 +15,7 @@ import javafx.stage.Stage;
 import Controller.ControlMonster;
 import Controller.ControlMonsterBot;
 import Controller.ControlMonsterPlayer;
+import Model.GameModel;
 import Model.Hunter;
 import Model.Monster;
 import Utils.Coordinate;
@@ -166,7 +167,7 @@ public class VueMonster extends AbstractView implements Observer {
      */
     public void chargePlateau() {
         gridPane.getChildren().clear();
-        Maps map = monster.getGameModel().getMap();
+        Maps map = GameModel.map;
         for (int i = 0; i < map.getRow(); i++) {
             for (int j = 0; j < map.getCol(); j++) {
                 StackPane stackPane = createStackPaneWithBorder(map.getMaps()[i][j]);
@@ -326,6 +327,21 @@ public class VueMonster extends AbstractView implements Observer {
         Image imageClicked = new Image(getClass().getResourceAsStream(imagePathClicked));
         ImageView existingImageView = (ImageView) existingStackPane.getChildren().get(0);
         existingImageView.setImage(imageClicked);
+    }
+
+    public void resetAllEffectImageView(GridPane gridPane) {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        // Réinitialisez l'effet pour toutes les cases
+        for (Node node : children) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                ImageView imageView = (ImageView) stackPane.getChildren().get(0);
+                imageView.setEffect(null);
+                stackPane.setEffect(null);
+
+            }
+        }
     }
 
     /**

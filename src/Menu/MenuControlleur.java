@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 
 import Model.GameModel;
 import Model.Hunter;
+import Model.HunterStrategy;
 import Model.Monster;
 import View.GameView;
 import View.VueHunter;
@@ -63,14 +64,19 @@ public class MenuControlleur implements Initializable {
     @FXML
     Label labelObstacle;
 
+    @FXML
+    ChoiceBox<String> laby;
+
     String[] players = { "bot", "joueur" };
     String[] affichages = { "1 fenêtre", "2 fenêtres" };
     String[] brouillard = { "Activé ( brouillard de 1 )", "Activé ( brouillard de 2 )", "Désactivé" };
+    String[] labyrinthOption = { "Activé", "Désactivé" };
 
     public static int intTaillePlateau;
     public static int intProbaWall;
     public static String affichage;
     public static String fogOfWar;
+    public static String labyrinth;
 
     private String cssMenu = this.getClass().getResource("/res/css/application.css").toExternalForm();
     private String cssOption = this.getClass().getResource("/res/css/option.css").toExternalForm();
@@ -89,6 +95,7 @@ public class MenuControlleur implements Initializable {
         intProbaWall = (int) sliderObstacle.getValue();
         affichage = comboBox3.getValue();
         fogOfWar = fog.getValue();
+        labyrinth = laby.getValue();
         Parent root = FXMLLoader.load(getClass().getResource("/res/fxml/Menu.fxml"));
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         scene = new Scene(root);
@@ -114,21 +121,28 @@ public class MenuControlleur implements Initializable {
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
 
-        int size = 10;
-        int probaWall = 20;
+        int size = intTaillePlateau;
+        int probaWall = intProbaWall;
+        boolean isPredefined = false;
 
-        if (size <= 0 || probaWall <= 0) {
+        if (size <= 0 || probaWall < 0) {
             size = 10;
             probaWall = 20;
         }
 
+        if (labyrinth != null) {
+            if (labyrinth.equals("Activé")) {
+                isPredefined = true;
+            }
+        }
+
         // Création des objets
-        GameModel gameModel = new GameModel(null, null, size, probaWall);
+        GameModel gameModel = new GameModel(null, null, size, probaWall, isPredefined);
         // Ensuite, utilisez ce GameModel pour créer un Monster
         Monster monster = new Monster("STYLESHEET_CASPIAN", gameModel);
 
         // Puis, utilisez le GameModel et le Monster pour créer un Hunter
-        Hunter hunter = new Hunter("STYLESHEET_CASPIAN", gameModel);
+        Hunter hunter = new Hunter("STYLESHEET_CASPIAN", gameModel, null);
 
         // Enfin, utilisez le Monster et le Hunter pour mettre à jour le GameModel si
         // nécessaire
@@ -136,11 +150,16 @@ public class MenuControlleur implements Initializable {
         gameModel.setHunter(hunter);
         boolean controlHunter = false;
         boolean controlMonster = false;
+
         try {
             controlHunter = comboBox2.getValue().equals("bot");
             controlMonster = comboBox.getValue().equals("bot");
         } catch (Exception exception) {
             exception.printStackTrace();
+        }
+        if (controlHunter) {
+            hunter.setStrategy(new HunterStrategy());
+            hunter.getStrategy().initialize(size, size);
         }
 
         VueHunter hunterView = new VueHunter(hunter, controlHunter);
@@ -234,6 +253,9 @@ public class MenuControlleur implements Initializable {
         }
         if (fog != null) {
             fog.getItems().addAll(brouillard);
+        }
+        if (laby != null) {
+            laby.getItems().addAll(labyrinthOption);
         }
     }
 }

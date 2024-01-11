@@ -5,6 +5,7 @@ import java.util.List;
 
 import Menu.Menu;
 import fr.univlille.iutinfo.cam.player.perception.ICellEvent.CellInfo;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -128,6 +129,18 @@ public abstract class AbstractView {
         Stage stage = (Stage) gridPane.getScene().getWindow();
         if (stage != null) {
             stage.close();
+        }
+    }
+
+    public void resetAllEffect(GridPane gridPane) {
+        ObservableList<Node> children = gridPane.getChildren();
+
+        // Réinitialisez l'effet pour toutes les cases
+        for (Node node : children) {
+            if (node instanceof StackPane) {
+                StackPane stackPane = (StackPane) node;
+                stackPane.setEffect(null);
+            }
         }
     }
 

@@ -51,11 +51,11 @@ public class GameModel {
      * @param probaWall Probabilité de la présence d'un mur dans une cellule de la
      *                  carte.
      */
-    public GameModel(Monster monster, Hunter hunter, int size, int probaWall) {
+    public GameModel(Monster monster, Hunter hunter, int size, int probaWall, boolean predefinedLaby) {
         this.monster = monster;
         this.hunter = hunter;
         this.turn = 0;
-        map = new Maps(size, size, probaWall);
+        map = new Maps(size, size, probaWall, predefinedLaby);
         this.path = new HashMap<>();
         currentPlayer = 1;
         this.addPath(map.getCordUser(CellInfo.MONSTER));

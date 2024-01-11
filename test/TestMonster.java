@@ -18,7 +18,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size, 10);
+        GameModel gameModel = new GameModel(null, null, size, 10, false);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);
@@ -60,7 +60,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size, 10);
+        GameModel gameModel = new GameModel(null, null, size, 10, false);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);
@@ -81,7 +81,7 @@ public class TestMonster {
         int size = 10;
 
         // Créer un GameModel
-        GameModel gameModel = new GameModel(null, null, size, 10);
+        GameModel gameModel = new GameModel(null, null, size, 10, false);
 
         // Créer un Monster pour le test
         Monster monster = new Monster("TestMonster", gameModel);

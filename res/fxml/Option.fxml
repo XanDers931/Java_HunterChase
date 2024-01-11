@@ -10,7 +10,7 @@
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Menu.MenuControlleur">
    <children>
       <Button fx:id="save" layoutX="257.0" layoutY="350.0" mnemonicParsing="false" onAction="#retour" text="Sauvegarder" textFill="WHITE" />
-      <Label fx:id="label" layoutX="228.0" layoutY="25.0" prefHeight="23.0" prefWidth="165.0" text="Taille du plateau :" underline="true">
+      <Label fx:id="label" layoutX="98.0" layoutY="21.0" prefHeight="23.0" prefWidth="165.0" text="Taille du plateau :" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -21,7 +21,7 @@
          </font>
       </Label>
       <ChoiceBox fx:id="comboBox3" layoutX="225.0" layoutY="299.0" prefWidth="150.0" styleClass="affichage" />
-      <Label fx:id="label11" layoutX="203.0" layoutY="115.0" text="Pourcentage d'obstacles :" underline="true">
+      <Label fx:id="label11" layoutX="68.0" layoutY="111.0" text="Pourcentage d'obstacles :" underline="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -32,27 +32,38 @@
          </font>
       </Label>
       <ChoiceBox fx:id="fog" layoutX="225.0" layoutY="226.0" prefWidth="150.0" styleClass="fog" />
-      <Slider fx:id="sliderTaille" blockIncrement="1.0" layoutX="219.0" layoutY="73.0" max="16.0" min="8.0" />
-      <Slider fx:id="sliderObstacle" blockIncrement="5.0" layoutX="219.0" layoutY="162.0" max="40.0" />
-      <Label fx:id="labelPlateau" layoutX="181.0" layoutY="70.0" prefHeight="23.0" prefWidth="26.0" text="8">
+      <Slider fx:id="sliderTaille" blockIncrement="1.0" layoutX="137.0" layoutY="73.0" max="16.0" min="8.0" />
+      <Slider fx:id="sliderObstacle" blockIncrement="5.0" layoutX="137.0" layoutY="162.0" max="40.0" />
+      <Label fx:id="labelPlateau" layoutX="107.0" layoutY="69.0" prefHeight="23.0" prefWidth="26.0" text="8">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelObstacle" layoutX="181.0" layoutY="158.0" prefHeight="23.0" prefWidth="26.0" text="0">
+      <Label fx:id="labelObstacle" layoutX="107.0" layoutY="158.0" prefHeight="23.0" prefWidth="26.0" text="0">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelObstacle1" layoutX="120.0" layoutY="158.0" prefHeight="23.0" prefWidth="60.0" text="Valeur : ">
+      <Label fx:id="labelObstacle1" layoutX="26.0" layoutY="158.0" prefHeight="23.0" prefWidth="60.0" text="Valeur : ">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="labelPlateau1" layoutX="120.0" layoutY="70.0" prefHeight="23.0" prefWidth="66.0" text="Valeur :">
+      <Label fx:id="labelPlateau1" layoutX="23.0" layoutY="69.0" prefHeight="23.0" prefWidth="66.0" text="Valeur :">
          <font>
             <Font size="18.0" />
          </font>
       </Label>
+      <Label layoutX="294.0" layoutY="89.0" prefHeight="17.0" prefWidth="34.0" text="OU">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label layoutX="319.0" layoutY="19.0" prefHeight="28.0" prefWidth="353.0" text="Utilisation d'un labyrinthe prédefini :" underline="true">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="laby" layoutX="381.0" layoutY="90.0" prefWidth="150.0" styleClass="predefinedLaby" />
    </children>
 </AnchorPane>
