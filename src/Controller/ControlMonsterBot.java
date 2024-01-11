@@ -4,6 +4,7 @@ import Model.Monster;
 import Model.MonsterStrategy;
 import Utils.Coordinate;
 import View.VueMonster;
+import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -26,14 +27,7 @@ import javafx.util.Duration;
  */
 public class ControlMonsterBot implements ControlMonster {
 
-    /**
-     * Vue du monstre associée à cette instance de ControlMonsterBot.
-     */
     private VueMonster view;
-
-    /**
-     * Coordonnée de la case cliquée par le monstre.
-     */
     private Coordinate clickedCase;
 
     /**
@@ -71,52 +65,57 @@ public class ControlMonsterBot implements ControlMonster {
     @Override
     public void mMouvement() {
         MonsterStrategy strategy = new MonsterStrategy();
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> {
-            Monster monster = view.getMonster();
-            if (monster.getGameModel().currentPlayer == 1) {
-                ICoordinate coord = strategy.playBrouilard();
-                int clickedRow = coord.getRow();
-                int clickedCol = coord.getCol();
-                this.clickedCase = new Coordinate(clickedRow, clickedCol);
-
-                if (monster.victory(clickedRow, clickedCol) && monster.moveMonster(clickedRow, clickedCol)) {
-                    monster.getGameModel().currentPlayer = 3;
-                    view.showVictoryMessage(view.getGridPane(), "monster");
-                } else {
-                    if (monster.moveMonster(clickedRow, clickedCol)) {
-                        if (view.isFogOfWar()) {
-                            view.applyFogOfWar(view.getGridPane(), true, view.getRangeOfFog(), clickedRow, clickedCol);
-                        }
-                        monster.addCurrentCordMonster(clickedRow, clickedCol);
-                        monster.getGameModel().changeCurrentPlayer();
-                    }
-                }
-            }
-            if (!view.isFogOfWar()) {
-                view.resetAllEffectImageView(view.getGridPane());
-            }
-            Coordinate cord = view.getMonster().getHunted();
-            StackPane stackPane = (StackPane) view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(),
-                    view.getGridPane());
-            if (stackPane != null) {
-                ImageView imageView = (ImageView) stackPane.getChildren().get(0);
-                ColorAdjust color = new ColorAdjust();
-                color.setHue(0.5);
-                imageView.setEffect(color);
-            }
-
-            if (view.getMonster().getGameModel().currentPlayer == 1) {
-                view.getCurrentLabel().setText("C'est au tour du Monstre");
-            } else {
-                view.getCurrentLabel().setText("C'est au tour du Chasseur");
-            }
-
-        }));
-        // Configure la répétition indéfinie de la timeline, ce qui signifie que le
-        // rafraîchissement continuera indéfiniment.
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(4), event -> handleMonsterMovement(strategy)));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
-
     }
 
+    private void handleMonsterMovement(MonsterStrategy strategy) {
+        Monster monster = view.getMonster();
+        if (monster.getGameModel().currentPlayer == 1) {
+            ICoordinate coord = view.isFogOfWar() ? strategy.playBrouilard() : strategy.play();
+            int clickedRow = coord.getRow();
+            int clickedCol = coord.getCol();
+            this.clickedCase = new Coordinate(clickedRow, clickedCol);
+
+            if (monster.victory(clickedRow, clickedCol) && monster.moveMonster(clickedRow, clickedCol)) {
+                monster.getGameModel().currentPlayer = 3;
+                view.showVictoryMessage(view.getGridPane(), "monster");
+            } else if (monster.moveMonster(clickedRow, clickedCol)) {
+                if (view.isFogOfWar()) {
+                    view.applyFogOfWar(view.getGridPane(), true, view.getRangeOfFog(), clickedRow, clickedCol);
+                }
+                monster.addCurrentCordMonster(clickedRow, clickedCol);
+                monster.getGameModel().changeCurrentPlayer();
+            }
+        }
+
+        if (!view.isFogOfWar()) {
+            view.resetAllEffectImageView(view.getGridPane());
+        }
+
+        updateHuntedColor();
+
+        updateCurrentPlayerLabel();
+    }
+
+    private void updateHuntedColor() {
+        Coordinate cord = view.getMonster().getHunted();
+        StackPane stackPane = (StackPane) view.getNodeByRowColumnIndex(cord.getRow(), cord.getCol(),
+                view.getGridPane());
+        if (stackPane != null) {
+            ImageView imageView = (ImageView) stackPane.getChildren().get(0);
+            ColorAdjust color = new ColorAdjust();
+            color.setHue(0.5);
+            imageView.setEffect(color);
+        }
+    }
+
+    private void updateCurrentPlayerLabel() {
+        if (view.getMonster().getGameModel().currentPlayer == 1) {
+            view.getCurrentLabel().setText("C'est au tour du Monstre");
+        } else {
+            view.getCurrentLabel().setText("C'est au tour du Chasseur");
+        }
+    }
 }

@@ -38,7 +38,7 @@ public class MonsterStrategy implements IMonsterStrategy {
         solution = solve.estFaisable(true);
         System.out.println(solution);
         if (solution.size() > 0) {
-            caseToPlay = solution.get(0);        
+            caseToPlay = solution.get(0);
         }
         return caseToPlay;
     }

@@ -121,11 +121,11 @@ public class MenuControlleur implements Initializable {
         stage = (Stage) ((Node) e.getSource()).getScene().getWindow();
         stage.close();
 
-        int size = 10;
-        int probaWall = 20;
+        int size = intTaillePlateau;
+        int probaWall = intProbaWall;
         boolean isPredefined = false;
 
-        if (size <= 0 || probaWall <= 0) {
+        if (size <= 0 || probaWall < 0) {
             size = 10;
             probaWall = 20;
         }

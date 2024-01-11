@@ -29,20 +29,8 @@ import javafx.util.Duration;
  */
 public class ControlHunterBot implements ControlHunter {
 
-    /**
-     * Vue du chasseur associée à cette instance de ControlHunterBot.
-     */
     public VueHunter view;
-
-    /**
-     * Coordonnée de la case cliquée par le joueur.
-     */
-    public Coordinate clickedCase;
-
-    /**
-     * Coordonnée de la dernière case cliqué par le chasseur
-     */
-    public Coordinate lastCaseClicked;
+    private Coordinate clickedCase;
 
     /**
      * Constructeur de la classe ControlHunterBot.
@@ -51,7 +39,6 @@ public class ControlHunterBot implements ControlHunter {
      */
     public ControlHunterBot(VueHunter view) {
         this.view = view;
-        this.lastCaseClicked = new Coordinate(-1, -1);
         this.clickedCase = new Coordinate(-1, -1);
     }
 
@@ -63,45 +50,42 @@ public class ControlHunterBot implements ControlHunter {
      * intervalles réguliers.
      */
     public void hMouvement() {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> {
-            HunterStrategy strategy = (HunterStrategy) view.getHunter().getStrategy();
-            Coordinate coordinate = strategy.smartPlay(clickedCase, view);
-            int clickedRow = coordinate.getRow();
-            int clickedCol = coordinate.getCol();
-
-            this.clickedCase = new Coordinate(clickedRow, clickedCol);
-
-            if (view.getHunter().getGameModel().currentPlayer == 2) {
-                view.getHunter().shoot(clickedRow, clickedCol);
-                if (view.getHunter().victory(clickedRow, clickedCol)) {
-                    view.getHunter().getGameModel().currentPlayer = 3;
-                    view.showVictoryMessage(view.getGridPane(), "hunter");
-                } else {
-                    view.getHunter().getGameModel().changeCurrentPlayer();
-                }
-                updateHunterPosition(clickedRow, clickedCol);
-            }
-            if (view.getHunter().getGameModel().currentPlayer == 1) {
-                view.getCurrentLabel().setText("C'est au tour du Monstre");
-            } else {
-                view.getCurrentLabel().setText("C'est au tour du Chasseur");
-            }
-
-        }));
-        // Configure la répétition indéfinie de la timeline, ce qui signifie que le
-        // rafraîchissement continuera indéfiniment.
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(3), event -> handleHunterMovement()));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
 
-    /**
-     * Met à jour la position du chasseur.
-     *
-     * @param row L'indice de ligne de la nouvelle position.
-     * @param col L'indice de colonne de la nouvelle position.
-     */
+    private void handleHunterMovement() {
+        HunterStrategy strategy = (HunterStrategy) view.getHunter().getStrategy();
+        Coordinate coordinate = strategy.smartPlay(clickedCase, view);
+        int clickedRow = coordinate.getRow();
+        int clickedCol = coordinate.getCol();
+
+        this.clickedCase = new Coordinate(clickedRow, clickedCol);
+
+        if (view.getHunter().getGameModel().currentPlayer == 2) {
+            view.getHunter().shoot(clickedRow, clickedCol);
+            if (view.getHunter().victory(clickedRow, clickedCol)) {
+                view.getHunter().getGameModel().currentPlayer = 3;
+                view.showVictoryMessage(view.getGridPane(), "hunter");
+            } else {
+                view.getHunter().getGameModel().changeCurrentPlayer();
+            }
+            updateHunterPosition(clickedRow, clickedCol);
+        }
+        updateCurrentPlayerLabel();
+    }
+
     private void updateHunterPosition(int row, int col) {
         view.getHunter().setHunted(new Coordinate(row, col));
+    }
+
+    private void updateCurrentPlayerLabel() {
+        if (view.getHunter().getGameModel().currentPlayer == 1) {
+            view.getCurrentLabel().setText("C'est au tour du Monstre");
+        } else {
+            view.getCurrentLabel().setText("C'est au tour du Chasseur");
+        }
     }
 
     /**
