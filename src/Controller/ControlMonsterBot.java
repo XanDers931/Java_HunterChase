@@ -4,7 +4,6 @@ import Model.Monster;
 import Model.MonsterStrategy;
 import Utils.Coordinate;
 import View.VueMonster;
-import fr.univlille.iutinfo.cam.player.monster.IMonsterStrategy;
 import fr.univlille.iutinfo.cam.player.perception.ICoordinate;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -73,7 +72,7 @@ public class ControlMonsterBot implements ControlMonster {
     private void handleMonsterMovement(MonsterStrategy strategy) {
         Monster monster = view.getMonster();
         if (monster.getGameModel().currentPlayer == 1) {
-            ICoordinate coord = view.isFogOfWar() ? strategy.playBrouilard() : strategy.play();
+            ICoordinate coord = view.isFogOfWar() ? strategy.playBrouillard() : strategy.play();
             int clickedRow = coord.getRow();
             int clickedCol = coord.getCol();
             this.clickedCase = new Coordinate(clickedRow, clickedCol);

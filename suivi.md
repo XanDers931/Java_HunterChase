@@ -86,8 +86,18 @@
     - Ajouts de l'aide pour le Hunter
     - Ajouts du labyrinthe prédéfini
     - Fix bug de la taille du Plateau et de la probaWall
+    - Ajout bouton sur la fenêtre de l'avant partie .
+    - Javadoc
 - **Paul Milleville :**
     - IA du monstre avec le Brouillard
     - Réorganisation code
     - Mise à jour du fichier suivi.md
+- **Alexandre Martel :**
+    - Modification de l'IA du Hunter
+    - FIxation d'un bug persistant sur plusieurs FXML
+
+- **Alexy Fouconnier :**
+    - Ajout de nombreux tests sur la partie modèle .
+
+
 

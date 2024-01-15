@@ -103,7 +103,7 @@ public class Maps {
      */
 
     public void readMapFromCSV(int ligne, int colonne) {
-        File csv = new File("./res/Maps.csv");
+        File csv = new File("res/Maps.csv");
         this.map = new CellInfo[ligne][colonne];
         try (BufferedReader reader = new BufferedReader(new FileReader(csv))) {
             String str;
