@@ -63,6 +63,50 @@ ArrayList<Coordinate> estFaisable(boolean brouillard)
 
 En ce qui concerne le bot chasseur, ce dernier repose malheureusement principalement sur le hasard. En effet, dès que le chasseur tire, il sélectionne de manière aléatoire une case du labyrinthe sur laquelle tirer. Cependant, pour tenter d'augmenter les chances de victoire de notre bot, nous avons décidé d'implémenter une autre solution.
 
+Lorsque le chasseur souhaite tirer, il va vérifier si la dernière case sur laquelle il a tiré fait partie du chemin emprunté par le monstre. Si c'est le cas, cela va permettre de réduire le périmètre des possibilités du prochain tir. En effet, si la dernière case contient un nombre correspondant au passage du monstre, le chasseur va calculer en fonction du nombre de tours actuel la distance maximale dans laquelle le monstre peut se trouver. Ainsi, il réduit le champ de tir maximal et augmente ses chances de tirer sur le monstre.
+
+Il y une fonction qui tire en aléatoire (`play()`)
+
+```
+Coordinate smartPlay(Coordinate lastCaseClicked, VueHunter view):
+    Si lastCaseClicked.getRow() == -1 Alors
+        Retourner play()
+    Fin Si
+
+    Si view.getHunter().getGameModel().getPath().contientClé(lastCaseClicked) Alors
+        nbTour = view.getHunter().getGameModel().getPath().get(lastCaseClicked)
+
+        maxCol = lastCaseClicked.getCol() + nbTour
+        minCol = lastCaseClicked.getCol() - nbTour
+        maxRow = lastCaseClicked.getRow() + nbTour
+        minRow = lastCaseClicked.getRow() - nbTour
+
+        tailleCol = GameModel.map.getCol()
+        tailleRow = GameModel.map.getRow()
+
+        Si maxCol >= tailleCol Alors
+            maxCol = tailleCol - 1
+        Fin Si
+        Si minCol <= 0 Alors
+            minCol = 1
+        Fin Si
+        Si maxRow >= tailleRow Alors
+            maxRow = tailleRow - 1
+        Fin Si
+        Si minRow <= 0 Alors
+            minRow = 1
+        Fin Si
+
+        caseToPlayCol = minCol + entierAleatoireEntre(0, maxCol - minCol)
+        caseToPlayRow = minRow + entierAleatoireEntre(0, maxRow - minRow)
+
+        caseToPlay = nouvelleCoordinate(caseToPlayRow, caseToPlayCol)
+        Retourner caseToPlay
+    Fin Si
+
+    Retourner play()
+Fin Fonction
+```
 
 ### Structures de données :
 
