@@ -59,6 +59,11 @@ ArrayList<Coordinate> estFaisable(boolean brouillard)
 
 ```
 
+### IA Chasseur
+
+En ce qui concerne le bot chasseur, ce dernier repose malheureusement principalement sur le hasard. En effet, dès que le chasseur tire, il sélectionne de manière aléatoire une case du labyrinthe sur laquelle tirer. Cependant, pour tenter d'augmenter les chances de victoire de notre bot, nous avons décidé d'implémenter une autre solution.
+
+
 ### Structures de données :
 
 Pour les structures de données utilisées, nous avons utilisé la même classe (`Solveur`), qui utilise un algorythme de recherche du plus court chemin avec comme structure de données une **File**. En effet, cette structure permet une recherche en largeur (ou en parallèle). Nous avons fait le choix d'un algorithme qui est plus efficace si la  sortie est à côté de l'entrée au contraire d'une sortie plus éloigné de l'entrée.
